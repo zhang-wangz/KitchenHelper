@@ -63,7 +63,7 @@
                                           <VBox alignment="CENTER" prefHeight="275.0" prefWidth="297.0">
                                              <children>
                                                 <JFXComboBox fx:id="choiceType1" focusColor="WHITE" labelFloat="true" onAction="#OrderOrAppointmentChoice" prefHeight="22.0" prefWidth="294.0" promptText="类型" unFocusColor="WHITE" />
-                                                <JFXTextField fx:id="orderId" labelFloat="true" onAction="#levelDownOperatorgit" promptText="订单或预约ID">
+                                                <JFXTextField fx:id="orderId" labelFloat="true" onAction="#levelUpOperator" promptText="订单或预约ID">
                                                    <VBox.margin>
                                                       <Insets top="40.0" />
                                                    </VBox.margin></JFXTextField>
