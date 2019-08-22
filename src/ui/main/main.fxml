@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="970.0" stylesheets="@../theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.main.Main">
+   <children>
+      <AnchorPane fx:id="rootAnchorPane">
+         <children>
+            <JFXTabPane fx:id="tabPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <tabs>
+                  <Tab fx:id="homeTab" text="主页">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox layoutX="121.0" layoutY="44.0" prefHeight="551.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox prefHeight="528.0" prefWidth="970.0">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="261.0" prefWidth="531.0">
+                                             <children>
+                                                <Text fx:id="adminTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="管理员总数" textAlignment="CENTER" />
+                                                <Text fx:id="userTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="用户总数" textAlignment="CENTER" />
+                                                <Text fx:id="PetTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="总数" textAlignment="CENTER" />
+                                                <Text fx:id="orderTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="订单总数" textAlignment="CENTER" />
+                                                <Text fx:id="appointmentTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="预约总数" textAlignment="CENTER" />
+                                                <Text fx:id="serviceTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="服务总数" textAlignment="CENTER" />
+                                                <Text fx:id="productTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="产品总数" textAlignment="CENTER" />
+                                                <Text fx:id="categoryTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="分类总数" textAlignment="CENTER" />
+                                             </children>
+                                          </VBox>
+                                          <VBox fx:id="charContainer" prefHeight="261.0" prefWidth="421.0">
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding></VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                     <contextMenu>
+                        <ContextMenu>
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#refreshHomeTab" text="刷新" />
+                          </items>
+                        </ContextMenu>
+                     </contextMenu>
+                  </Tab>
+                  <Tab text="检索">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="551.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox prefHeight="275.0" prefWidth="775.0">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="275.0" prefWidth="297.0">
+                                             <children>
+                                                <JFXComboBox fx:id="choiceType1" focusColor="WHITE" labelFloat="true" onAction="#OrderOrAppointmentChoice" prefHeight="22.0" prefWidth="294.0" promptText="类型" unFocusColor="WHITE" />
+                                                <JFXTextField fx:id="orderId" labelFloat="true" onAction="#levelDownOperator" promptText="订单或预约ID">
+                                                   <VBox.margin>
+                                                      <Insets top="40.0" />
+                                                   </VBox.margin></JFXTextField>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER" prefHeight="275.0" prefWidth="481.0">
+                                             <children>
+                                                <Text fx:id="orderUser" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text">
+                                                   <font>
+                                                      <Font size="29.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="orderPrice" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text">
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                   <font>
+                                                      <Font size="29.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="orderTel" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text">
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                   <font>
+                                                      <Font size="29.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="orderStatus" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text">
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                   <font>
+                                                      <Font size="29.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox prefHeight="275.0" prefWidth="775.0">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="275.0" prefWidth="297.0">
+                                             <children>
+                                                <JFXComboBox fx:id="choiceType2" focusColor="WHITE" labelFloat="true" onAction="#otherChoice" prefHeight="22.0" prefWidth="300.0" promptText="类型" unFocusColor="WHITE">
+                                                   <VBox.margin>
+                                                      <Insets bottom="30.0" />
+                                                   </VBox.margin>
+                                                </JFXComboBox>
+                                                <JFXTextField fx:id="keyword" labelFloat="true" onAction="#levelUpOperator" promptText="检索关键词" />
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER" prefHeight="275.0" prefWidth="481.0">
+                                             <children>
+                                                <Text fx:id="appUser" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text">
+                                                   <font>
+                                                      <Font size="29.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="appDate" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text">
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                   <font>
+                                                      <Font size="29.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="appPet" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text">
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                   <font>
+                                                      <Font size="29.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="appStatus" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text">
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                   <font>
+                                                      <Font size="29.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="adminTab" text="管理员详情">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="operatorTbl" layoutX="26.0" layoutY="38.0" prefHeight="486.0" prefWidth="918.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <columns>
+                                    <TableColumn fx:id="OperatorIdCol" prefWidth="75.0" text="ID" />
+                                    <TableColumn fx:id="OperatornameCol" prefWidth="75.0" text="用户名" />
+                                    <TableColumn fx:id="OPeratorlevCol" prefWidth="75.0" text="等级" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" onAction="#deleteOperator" text="删除" />
+                                          <MenuItem mnemonicParsing="false" onAction="#editOperator" text="编辑" />
+                                          <MenuItem mnemonicParsing="false" onAction="#refreshOperator" text="刷新" />
+                                          <MenuItem mnemonicParsing="false" onAction="#levelUpOperator" text="升级" />
+                                          <MenuItem mnemonicParsing="false" onAction="#levelDownOperator" text="降级" />
+                                       </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="userTab" text="用户详情">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="userTbl" layoutX="26.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <columns>
+                                    <TableColumn fx:id="UserIdCol" prefWidth="75.0" text="ID" />
+                                    <TableColumn fx:id="UsernameCol" prefWidth="75.0" text="用户名" />
+                                    <TableColumn fx:id="UserTelCol" prefWidth="75.0" text="手机号码" />
+                                    <TableColumn fx:id="UserEmailCol" prefWidth="75.0" text="电子邮箱" />
+                                    <TableColumn fx:id="UserContactCol" prefWidth="75.0" text="其他联系方式" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" onAction="#deleteUser" text="删除" />
+                                          <MenuItem mnemonicParsing="false" onAction="#editUser" text="编辑" />
+                                          <MenuItem mnemonicParsing="false" onAction="#refreshUser" text="刷新" />
+                                       </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </JFXTabPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

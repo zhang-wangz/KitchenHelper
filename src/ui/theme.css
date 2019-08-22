@@ -1,0 +1,130 @@
+* {
+    -fx-dark-primary-color: #1976D2;
+    -fx-light-primary-color: #2196F3;
+    -fx-primary-color:#2196F3;
+    -fx-text-color:#FFFFFF;
+    -fx-icon-color:#727272;
+    -fx-secondary-color: #49A8EE;
+    -fx-primary-text: #212121;
+    -fx-secondary-text: #BDBDBD;
+}
+
+. root {
+    -fx-background-color: -fx-dark-primary-color;
+}
+
+.glyph-icon {
+    -fx-fill: #b7d7f7;
+}
+
+.button {
+    -fx-text-fill: -fx-text-color;
+    -fx-background-color: -fx-light-primary-color;
+}
+
+.button:hover{
+    -fx-text-fill: -fx-text-color;
+    -fx-background-color: -fx-secondary-color;
+}
+
+.text-field {
+    -fx-prompt-text-fill: #FFFFFF;
+    -jfx-focus-color: #FFFFFF;
+    -jfx-unfocus-color: #FFFFFF;
+    -fx-text-fill: #FFFFFF;
+}
+
+.wrong-match {
+    -jfx-focus-color: #E15241;
+    -jfx-unfocus-color: #E15241;
+}
+
+/* Main */
+
+/* TabPane */
+
+.tab {
+    -fx-background-color:-fx-dark-primary-color;
+    -fx-pref-width: 200;
+    -fx-pref-height: 60;
+}
+
+.tab-header-background {
+    -fx-background-color:-fx-dark-primary-color;
+}
+
+.jfx-hamburger-icon {
+    -fx-spacing : 5;
+}
+
+.jfx-hamburger-icon StackPane {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 5px;
+}
+
+.toolbar-button {
+    -fx-text-fill: -fx-text-color;
+    -fx-background-color: -fx-light-primary-color;
+}
+
+.toolbar-button:hover{
+    -fx-text-fill: -fx-text-color;
+    -fx-background-color: -fx-secondary-color;
+}
+
+.table-view {
+    -fx-boder-color : -fx-dark-primary-color;
+}
+
+.table-view .column-header{
+    -fx-background-color:-fx-dark-primary-color;
+}
+
+.table-column .label{
+    -fx-text-fill: white ;
+}
+
+.table-view .table-row-cell{
+    -fx-background-color: -fx-dark-primary-color;
+    -fx-border-color: -fx-dark-primary-color;
+}
+
+.table-row-cell .table-cell {  
+    -fx-border-width: 0px;
+    -fx-border-color: -fx-dark-primary-color;
+}
+
+.main-text {
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 20px;
+}
+
+.combo-box .list-cell {
+    -fx-background: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 1.66667em;
+}
+
+.combo-box-base:showing {
+    -fx-color: white;
+}
+
+.combo-box-base {
+    -fx-background-color: white;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.chart-legend {
+    -fx-background-color: -fx-secondary-color;
+}
+
+.context-menu {
+    -fx-background-color:  -fx-secondary-color;
+}
+
+.jfx-dialog-layout .jfx-layout-heading .text { -fx-fill: #2196F3; }
