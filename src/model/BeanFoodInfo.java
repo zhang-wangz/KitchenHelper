@@ -5,7 +5,7 @@ public class BeanFoodInfo {
     private String foodName;
     private Integer foodPrice;
     private Integer num;
-    private String foodDes;
+    private String foodDes = "该食材暂时没有信息描述";
 
     public String getFoodId() {
         return foodId;

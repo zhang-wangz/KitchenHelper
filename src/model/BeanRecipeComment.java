@@ -7,7 +7,7 @@ public class BeanRecipeComment  implements Serializable {
 
     private String recipeId;
     private String userId;
-    private String commentContent;
+    private String commentContent = "该菜谱暂时没有评价";
     private Integer browseSig;
     private Integer collSig;
     private Integer commentScore;

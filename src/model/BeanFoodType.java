@@ -3,7 +3,7 @@ package model;
 public class BeanFoodType {
     private String foodTypeId;
     private String foodTypeName;
-    private String foodTypeDes;
+    private String foodTypeDes = "该类型暂时没有描述";
 
     public String getFoodTypeId() {
         return foodTypeId;

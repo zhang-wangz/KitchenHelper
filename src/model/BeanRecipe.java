@@ -4,7 +4,7 @@ public class BeanRecipe {
     private String recipeId;
     private String recipeName;
     private String contriUsr;
-    private String recipeDes;
+    private String recipeDes = "该菜谱暂时没有描述";
     private Integer recipeScore;
     private Integer recipeColl;
     private Integer recipeBrow;

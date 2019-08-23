@@ -16,7 +16,7 @@
         </property>
 
         <property name="workAddress">
-            <column name="work_address" sql-type="varchar(1024)" length="1024" not-null="true" default=" "/>
+            <column name="work_address" sql-type="varchar(1024)" length="1024" not-null="true" />
         </property>
 
     </class>

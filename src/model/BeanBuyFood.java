@@ -1,7 +1,7 @@
 package model;
 
 import java.io.Serializable;
-
+// 管理员 食材采购
 public class BeanBuyFood implements Serializable {
     private static final long serialVersionUID = 1L;
 

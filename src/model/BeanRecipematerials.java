@@ -2,12 +2,13 @@ package model;
 
 import java.io.Serializable;
 
+//菜谱用料
 public class BeanRecipematerials implements Serializable {
     private static final long serialVersionUID = 1L;
     private String recipeId;
     private String foodId;
     private Integer numOfFood;
-    private String workAddress;
+    private String workAddress;//单位
 
     public BeanRecipematerials() {
     }

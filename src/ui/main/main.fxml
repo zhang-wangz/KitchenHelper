@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="970.0" stylesheets="@../theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.main.Main">
    <children>
@@ -25,7 +43,7 @@
                                              <children>
                                                 <Text fx:id="adminTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="管理员总数" textAlignment="CENTER" />
                                                 <Text fx:id="userTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="用户总数" textAlignment="CENTER" />
-                                                <Text fx:id="PetTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="总数" textAlignment="CENTER" />
+                                                <Text fx:id="PetTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="宠物总数" textAlignment="CENTER" />
                                                 <Text fx:id="orderTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="订单总数" textAlignment="CENTER" />
                                                 <Text fx:id="appointmentTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="预约总数" textAlignment="CENTER" />
                                                 <Text fx:id="serviceTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="服务总数" textAlignment="CENTER" />
@@ -46,9 +64,9 @@
                      </content>
                      <contextMenu>
                         <ContextMenu>
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#refreshHomeTab" text="刷新" />
-                          </items>
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#refreshHomeTab" text="刷新" />
+                           </items>
                         </ContextMenu>
                      </contextMenu>
                   </Tab>
@@ -63,7 +81,8 @@
                                           <VBox alignment="CENTER" prefHeight="275.0" prefWidth="297.0">
                                              <children>
                                                 <JFXComboBox fx:id="choiceType1" focusColor="WHITE" labelFloat="true" onAction="#OrderOrAppointmentChoice" prefHeight="22.0" prefWidth="294.0" promptText="类型" unFocusColor="WHITE" />
-                                                <JFXTextField fx:id="orderId" labelFloat="true" onAction="#levelUpOperator" promptText="订单或预约ID">
+                                                <JFXTextField fx:id="orderId" labelFloat="true" onAction="#levelDownOperator" promptText="订单或预约ID">
+<!--                                                   loadOrderOrAppointmentInfo wz-->
                                                    <VBox.margin>
                                                       <Insets top="40.0" />
                                                    </VBox.margin></JFXTextField>
@@ -119,7 +138,11 @@
                                                       <Insets bottom="30.0" />
                                                    </VBox.margin>
                                                 </JFXComboBox>
-                                                <JFXTextField fx:id="keyword" labelFloat="true" onAction="#levelUpOperator" promptText="检索关键词" />
+
+<!--                                                wz-->
+                                                <JFXTextField fx:id="keyword" labelFloat="true" onAction="#levelDownOperator" promptText="检索关键词" />
+<!--                                                loadOtherInfo-->
+
                                              </children>
                                           </VBox>
                                           <VBox alignment="CENTER" prefHeight="275.0" prefWidth="481.0">
@@ -229,6 +252,8 @@
                   </Tab>
                </tabs>
             </JFXTabPane>
+            <JFXDrawer fx:id="drawer" defaultDrawerSize="0.0" direction="RIGHT" layoutX="843.0" overLayVisible="false" prefHeight="585.0" prefWidth="97.0" AnchorPane.rightAnchor="0.0" />
+            <JFXHamburger fx:id="hamburger" styleClass="jfx-hamburger-icon" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0" />
          </children>
       </AnchorPane>
    </children>

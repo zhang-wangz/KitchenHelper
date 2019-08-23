@@ -6,7 +6,9 @@ public class BeanRecipeStep implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String recipeId;
+
     private Integer stepId;
+
     private String stepDes;
 
     public String getRecipeId() {

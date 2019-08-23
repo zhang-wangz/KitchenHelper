@@ -27,25 +27,6 @@ public class Toolbar {
         showWindow("/ui/add/addCategory/addCategory.fxml","添加分类");
     }
 
-    @FXML
-    void addOrderStater(ActionEvent event) {
-        showWindow("/ui/add/addOrder/addOrder.fxml", "添加订单");
-    }
-
-    @FXML
-    void addPetStarter(ActionEvent event) {
-        showWindow("/ui/add/addPet/addPet.fxml","添加宠物");
-    }
-
-    @FXML
-    void addProductStarter(ActionEvent event) {
-        showWindow("/ui/add/addProduct/addProduct.fxml","添加产品");
-    }
-
-    @FXML
-    void addServiceStarter(ActionEvent event) {
-        showWindow("/ui/add/addService/addService.fxml","添加服务");
-    }
 
     @FXML
     void addUserStarter(ActionEvent event) {
