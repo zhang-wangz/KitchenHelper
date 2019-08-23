@@ -1,6 +1,7 @@
 package ui.login;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
@@ -32,6 +33,9 @@ public class Login {
     private JFXPasswordField password;
 
     @FXML
+    private JFXCheckBox isAdmin;
+
+    @FXML
     void quit(ActionEvent event) {
         System.exit(0);
     }
@@ -42,13 +46,19 @@ public class Login {
         String userName = username.getText();
         //String passWord = DigestUtils.sha1Hex(password.getText());
         String passWord = password.getText();
+        boolean isadmin = isAdmin.isSelected();
         System.out.println(passWord);
         try {
-            KitchenSystemUtil.operatorController.login(userName, passWord);
-            loadMain();
-            BeanOperator operator =  KitchenSystemUtil.operatorController.findOperatorByName(userName);
-            BeanOperator.currentOperator = operator;
-            ((Stage)username.getScene().getWindow()).close();
+            if(isadmin) {
+                KitchenSystemUtil.operatorController.login(userName, passWord);
+                loadMain();
+                BeanOperator operator = KitchenSystemUtil.operatorController.findOperatorByName(userName);
+                BeanOperator.currentOperator = operator;
+                ((Stage) username.getScene().getWindow()).close();//获取当前的scene并且销毁
+            }else{
+
+            }
+
         } catch (BaseException e) {
             username.getStyleClass().add("wrong-match");
             password.getStyleClass().add("wrong-match");

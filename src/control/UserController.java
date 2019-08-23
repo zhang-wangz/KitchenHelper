@@ -68,7 +68,7 @@ public class UserController {
         session.close();
     }
 
-    public void delUser(Integer userId){
+    public void delUser(String userId){
         Session session = getSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("delete BeanMyUser u where u.userId = :id");

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.BeanBuyFood" table="buyfood" schema="KitchenHelper">
+        <composite-id>
+            <key-property name="BuyOrderId" type="java.lang.String" column="buy_order_id" />
+            <key-property name="foodId" type="java.lang.String" column="food_id" />
+        </composite-id>
+
+        <property name="num">
+            <column name="num" sql-type="int(11)" length="100" not-null="true"/>
+        </property>
+
+        <property name="status">
+            <column name="status" sql-type="int(11)" length="100" not-null="true"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

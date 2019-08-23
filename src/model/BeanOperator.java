@@ -4,18 +4,19 @@ import java.util.Objects;
 
 public class BeanOperator {
     public static BeanOperator currentOperator;
-    private Integer opId;
+    private String opId;
     private String opName;
-    private Integer opLevel;//管理员和用户
+    private Integer opLevel;
     private String opPwd;
+
     public static final String[] tableTitles={"ID","名称","等级"};
 
 
-    public Integer getOpId() {
+    public String getOpId() {
         return opId;
     }
 
-    public void setOpId(Integer opId) {
+    public void setOpId(String opId) {
         this.opId = opId;
     }
 

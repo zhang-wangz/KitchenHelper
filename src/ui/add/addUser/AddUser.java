@@ -36,7 +36,7 @@ public class AddUser {
     private JFXButton btnCancel;
 
     private Boolean isEditMode = false;
-    private int userId = 0;
+    private String userId = "0";
 
     @FXML
     void cancel(ActionEvent event) {

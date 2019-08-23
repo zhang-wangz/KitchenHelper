@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.BeanRecipeStep" table="recipestep" schema="KitchenHelper">
+        <composite-id>
+            <key-property name="recipeId" type="java.lang.String" column="recipe_id" />
+            <key-property name="stepId" type="java.lang.Integer" column="step_id" />
+        </composite-id>
+
+        <property name="stepDes">
+            <column name="step_des" sql-type="varchar(1024)" length="1024" not-null="true" default=""/>
+        </property>
+
+    </class>
+</hibernate-mapping>

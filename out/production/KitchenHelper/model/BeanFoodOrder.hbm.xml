@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.BeanFoodOrder" table="foodorder" schema="KitchenHelper">
+
+        <id name="orderId">
+            <column name="order_id" sql-type="varchar(1024)" length="1024"/>
+            <generator class="assigned" />
+        </id>
+
+        <property name="sendTime">
+            <column name="send_time" sql-type="timestamp" length="6" not-null="true"/>
+        </property>
+
+        <property name="sendAddress">
+            <column name="send_address" sql-type="varchar(1024)" length="1024" not-null="true"/>
+        </property>
+
+        <property name="userTel">
+            <column name="user_tel" sql-type="varchar(1024)" length="1024" not-null="true"/>
+        </property>
+
+        <property name="orderStatus">
+            <column name="order_status" sql-type="int(11)"  not-null="true" default="0"/>
+        </property>
+
+
+    </class>
+</hibernate-mapping>

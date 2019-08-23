@@ -4,7 +4,8 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</property>
+<!--        org.hibernate.dialect.MySQL5InnoDBDialect-->
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.pool_size">100</property>
         <property name="hbm2ddl.auto">update</property>
@@ -14,15 +15,18 @@
         <property name="connection.password">123456</property>
         <property name="connection.url">jdbc:mysql://localhost/Kitchen</property>
 
-<!--        <mapping resource="model/BeanAppointment.hbm.xml"/>-->
-<!--        <mapping resource="model/BeanCategory.hbm.xml"/>-->
-<!--        <mapping resource="model/BeanMyOrder.hbm.xml"/>-->
+
+        <mapping resource="model/BeanBuyFood.hbm.xml"/>
+        <mapping resource="model/BeanFoodInfo.hbm.xml"/>
+        <mapping resource="model/BeanFoodOrder.hbm.xml"/>
+        <mapping resource="model/BeanFoodType.hbm.xml"/>
         <mapping resource="model/BeanMyUser.hbm.xml"/>
         <mapping resource="model/BeanOperator.hbm.xml"/>
-<!--        <mapping resource="model/BeanPet.hbm.xml"/>-->
-<!--        <mapping resource="model/BeanProduct.hbm.xml"/>-->
-<!--        <mapping resource="model/BeanService.hbm.xml"/>-->
-<!--        <mapping resource="model/BeanOrderDetail.hbm.xml"/>-->
-<!--        <mapping resource="model/BeanAppointmentDetail.hbm.xml"/>-->
+        <mapping resource="model/BeanOrderDetail.hbm.xml"/>
+        <mapping resource="model/BeanRecipe.hbm.xml"/>
+        <mapping resource="model/BeanRecipeComment.hbm.xml"/>
+        <mapping resource="model/BeanRecipematerials.hbm.xml"/>
+        <mapping resource="model/BeanRecipeStep.hbm.xml"/>
+
     </session-factory>
 </hibernate-configuration>

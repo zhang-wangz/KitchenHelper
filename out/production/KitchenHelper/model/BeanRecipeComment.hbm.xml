@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.BeanRecipeComment" table="recipecomment" schema="KitchenHelper">
+        <composite-id>
+            <key-property name="recipeId" type="java.lang.String" column="recipe_id" />
+            <key-property name="userId" type="java.lang.String" column="user_id" />
+        </composite-id>
+
+        <property name="commentContent">
+            <column name="comment_content" sql-type="varchar(1024)" length="1024" not-null="true" default="该评价内容暂时为空"/>
+        </property>
+
+        <property name="browseSig">
+            <column name="browse_sig" sql-type="int(11)"  not-null="true" default="0"/>
+        </property>
+
+        <property name="collSig">
+            <column name="coll_sig" sql-type="int(11)"  not-null="true" default="0"/>
+        </property>
+
+        <property name="commentScore">
+            <column name="comment_score" sql-type="int(11)"   not-null="true" default="0"/>
+        </property>
+
+
+    </class>
+</hibernate-mapping>

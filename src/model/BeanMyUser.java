@@ -1,19 +1,57 @@
 package model;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 public class BeanMyUser {
-    private Integer userId;
+    private String userId;
     private String userName;
     private String userTel;
     private String userEmail;
+    private String sex;
+    private String pwd;
     private String userContact;
+    private String city;
+    private Timestamp registerDate;
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Timestamp getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Timestamp registerDate) {
+        this.registerDate = registerDate;
+    }
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

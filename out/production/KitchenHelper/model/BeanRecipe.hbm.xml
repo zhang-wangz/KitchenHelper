@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.BeanRecipe" table="recipe" schema="KitchenHelper">
+        <id name="recipeId">
+            <column name="op_id" sql-type="int(11)"/>
+            <generator class="assigned" />
+        </id>
+
+        <property name="recipeName">
+            <column name="recipe_name" sql-type="varchar(1024)" length="1024" not-null="true"/>
+        </property>
+
+        <property name="contriUsr">
+            <column name="contri_usr" sql-type="varchar(1024)" not-null="true"/>
+        </property>
+
+        <property name="recipeDes">
+            <column name="recipe_des" sql-type="varchar(1024)" length="1024" not-null="true" default="该菜谱暂时没有描述"/>
+        </property>
+
+        <property name="recipeScore">
+            <column name="recipe_score" sql-type="varchar(1024)" length="1024" not-null="true" default="0"/>
+        </property>
+
+        <property name="recipeColl">
+            <column name="recipe_coll" sql-type="int(11)"  not-null="true" default="0"/>
+        </property>
+
+        <property name="recipeBrow">
+            <column name="recipe_brow" sql-type="int(11)"  not-null="true" default="0"/>
+        </property>
+
+
+
+
+
+    </class>
+</hibernate-mapping>

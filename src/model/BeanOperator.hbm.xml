@@ -6,8 +6,8 @@
 
     <class name="model.BeanOperator" table="operator" schema="PetManageSystem">
         <id name="opId">
-            <column name="op_id" sql-type="int(11)"/>
-            <generator class="native" />
+            <column name="op_id" sql-type="varchar(1024)" length="1024"/>
+            <generator class="assigned" />
         </id>
         <property name="opName">
             <column name="op_name" sql-type="varchar(1024)" length="1024" not-null="true"/>

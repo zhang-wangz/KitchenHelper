@@ -59,7 +59,7 @@ public class OperatorController {
             beanOperator1.setOpPwd(pwd1);
             session.save(beanOperator1);
         }else{
-            throw new BaseException("改用户名已被使用");
+            throw new BaseException("该用户名已被使用");
         }
         tx.commit();
         session.close();
@@ -77,8 +77,8 @@ public class OperatorController {
         return list;
     }
 
-    public void delOperator(int id) throws BaseException {
-        if(BeanOperator.currentOperator.getOpId() == id){
+    public void delOperator(String id) throws BaseException {
+        if(BeanOperator.currentOperator.getOpId().equals(id)){
             throw new BaseException("当前管理员活动中不可删除");
         }
         Session session = getSession();
@@ -145,7 +145,7 @@ public class OperatorController {
         Session session = getSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("from BeanOperator b where b.opName = :name");
-        query.setParameter("name",userName);
+        query.setParameter("name", userName);
         BeanOperator operator = (BeanOperator) query.list().get(0);
         tx.commit();
         session.close();
@@ -162,4 +162,6 @@ public class OperatorController {
         session.close();
         return list;
     }
+
+
 }

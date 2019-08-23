@@ -33,7 +33,7 @@ public class AddOperator {
     private JFXButton cancel;
 
     private Boolean isEditMode = false;
-    private int operatorId = 0;
+    private String operatorId = "0";
 
     @FXML
     void cancel(ActionEvent event) {
