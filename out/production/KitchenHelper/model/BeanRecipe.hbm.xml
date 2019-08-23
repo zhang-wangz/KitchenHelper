@@ -19,7 +19,7 @@
         </property>
 
         <property name="recipeDes">
-            <column name="recipe_des" sql-type="varchar(1024)" length="1024" not-null="true" default="该菜谱暂时没有描述"/>
+            <column name="recipe_des" sql-type="varchar(1024)" length="1024" not-null="true" />
         </property>
 
         <property name="recipeScore">

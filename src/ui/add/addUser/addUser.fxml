@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane fx:id="rootPane" prefHeight="302.0" prefWidth="350.0" stylesheets="@../../theme.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.add.addUser.AddUser">
+
+<AnchorPane fx:id="rootPane" prefHeight="302.0" prefWidth="350.0" stylesheets="@../../theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.add.addUser.AddUser">
    <children>
       <VBox layoutY="2.0" prefHeight="265.0" prefWidth="340.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -12,6 +14,13 @@
                   <Insets bottom="10.0" left="20.0" right="20.0" top="25.0" />
                </VBox.margin>
             </JFXTextField>
+
+            <JFXTextField fx:id="userpwd" labelFloat="true" prefHeight="27.0" prefWidth="313.0" promptText="密码">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="25.0" />
+               </VBox.margin>
+            </JFXTextField>
+
             <JFXTextField fx:id="tel" labelFloat="true" prefHeight="27.0" prefWidth="313.0" promptText="手机号">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
@@ -20,6 +29,16 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </JFXTextField>
+
+            <JFXTextField fx:id="sex" labelFloat="true" prefHeight="27.0" prefWidth="313.0" promptText="性别">
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+
             <JFXTextField fx:id="email" labelFloat="true" prefHeight="27.0" prefWidth="313.0" promptText="电子邮箱">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
@@ -28,7 +47,8 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </JFXTextField>
-            <JFXTextField fx:id="address" labelFloat="true" prefHeight="27.0" prefWidth="313.0" promptText="住址">
+
+            <JFXTextField fx:id="address" labelFloat="true" prefHeight="27.0" prefWidth="313.0" promptText="城市">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
                </padding>

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class BeanMyUser {
+    public static BeanMyUser currentUser;
     private String userId;
     private String userName;
     private String userTel;
@@ -14,6 +15,15 @@ public class BeanMyUser {
     private String userContact;
     private String city;
     private Timestamp registerDate;
+    private boolean userSig = true;
+
+    public boolean isUserSig() {
+        return userSig;
+    }
+
+    public void setUserSig(boolean userSig) {
+        this.userSig = userSig;
+    }
 
     public String getUserId() {
         return userId;

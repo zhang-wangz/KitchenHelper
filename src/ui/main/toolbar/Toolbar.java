@@ -12,10 +12,6 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 
 public class Toolbar {
-    @FXML
-    void AddAppointmentStarter(ActionEvent event) {
-        showWindow("/ui/add/addAppointment/addAppointment.fxml","ÃÌº”‘§‘º");
-    }
 
     @FXML
     void addAdminStarter(ActionEvent event) {
@@ -36,7 +32,7 @@ public class Toolbar {
     private void showWindow(String loc, String title){
         try {
             Parent parent = FXMLLoader.load(getClass().getResource(loc));
-            Stage stage = new Stage(StageStyle.DECORATED);
+            Stage stage = new Stage(StageStyle.DECORATED); //default style
             stage.getIcons().add(new Image("/ui/icons/icon.png"));
             stage.setTitle(title);
             stage.setResizable(false);

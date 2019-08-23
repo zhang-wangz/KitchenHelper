@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.BeanMyUser;
 import model.BeanOperator;
 import util.BaseException;
 import util.KitchenSystemUtil;
@@ -56,7 +57,11 @@ public class Login {
                 BeanOperator.currentOperator = operator;
                 ((Stage) username.getScene().getWindow()).close();//获取当前的scene并且销毁
             }else{
-
+                KitchenSystemUtil.userController.login(userName, passWord);
+                loadMain();
+                BeanMyUser myUser = KitchenSystemUtil.userController.findUserByName(userName);
+                BeanMyUser.currentUser = myUser;
+                ((Stage) username.getScene().getWindow()).close();//获取当前的scene并且销毁
             }
 
         } catch (BaseException e) {
