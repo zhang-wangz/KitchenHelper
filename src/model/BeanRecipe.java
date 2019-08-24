@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class BeanRecipe {
     private String recipeId;
     private String recipeName;
@@ -51,6 +53,30 @@ public class BeanRecipe {
 
     public Integer getRecipeColl() {
         return recipeColl;
+    }
+
+    @Override
+    public String toString() {
+        return getRecipeName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BeanRecipe)) return false;
+        BeanRecipe that = (BeanRecipe) o;
+        return Objects.equals(getRecipeId(), that.getRecipeId()) &&
+                Objects.equals(getRecipeName(), that.getRecipeName()) &&
+                Objects.equals(getContriUsr(), that.getContriUsr()) &&
+                Objects.equals(getRecipeDes(), that.getRecipeDes()) &&
+                Objects.equals(getRecipeScore(), that.getRecipeScore()) &&
+                Objects.equals(getRecipeColl(), that.getRecipeColl()) &&
+                Objects.equals(getRecipeBrow(), that.getRecipeBrow());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRecipeId(), getRecipeName(), getContriUsr(), getRecipeDes(), getRecipeScore(), getRecipeColl(), getRecipeBrow());
     }
 
     public void setRecipeColl(Integer recipeColl) {

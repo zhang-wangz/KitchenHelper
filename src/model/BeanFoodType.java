@@ -28,4 +28,9 @@ public class BeanFoodType {
     public void setFoodTypeDes(String foodTypeDes) {
         this.foodTypeDes = foodTypeDes;
     }
+
+    @Override
+    public String toString() {
+        return getFoodTypeName();
+    }
 }

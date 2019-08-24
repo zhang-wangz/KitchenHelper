@@ -14,6 +14,16 @@ public class BeanBuyFood implements Serializable {
         return buyOrderId;
     }
 
+    @Override
+    public String toString() {
+        return "BeanBuyFood{" +
+                "buyOrderId='" + buyOrderId + '\'' +
+                ", foodId='" + foodId + '\'' +
+                ", num=" + num +
+                ", status=" + status +
+                '}';
+    }
+
     public void setBuyOrderId(String buyOrderId) {
         this.buyOrderId = buyOrderId;
     }

@@ -16,6 +16,11 @@ public class BeanFoodInfo {
         return foodId;
     }
 
+    @Override
+    public String toString() {
+        return getFoodName();
+    }
+
     public void setFoodId(String foodId) {
         this.foodId = foodId;
     }

@@ -10,7 +10,7 @@ public class BeanOrderDetail implements Serializable {
     private String foodId;
     private Integer num;
     private Integer price;
-    private Integer discount;
+    private Double discount;
 
     public String getOrderId() {
         return orderId;
@@ -44,11 +44,11 @@ public class BeanOrderDetail implements Serializable {
         this.price = price;
     }
 
-    public Integer getDiscount() {
+    public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Integer discount) {
+    public void setDiscount(Double discount) {
         this.discount = discount;
     }
 }

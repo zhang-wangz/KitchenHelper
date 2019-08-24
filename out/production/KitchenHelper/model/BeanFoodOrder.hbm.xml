@@ -11,6 +11,10 @@
             <generator class="assigned" />
         </id>
 
+        <property name="userId">
+            <column name="user_id" sql-type="varchar(1024)" length="1024" not-null="true"/>
+        </property>
+
         <property name="sendTime">
             <column name="send_time" sql-type="Date" length="6" not-null="true"/>
         </property>

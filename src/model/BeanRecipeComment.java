@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class BeanRecipeComment  implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -11,6 +12,29 @@ public class BeanRecipeComment  implements Serializable {
     private Integer browseSig;
     private Integer collSig;
     private Integer commentScore;
+
+    @Override
+    public String toString() {
+        return getCommentContent();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BeanRecipeComment)) return false;
+        BeanRecipeComment that = (BeanRecipeComment) o;
+        return Objects.equals(getRecipeId(), that.getRecipeId()) &&
+                Objects.equals(getUserId(), that.getUserId()) &&
+                Objects.equals(getCommentContent(), that.getCommentContent()) &&
+                Objects.equals(getBrowseSig(), that.getBrowseSig()) &&
+                Objects.equals(getCollSig(), that.getCollSig()) &&
+                Objects.equals(getCommentScore(), that.getCommentScore());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRecipeId(), getUserId(), getCommentContent(), getBrowseSig(), getCollSig(), getCommentScore());
+    }
 
     public String getRecipeId() {
         return recipeId;

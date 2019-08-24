@@ -27,6 +27,7 @@ import util.BaseException;
 import util.KeyUtil;
 import util.KitchenSystemUtil;
 import java.net.URL;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -111,13 +112,15 @@ public class AddFoodOrder implements Initializable{
     @FXML
     private HBox hbox4;
 
+    @FXML
+    private HBox hbox5;
 
-    private Integer discount = 1;
+    private Double discount = 1.0;
     private BeanFoodInfo product1 = null;
     private BeanFoodInfo product2 = null;
     private BeanFoodInfo product3 = null;
     private BeanFoodInfo product4 = null;
-    private LocalDate date = null;
+    private LocalDate foodsenddate = null;
 
     private int num1 = 0;
     private int num2 = 0;
@@ -144,10 +147,10 @@ public class AddFoodOrder implements Initializable{
 
     private ObservableList<BeanMyUser> users = FXCollections.observableArrayList();
 
-//    @FXML
-//    void appointmentDate2Selected(ActionEvent event) {
-//        date = foodOrderSendTime.getValue();
-//    }
+    @FXML
+    void foodOrderSendTimeSelected(ActionEvent event) {
+        foodsenddate = foodOrderSendTime.getValue();
+    }
 
 
     private ObservableList<BeanFoodInfo> getProduct(){
@@ -164,6 +167,13 @@ public class AddFoodOrder implements Initializable{
     void cancel(ActionEvent event) {
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.close();
+    }
+
+    private void beforeAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText("预约时间不能早于当前时间");
+        alert.setHeaderText(null);
+        alert.showAndWait();
     }
 
 
@@ -185,19 +195,28 @@ public class AddFoodOrder implements Initializable{
         product3Selected(new ActionEvent());
         product4NumInput(new ActionEvent());
         product4Selected(new ActionEvent());
+        foodOrderSendTimeSelected(new ActionEvent());
 
 
         if(!isEditMode)
             order = new BeanFoodOrder();
-
-
 
 //        order.setOrderPrice(price1+price2+price3+price4);
 //        order.setOrderNum(num1+num2+num3+num4);
         order.setOrderStatus(0);
         order.setOrderId(KeyUtil.getUniqueKey());
         order.setSendAddress(foodOrderSendAddress.getText());
-//        order.setSendTime();  wait
+        discount = Double.parseDouble(foodDiscount.getText());
+        if(!isEditMode){
+            if(foodsenddate.isBefore(LocalDate.now())){
+                beforeAlert();
+            }else{
+                order.setSendTime(Date.valueOf(foodsenddate));
+            }
+        }else{
+            order.setSendTime(Date.valueOf(foodsenddate));
+        }
+
         order.setUserTel(foodOrderUserTel.getText());
 
         //会有找不到用户的错误产生可能
@@ -216,7 +235,9 @@ public class AddFoodOrder implements Initializable{
             detail.setFoodId(product1.getFoodId());
             detail.setNum(num1);
             detail.setPrice(Integer.parseInt(productPrice1.getText()));
-            detail.setDiscount(Integer.parseInt(foodDiscount.getText()));
+            discount = Double.parseDouble(foodDiscount.getText());
+
+
             if(isEditMode){
                 detail.setOrderId(orderid1);
                 detail.setFoodId(foodid1);
@@ -232,7 +253,8 @@ public class AddFoodOrder implements Initializable{
             detail.setFoodId(product2.getFoodId());
             detail.setNum(num2);
             detail.setPrice(Integer.parseInt(productPrice2.getText()));
-            detail.setDiscount(Integer.parseInt(foodDiscount.getText()));
+            discount = Double.parseDouble(foodDiscount.getText());
+
             if(isEditMode){
                 detail.setOrderId(orderid2);
                 detail.setFoodId(foodid2);
@@ -248,7 +270,7 @@ public class AddFoodOrder implements Initializable{
             detail.setFoodId(product3.getFoodId());
             detail.setNum(num3);
             detail.setPrice(Integer.parseInt(productPrice3.getText()));
-            detail.setDiscount(Integer.parseInt(foodDiscount.getText()));
+            discount = Double.parseDouble(foodDiscount.getText());
 
             if(isEditMode){
                 detail.setOrderId(orderid3);
@@ -266,7 +288,7 @@ public class AddFoodOrder implements Initializable{
             detail.setFoodId(product4.getFoodId());
             detail.setNum(num4);
             detail.setPrice(Integer.parseInt(productPrice4.getText()));
-            detail.setDiscount(Integer.parseInt(foodDiscount.getText()));
+            discount = Double.parseDouble(foodDiscount.getText());
             if(isEditMode){
                 detail.setOrderId(orderid4);
                 detail.setFoodId(foodid4);
@@ -291,7 +313,7 @@ public class AddFoodOrder implements Initializable{
         if(num2 == 0 || product2 == null){
             productPrice2.setText("价格");
         }else {
-            price2 = product2.getFoodPrice()*num2;
+            price2 = (int)(product2.getFoodPrice()*num2 * discount);
             productPrice2.setText(String.valueOf(price2)+"元");
 //            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
@@ -304,7 +326,7 @@ public class AddFoodOrder implements Initializable{
         if(num2 == 0 || product2 == null){
             productPrice2.setText("价格");
         }else {
-            price2 = product2.getFoodPrice()*num2;
+            price2 = (int)(product2.getFoodPrice() * num2* discount);
             productPrice2.setText(String.valueOf(price2)+"元");
 //            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
@@ -322,7 +344,7 @@ public class AddFoodOrder implements Initializable{
         if(num3 == 0 || product3 == null){
             productPrice3.setText("价格");
         }else {
-            price3 = product3.getFoodPrice()*num3;
+            price3 = (int)(product3.getFoodPrice()*num3* discount);
             productPrice3.setText(String.valueOf(price3)+"元");
 //            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
@@ -335,7 +357,7 @@ public class AddFoodOrder implements Initializable{
         if(num3 == 0 || product3 == null){
             productPrice3.setText("价格");
         }else {
-            price3 = product3.getFoodPrice()*num3;
+            price3 = (int)(product3.getFoodPrice()*num3* discount);
             productPrice3.setText(String.valueOf(price3)+"元");
 //            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
@@ -352,7 +374,7 @@ public class AddFoodOrder implements Initializable{
         if(num4 == 0 || product4 == null){
             productPrice4.setText("价格");
         }else {
-            price4 = product4.getFoodPrice()*num4;
+            price4 =(int) (product4.getFoodPrice()*num4* discount);
             productPrice4.setText(String.valueOf(price4)+"元");
 //            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
 
@@ -366,7 +388,7 @@ public class AddFoodOrder implements Initializable{
         if(num4 == 0 || product4 == null){
             productPrice4.setText("");
         }else {
-            price4 = product4.getFoodPrice()*num4;
+            price4 = (int)(product4.getFoodPrice()*num4* discount);
             productPrice4.setText(String.valueOf(price4)+"元");
 //            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
@@ -383,7 +405,7 @@ public class AddFoodOrder implements Initializable{
         if(num1 == 0 || product1 == null){
             productPrice1.setText("价格");
         }else {
-            price1 = product1.getFoodPrice()*num1;
+            price1 =(int)( product1.getFoodPrice()*num1* discount);
             productPrice1.setText(String.valueOf(price1)+"元");
 //            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
@@ -396,7 +418,7 @@ public class AddFoodOrder implements Initializable{
         if(num1 == 0 || product1 == null){
             productPrice1.setText("价格");
         }else {
-            price1 = product1.getFoodPrice()*num1;
+            price1 = (int)(product1.getFoodPrice()*num1* discount);
             productPrice1.setText(String.valueOf(price1)+"元");
 //            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
@@ -411,6 +433,7 @@ public class AddFoodOrder implements Initializable{
         jfxDepthManager.setDepth(hbox2,2);
         jfxDepthManager.setDepth(hbox3,2);
         jfxDepthManager.setDepth(hbox4,2);
+        jfxDepthManager.setDepth(hbox5,2);
 
         this.products = getProduct();
 //        this.users = getUser();
@@ -427,11 +450,12 @@ public class AddFoodOrder implements Initializable{
 
         productBox1.getValidators().add(requiredFieldValidator);
         productNum1.getValidators().add(requiredFieldValidator);
+        foodOrderUsrName.getValidators().add(requiredFieldValidator);
         productNum1.getValidators().add(numberValidator);
         productNum2.getValidators().add(numberValidator);
         productNum3.getValidators().add(numberValidator);
         productNum4.getValidators().add(numberValidator);
-        foodOrderUsrName.getValidators().add(requiredFieldValidator);
+
 //        userBox.getValidators().add(requiredFieldValidator);
 
 
@@ -491,75 +515,89 @@ public class AddFoodOrder implements Initializable{
     }
 
     public void inflateUI(BeanFoodOrder order) {
-        List<BeanOrderDetail> details = KitchenSystemUtil.orderController.loadDetailByOrderId(order.getOrderId());
+        List<BeanOrderDetail> details = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(order.getOrderId());
 //        userBox.setValue(order.getOrderUser());
         foodOrderUsrName.setText(KitchenSystemUtil.userController.findUserById(order.getOrderId()).getUserName());
         int size = details.size();
         this.isEditMode = true;
         if(size == 1){
-            product1 = details.get(0).getProduct();
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
             productBox1.setValue(product1);
-            num1 = details.get(0).getProdNum();
+            num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
-            orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
-            detailId1 = details.get(0).getDetailId();
+            foodid1 = details.get(0).getFoodId();
+            orderid1 = details.get(0).getOrderId();
+            foodOrderSendTime.setValue(foodsenddate);
+            // orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
         }else if(size == 2) {
-            product1 = details.get(0).getProduct();
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
             productBox1.setValue(product1);
-            num1 = details.get(0).getProdNum();
+            num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
-            orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
-            detailId1 = details.get(0).getDetailId();
-            product2 = details.get(1).getProduct();
+            foodid1 = details.get(0).getFoodId();
+            orderid1 = details.get(0).getOrderId();
+
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getOrderId());
             productBox2.setValue(product2);
-            num2 = details.get(1).getProdNum();
+            num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
-            orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
-            detailId2 = details.get(1).getDetailId();
+            foodid2 = details.get(1).getFoodId();
+            orderid2 = details.get(1).getOrderId();
+            foodOrderSendTime.setValue(foodsenddate);
+
         }else if(size == 3){
-            product1 = details.get(0).getProduct();
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
             productBox1.setValue(product1);
-            num1 = details.get(0).getProdNum();
+            num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
-            orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
-            detailId1 = details.get(0).getDetailId();
-            product2 = details.get(1).getProduct();
+            foodid1 = details.get(0).getFoodId();
+            orderid1 = details.get(0).getOrderId();
+
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getOrderId());
             productBox2.setValue(product2);
-            num2 = details.get(1).getProdNum();
+            num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
-            orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
-            detailId2 = details.get(1).getDetailId();
-            product3 = details.get(2).getProduct();
+            foodid2 = details.get(1).getFoodId();
+            orderid2 = details.get(1).getOrderId();
+
+            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getOrderId());
             productBox3.setValue(product3);
-            num3 = details.get(2).getProdNum();
+            num3 = details.get(2).getNum();
             productNum3.setText(String.valueOf(num3));
-            orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
-            detailId3 = details.get(2).getDetailId();
-        }else if(size == 3){
-            product1 = details.get(0).getProduct();
+            foodid3 = details.get(2).getFoodId();
+            orderid3 = details.get(2).getOrderId();
+            foodOrderSendTime.setValue(foodsenddate);
+
+        }else if(size == 4){
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
             productBox1.setValue(product1);
-            num1 = details.get(0).getProdNum();
+            num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
-            orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
-            detailId1 = details.get(0).getDetailId();
-            product2 = details.get(1).getProduct();
+            foodid1 = details.get(0).getFoodId();
+            orderid1 = details.get(0).getOrderId();
+
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getOrderId());
             productBox2.setValue(product2);
-            num2 = details.get(1).getProdNum();
+            num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
-            orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
-            detailId2 = details.get(1).getDetailId();
-            product3 = details.get(2).getProduct();
+            foodid2 = details.get(1).getFoodId();
+            orderid2 = details.get(1).getOrderId();
+
+            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getOrderId());
             productBox3.setValue(product3);
-            num3 = details.get(2).getProdNum();
+            num3 = details.get(2).getNum();
             productNum3.setText(String.valueOf(num3));
-            orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
-            detailId3 = details.get(2).getDetailId();
-            product4 = details.get(3).getProduct();
+            foodid3 = details.get(2).getFoodId();
+            orderid3 = details.get(2).getOrderId();
+
+            product4 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(3).getOrderId());
             productBox4.setValue(product4);
-            num4 = details.get(3).getProdNum();
+            num4= details.get(3).getNum();
             productNum4.setText(String.valueOf(num4));
-            orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
-            detailId4 = details.get(3).getDetailId();
+            foodid4 = details.get(3).getFoodId();
+            orderid4 = details.get(3).getOrderId();
+            foodOrderSendTime.setValue(foodsenddate);
+
         }
 
         this.order = order;

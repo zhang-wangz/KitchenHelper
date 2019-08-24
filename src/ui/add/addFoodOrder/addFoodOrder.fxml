@@ -135,29 +135,29 @@
                </padding>
             </HBox>
 
-<!--            <HBox fx:id = "hbox5" prefHeight="79.0" prefWidth="310.0">-->
-<!--               <children>-->
-<!--                  <JFXTextField fx:id="foodDiscount" focusColor="WHITE" labelFloat="true" prefHeight="27.0" prefWidth="151.0" promptText="折扣" unFocusColor="WHITE">-->
-<!--                     <padding>-->
-<!--                        <Insets top="3.0" />-->
-<!--                     </padding>-->
-<!--                  </JFXTextField>-->
-<!--                  <JFXDatePicker fx:id="foodOrderSendTime" onAction="#orderAdd" prefHeight="27.0" prefWidth="99.0" promptText="时间">-->
-<!--                     <HBox.margin>-->
-<!--                        <Insets left="30.0" />-->
-<!--                     </HBox.margin>-->
-<!--                  </JFXDatePicker>-->
-<!--               </children>-->
-<!--               <VBox.margin>-->
-<!--                  <Insets top="20.0" />-->
-<!--               </VBox.margin>-->
-<!--            </HBox>-->
+            <HBox fx:id = "hbox5" prefHeight="79.0" prefWidth="310.0">
+               <children>
+                  <JFXTextField fx:id="foodDiscount" focusColor="WHITE" labelFloat="true" prefHeight="27.0" prefWidth="151.0" promptText="折扣" unFocusColor="WHITE">
+                     <padding>
+                        <Insets top="3.0" />
+                     </padding>
+                  </JFXTextField>
+                  <JFXDatePicker fx:id="foodOrderSendTime" onAction="#orderAdd" prefHeight="27.0" prefWidth="99.0" promptText="时间" defaultColor="aquamarine" >
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </JFXDatePicker>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
 
 
 
             <HBox prefHeight="55.0" prefWidth="340.0">
                <children>
-                  <JFXButton fx:id="btnOk" onAction="#orderAdd" prefHeight="58.0" prefWidth="162.0" style="-fx-background-color: #2196F3;" text="保存" textFill="WHITE">
+                  <JFXButton fx:id="btnOk" onAction="#orderAdd" prefHeight="58.0" prefWidth="162.0" style="-fx-background-color: #2196F3;" text="保存" textFill="#355380">
                      <HBox.margin>
                         <Insets bottom="5.0" right="5.0" />
                      </HBox.margin>

@@ -34,6 +34,12 @@
     -fx-text-fill: #FFFFFF;
 }
 
+#foodOrderSendTime .text-field{
+    -fx-prompt-text-fill: blue;
+    -jfx-focus-color: #FFFFFF;
+    -jfx-unfocus-color: #FFFFFF;
+    -fx-text-fill: blue;
+}
 .wrong-match {
     -jfx-focus-color: #E15241;
     -jfx-unfocus-color: #E15241;

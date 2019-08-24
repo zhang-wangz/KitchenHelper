@@ -12,6 +12,11 @@
          <children>
 
 
+            <JFXTextField fx:id="foodOrderUsrName" labelFloat="true" promptText="用户名">
+               <VBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="10.0" />
+               </VBox.margin>
+            </JFXTextField>
 
             <JFXTextField fx:id="foodOrderSendAddress" labelFloat="true" promptText="配送地址">
                <VBox.margin>
@@ -137,7 +142,7 @@
                         <Insets top="3.0" />
                      </padding>
                   </JFXTextField>
-                  <JFXDatePicker fx:id="foodOrderSendTime" onAction="#orderAdd" prefHeight="27.0" prefWidth="99.0" promptText="时间">
+                  <JFXDatePicker fx:id="foodOrderSendTime" onAction="#orderAdd" prefHeight="27.0" prefWidth="99.0" promptText="时间" defaultColor="aquamarine" >
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -152,7 +157,7 @@
 
             <HBox prefHeight="55.0" prefWidth="340.0">
                <children>
-                  <JFXButton fx:id="btnOk" onAction="#orderAdd" prefHeight="58.0" prefWidth="162.0" style="-fx-background-color: #2196F3;" text="保存" textFill="WHITE">
+                  <JFXButton fx:id="btnOk" onAction="#orderAdd" prefHeight="58.0" prefWidth="162.0" style="-fx-background-color: #2196F3;" text="保存" textFill="#355380">
                      <HBox.margin>
                         <Insets bottom="5.0" right="5.0" />
                      </HBox.margin>

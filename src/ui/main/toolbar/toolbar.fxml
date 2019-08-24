@@ -25,7 +25,12 @@
       </JFXButton>
       <JFXButton fx:id="btnAddFoodInfo" mnemonicParsing="false" onAction="#addFoodInfoStarter" prefHeight="73.0" prefWidth="167.0" text="添加食材">
          <graphic>
-            <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
+            <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="btnAddFoodOrder" mnemonicParsing="false" onAction="#addFoodOrderStarter" prefHeight="73.0" prefWidth="167.0" text="添加订单">
+         <graphic>
+            <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
          </graphic>
       </JFXButton>
    </children>

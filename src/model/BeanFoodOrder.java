@@ -58,6 +58,6 @@ public class BeanFoodOrder {
     }
 
     public void setOrderStatus(Integer orderStatus) {
-        orderStatus = orderStatus;
+        this.orderStatus = orderStatus;
     }
 }

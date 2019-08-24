@@ -1,9 +1,6 @@
 package util;
 
-import control.FoodInfoController;
-import control.FoodTypeController;
-import control.OperatorController;
-import control.UserController;
+import control.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -17,9 +14,9 @@ public class KitchenSystemUtil {
     public static UserController userController = new UserController();
     public static FoodInfoController foodInfoController = new FoodInfoController();
     public static FoodTypeController foodTypeController = new FoodTypeController();
+    public static FoodOrderController foodOrderController = new FoodOrderController();
 
 //    public static AppointmentController appointmentController = new AppointmentController();
-
 //    public static OrderController orderController = new OrderController();
 //    public static ProductController productController = new ProductController();
 //    public static ServiceController serviceController = new ServiceController();

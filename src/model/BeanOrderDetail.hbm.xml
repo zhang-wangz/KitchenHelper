@@ -19,7 +19,7 @@
         </property>
 
         <property name="discount">
-            <column name="discount" sql-type="int(11)" not-null="true"/>
+            <column name="discount" sql-type="double(11)" not-null="true"/>
         </property>
     </class>
 </hibernate-mapping>
