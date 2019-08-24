@@ -12,7 +12,7 @@
         </id>
 
         <property name="sendTime">
-            <column name="send_time" sql-type="timestamp" length="6" not-null="true"/>
+            <column name="send_time" sql-type="Date" length="6" not-null="true"/>
         </property>
 
         <property name="sendAddress">

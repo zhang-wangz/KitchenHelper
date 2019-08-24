@@ -44,7 +44,7 @@ public class UserController {
         return user;
     }
 
-    public BeanMyUser findUserById(int id) {
+    public BeanMyUser findUserById(String id) {
         BeanMyUser user = null;
         Session session = getSession();
         Transaction tx = session.beginTransaction();

@@ -1,13 +1,24 @@
 package model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class BeanFoodOrder {
     private String orderId;
-    private Timestamp sendTime;//หอด๏
+    private String userId;
+    private Date sendTime;//หอด๏
     private String sendAddress;
     private String userTel;
     private Integer orderStatus;
+
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getOrderId() {
         return orderId;
@@ -17,11 +28,12 @@ public class BeanFoodOrder {
         this.orderId = orderId;
     }
 
-    public Timestamp getSendTime() {
+
+    public Date getSendTime() {
         return sendTime;
     }
 
-    public void setSendTime(Timestamp sendTime) {
+    public void setSendTime(Date sendTime) {
         this.sendTime = sendTime;
     }
 
