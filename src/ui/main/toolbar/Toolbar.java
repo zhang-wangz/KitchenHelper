@@ -19,15 +19,20 @@ public class Toolbar {
     }
 
     @FXML
-    void addCategoryStarter(ActionEvent event) {
-        showWindow("/ui/add/addCategory/addCategory.fxml","添加分类");
+    void addFoodTypeStarter(ActionEvent event) {
+        showWindow("/ui/add/addFoodType/addFoodType.fxml","添加分类");
     }
-
+    @FXML
+    void addFoodInfoStarter(ActionEvent event) {
+        showWindow("/ui/add/addFoodInfo/addFoodInfo.fxml","添加食材信息");
+    }
 
     @FXML
     void addUserStarter(ActionEvent event) {
         showWindow("/ui/add/addUser/addUser.fxml","添加用户");
     }
+
+
 
     private void showWindow(String loc, String title){
         try {

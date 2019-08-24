@@ -11,7 +11,11 @@
         </id>
 
         <property name="foodName">
-            <column name="send_address" sql-type="varchar(1024)"  length="1024" not-null="true"/>
+            <column name="food_name" sql-type="varchar(1024)"  length="1024" not-null="true"/>
+        </property>
+
+        <property name="foodTypeNameOfFoodInfo">
+            <column name="food_type_name_of_food_info" sql-type="varchar(1024)"  length="1024" not-null="true"/>
         </property>
 
         <property name="foodDes">
@@ -22,8 +26,8 @@
             <column name="food_price" sql-type="int(11)"  not-null="true" default="0"/>
         </property>
 
-        <property name="num">
-            <column name="num" sql-type="int(11)"  not-null="true" default="0"/>
+        <property name="foodNum">
+            <column name="food_num" sql-type="int(11)"  not-null="true" default="0"/>
         </property>
 
     </class>

@@ -1,0 +1,11 @@
+
+/*设置每一列内容居中，每一行高度*/
+.table-row-cell{
+    /*-fx-cell-size: 45px;*/
+    -fx-alignment: center;
+}
+
+/*设置每一列内容居中*/
+.table-column{
+    -fx-alignment: center;
+}

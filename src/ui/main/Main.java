@@ -32,9 +32,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.BeanMyUser;
-import model.BeanOperator;
-import model.BeanOrderDetail;
+import model.*;
+import ui.add.addFoodInfo.AddFoodInfo;
+import ui.add.addFoodType.AddFoodType;
 import ui.add.addOperator.AddOperator;
 import ui.add.addUser.AddUser;
 import util.BaseException;
@@ -67,22 +67,14 @@ public class Main implements Initializable{
     private Tab userTab;
 
     @FXML
-    private Tab serviceTab;
+    private Tab foodInfoTab;
 
     @FXML
-    private Tab appointmentTab;
+    private Tab foodTypeTab;
 
-    @FXML
-    private Tab categoryTab;
 
-    @FXML
-    private Tab productTab;
 
-    @FXML
-    private Tab orderTab;
 
-    @FXML
-    private Tab petTab;
 
     @FXML
     private Text orderSata;
@@ -156,25 +148,46 @@ public class Main implements Initializable{
     @FXML
     private TableColumn<BeanMyUser, String> UserContactCol;
 
-//    @FXML
-//    private TableView<BeanPet> petTbl;
-//
-//    @FXML
-//    private TableColumn<BeanPet, Integer> PetIdCol;
-//
-//    @FXML
-//    private TableColumn<BeanPet, Integer> PetOwnerCol;
-//
-//    @FXML
-//    private TableColumn<BeanPet, String> PetNikenameCol;
-//
-//    @FXML
-//    private TableColumn<BeanPet, String> PetAliasCol;
+
+    @FXML
+    private TableView<BeanFoodInfo> foodInfoTableView;
+
+    @FXML
+    private TableColumn<BeanFoodInfo, Integer> foodinfoidCol;
+
+    @FXML
+    private TableColumn<BeanFoodInfo, Integer> foodinfonameCol;
+
+    @FXML
+    private TableColumn<BeanFoodInfo, Integer> foodTypeNameOffoodInfoCol;
 
 
     @FXML
-    private TableView<BeanOrderDetail> orderTbl;
+    private TableColumn<BeanFoodInfo, Integer> foodinfopriceCol;
 
+    @FXML
+    private TableColumn<BeanFoodInfo, Integer> foodinfonumCol;
+
+    @FXML
+    private  TableColumn<BeanFoodInfo,String> foodinfodesCol;
+
+
+    @FXML
+    private TableView<BeanFoodType> foodTypeTbl;
+
+    @FXML
+    private TableColumn<BeanFoodType, String> foodTypeIdCol;
+
+    @FXML
+    private TableColumn<BeanFoodType, String> foodTypeNameCol;
+
+    @FXML
+    private TableColumn<BeanFoodType, String> foodTypeDesCol;
+
+
+//    @FXML
+//    private TableView<BeanOrderDetail> orderTbl;
+//
 //    @FXML
 //    private JFXComboBox<BeanMyOrder> orderBox;
 //
@@ -232,17 +245,7 @@ public class Main implements Initializable{
 //    @FXML
 //    private TableColumn<BeanProduct, BeanCategory> ProductCategory;
 //
-//    @FXML
-//    private TableView<BeanCategory> categoryTbl;
-//
-//    @FXML
-//    private TableColumn<BeanCategory, Integer> CategoryIdCol;
-//
-//    @FXML
-//    private TableColumn<BeanCategory, String> CategoryNameCol;
-//
-//    @FXML
-//    private TableColumn<BeanCategory, String> CategoryDetailCol;
+
 
     @FXML
     private Text adminTotal;
@@ -251,7 +254,10 @@ public class Main implements Initializable{
     private Text userTotal;
 
     @FXML
-    private Text PetTotal;
+    private Text foodInfoTotal;
+
+    @FXML
+    private Text foodTypeTotal;
 
     @FXML
     private Text orderTotal;
@@ -262,8 +268,6 @@ public class Main implements Initializable{
     @FXML
     private Text serviceTotal;
 
-    @FXML
-    private Text categoryTotal;
 
     @FXML
     private Text productTotal;
@@ -279,10 +283,12 @@ public class Main implements Initializable{
 
     private ObservableList<BeanOperator> operators = null;
     private ObservableList<BeanMyUser> users = null;
-//    private ObservableList<BeanPet> pets = null;
+    private ObservableList<BeanFoodInfo> foodInfos = null;
+    private ObservableList<BeanFoodType> foodTypes = null;
+
 //    private ObservableList<BeanService> services = null;
 //    private ObservableList<BeanProduct> products = null;
-//    private ObservableList<BeanCategory> categories = null;
+
 //    private ObservableList<BeanOrderDetail> orderDetails = null;
 //    private ObservableList<BeanAppointmentDetail> appointmentDetails = null;
     private PieChart orderPie = null;
@@ -362,31 +368,61 @@ public class Main implements Initializable{
         showConfirmDialog("是否要删除用户"+user.getUserName()+" ?",Arrays.asList(btnCancel, btnOK));
 
     }
-//
-//    @FXML
-//    void deletePet(ActionEvent event){
-//        BeanPet pet = petTbl.getSelectionModel().getSelectedItem();
-//        if(pet == null){
-//            showDialog("请选择要操作的宠物");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("去意已决");
-//        JFXButton btnCancel = new JFXButton("再想想");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("删除");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            try {
-//                KitchenSystemUtil.petController.delPet(pet.getPetId());
-//            } catch (Exception exception1) {
-//                showDialog("该宠物目前处于活跃状态,不可删除");
-//                return;
-//            }
-//            pets.remove(pet);
-//            showDialog("宠物"+pet.getPetNikename()+"已删除");
-//        });
-//        showConfirmDialog("是否要删除宠物"+pet.getPetNikename()+" ?", Arrays.asList(btnCancel, btnOK));
-//    }
+
+    @FXML
+    void deleteFoodInfo(ActionEvent event){
+        BeanFoodInfo foodInfo = foodInfoTableView.getSelectionModel().getSelectedItem();
+        if(foodInfo == null){
+            showDialog("请选择要操作的食材信息");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("去意已决");
+        JFXButton btnCancel = new JFXButton("再想想");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("删除");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            try {
+                KitchenSystemUtil.foodInfoController.delFoodInfo(foodInfo.getFoodId());
+            } catch (Exception exception1) {
+                showDialog("该食材目前处于活跃状态,不可删除");
+                return;
+            }
+            foodInfos.remove(foodInfo);
+            showDialog("食材信息"+foodInfo.getFoodName()+"已删除");
+        });
+        showConfirmDialog("是否要删除食材信息"+foodInfo.getFoodName()+" ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+
+
+
+    @FXML
+    void deleteFoodType(ActionEvent event){
+        BeanFoodType foodType = foodTypeTbl.getSelectionModel().getSelectedItem();
+        if(foodType == null){
+            showDialog("请选择要删除的分类");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("去意已决");
+        JFXButton btnCancel = new JFXButton("再想想");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("删除");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            try {
+                KitchenSystemUtil.foodTypeController.delCategory(foodType.getFoodTypeId());
+            } catch (Exception exception) {
+                showDialog("该分类目前处于活跃状态,不可删除");
+                return;
+            }
+            foodTypes.remove(foodType);
+            showDialog("分类"+foodType.getFoodTypeName()+"已删除");
+        });
+        showConfirmDialog("是否要删除分类"+foodType.getFoodTypeName()+" ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+
 
 //    @FXML
 //    void deleteProduct(ActionEvent event){
@@ -413,30 +449,6 @@ public class Main implements Initializable{
 //        showConfirmDialog("是否要删除产品"+product.getProdName()+" ?", Arrays.asList(btnCancel, btnOK));
 //    }
 
-//    @FXML
-//    void deleteCategory(ActionEvent event){
-//        BeanCategory category = categoryTbl.getSelectionModel().getSelectedItem();
-//        if(category == null){
-//            showDialog("请选择要删除的分类");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("去意已决");
-//        JFXButton btnCancel = new JFXButton("再想想");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("删除");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            try {
-//                KitchenSystemUtil.categoryController.delCategory(category.getCateId());
-//            } catch (Exception exception) {
-//                showDialog("该分类目前处于活跃状态,不可删除");
-//                return;
-//            }
-//            categories.remove(category);
-//            showDialog("分类"+category.getCateName()+"已删除");
-//        });
-//        showConfirmDialog("是否要删除分类"+category.getCateName()+" ?", Arrays.asList(btnCancel, btnOK));
-//    }
 
 //    @FXML
 //    void deleteService(ActionEvent event){
@@ -593,29 +605,29 @@ public class Main implements Initializable{
         }
     }
 
-//    @FXML
-//    void editPet(ActionEvent event){
-//        BeanPet beanPet = petTbl.getSelectionModel().getSelectedItem();
-//        if(beanPet == null){
-//            showDialog("请选择要操作的宠物");
-//            return;
-//        }
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addPet/addPet.fxml"));
-//            Parent parent = loader.load();
-//            AddPet addPet = (AddPet) loader.getController();
-//            addPet.inflateUI(beanPet);
-//            Stage stage = new Stage(StageStyle.DECORATED);
-//            stage.getIcons().add(new Image("/ui/icons/icon.png"));
-//            stage.setTitle("编辑宠物");
-//            stage.setScene(new Scene(parent));
-//            stage.show();
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
-//
-//        refreshPet(new ActionEvent());
-//    }
+    @FXML
+    void editFoodInfo(ActionEvent event){
+        BeanFoodInfo beanFoodInfo = foodInfoTableView.getSelectionModel().getSelectedItem();
+        if(beanFoodInfo == null){
+            showDialog("请选择要操作的食材");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addFoodInfo/addFoodInfo.fxml"));
+            Parent parent = loader.load();
+            AddFoodInfo addFoodInfo = (AddFoodInfo) loader.getController();
+            addFoodInfo.inflateUI(beanFoodInfo);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.getIcons().add(new Image("/ui/icons/icon.png"));
+            stage.setTitle("编辑食材信息");
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+       // refreshFoodInfo(new ActionEvent());
+    }
 
     @FXML
     void editUser(ActionEvent event){
@@ -638,6 +650,30 @@ public class Main implements Initializable{
             exception.printStackTrace();
         }
     }
+
+    @FXML
+    void editFoodType(ActionEvent event){
+        BeanFoodType foodType = foodTypeTbl.getSelectionModel().getSelectedItem();
+        if(foodType == null){
+            showDialog("请选择要操作的分类");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addFoodType/addFoodType.fxml"));
+            Parent parent = loader.load();
+            AddFoodType addCategory = (AddFoodType) loader.getController();
+            addCategory.inflateUI(foodType);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.getIcons().add(new Image("/ui/icons/icon.png"));
+            stage.setTitle("编辑分类");
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+
 
 //    @FXML
 //    void editService(ActionEvent event){
@@ -683,27 +719,6 @@ public class Main implements Initializable{
 //        }
 //    }
 //
-//    @FXML
-//    void editCategory(ActionEvent event){
-//        BeanCategory category = categoryTbl.getSelectionModel().getSelectedItem();
-//        if(category == null){
-//            showDialog("请选择要操作的分类");
-//            return;
-//        }
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addCategory/addCategory.fxml"));
-//            Parent parent = loader.load();
-//            AddCategory addCategory = (AddCategory) loader.getController();
-//            addCategory.inflateUI(category);
-//            Stage stage = new Stage(StageStyle.DECORATED);
-//            stage.getIcons().add(new Image("/ui/icons/icon.png"));
-//            stage.setTitle("编辑分类");
-//            stage.setScene(new Scene(parent));
-//            stage.show();
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
-//    }
 //
 //    @FXML
 //    void editOrder(ActionEvent event){
@@ -761,12 +776,12 @@ public class Main implements Initializable{
         operatorTbl.setItems(operators);
     }
 
-//    @FXML
-//    void refreshPet(ActionEvent event){
-//        pets.clear();
-//        pets = getPet();
-//        petTbl.setItems(pets);
-//    }
+    @FXML
+    void refreshFoodInfo(ActionEvent event){
+        foodInfos.clear();
+        foodInfos = getFoodInfo();
+        foodInfoTableView.setItems(foodInfos);
+    }
 
     @FXML
     void refreshUser(ActionEvent event){
@@ -775,6 +790,16 @@ public class Main implements Initializable{
         userTbl.setItems(users);
     }
 
+
+    @FXML
+    void refreshFoodType(ActionEvent event){
+        foodTypes.clear();
+        foodTypes = getFoodTypes();
+        foodTypeTbl.setItems(foodTypes);
+    }
+
+
+
 //    @FXML
 //    void refreshProduct(ActionEvent event){
 //        products.clear();
@@ -782,12 +807,6 @@ public class Main implements Initializable{
 //        productTbl.setItems(products);
 //    }
 
-//    @FXML
-//    void refreshCategory(ActionEvent event){
-//        categories.clear();
-//        categories = getCategory();
-//        categoryTbl.setItems(categories);
-//    }
 //
 //    @FXML
 //    void refreshOrder(ActionEvent event){
@@ -1143,12 +1162,14 @@ public class Main implements Initializable{
         UserContactCol.setCellValueFactory(new PropertyValueFactory<>("userContact"));
         userTbl.setItems(users);
 
-//        PetIdCol.setCellValueFactory(new PropertyValueFactory<>("petId"));
-//        PetNikenameCol.setCellValueFactory(new PropertyValueFactory<>("petNikename"));
-//        PetAliasCol.setCellValueFactory(new PropertyValueFactory<>("petAlias"));
-//        PetOwnerCol.setCellValueFactory(new PropertyValueFactory<>("user"));
-//        petTbl.setItems(pets);
-//
+        foodinfoidCol.setCellValueFactory(new PropertyValueFactory<>("foodId"));
+        foodinfonameCol.setCellValueFactory(new PropertyValueFactory<>("foodName"));
+        foodTypeNameOffoodInfoCol.setCellValueFactory(new PropertyValueFactory<>("foodTypeNameOfFoodInfo"));
+        foodinfonumCol.setCellValueFactory(new PropertyValueFactory<>("foodNum"));
+        foodinfopriceCol.setCellValueFactory(new PropertyValueFactory<>("foodPrice"));
+        foodinfodesCol.setCellValueFactory(new PropertyValueFactory<>("foodDes"));
+        foodInfoTableView.setItems(foodInfos);
+
 //        ServiceIdCol.setCellValueFactory(new PropertyValueFactory<>("servId"));
 //        ServiceNameCol.setCellValueFactory(new PropertyValueFactory<>("servName"));
 //        ServicePriceCol.setCellValueFactory(new PropertyValueFactory<>("servPrice"));
@@ -1162,10 +1183,10 @@ public class Main implements Initializable{
 //        ProductCategory.setCellValueFactory(new PropertyValueFactory<>("prodCategory"));
 //        productTbl.setItems(products);
 //
-//        CategoryIdCol.setCellValueFactory(new PropertyValueFactory<>("cateId"));
-//        CategoryDetailCol.setCellValueFactory(new PropertyValueFactory<>("cateDetail"));
-//        CategoryNameCol.setCellValueFactory(new PropertyValueFactory<>("cateName"));
-//        categoryTbl.setItems(categories);
+        foodTypeIdCol.setCellValueFactory(new PropertyValueFactory<>("foodTypeId"));
+        foodTypeDesCol.setCellValueFactory(new PropertyValueFactory<>("foodTypeDes"));
+        foodTypeNameCol.setCellValueFactory(new PropertyValueFactory<>("foodTypeName"));
+        foodTypeTbl.setItems(foodTypes);
 //
 //        orderProductCol.setCellValueFactory(new PropertyValueFactory<>("product"));
 //        orderNumCol.setCellValueFactory(new PropertyValueFactory<>("prodNum"));
@@ -1195,14 +1216,28 @@ public class Main implements Initializable{
         return users;
     }
 
-//    private ObservableList<BeanPet> getPet(){
-//        ObservableList<BeanPet> pets = FXCollections.observableArrayList();
-//        List<BeanPet> list = KitchenSystemUtil.petController.loadAll();
-//        for (BeanPet e: list){
-//            pets.add(e);
-//        }
-//        return pets;
-//    }
+    private ObservableList<BeanFoodInfo> getFoodInfo(){
+        ObservableList<BeanFoodInfo> foodInfos = FXCollections.observableArrayList();
+        List<BeanFoodInfo> list = KitchenSystemUtil.foodInfoController.loadAll();
+        for (BeanFoodInfo e: list){
+            foodInfos.add(e);
+        }
+        return foodInfos;
+    }
+
+
+
+    //   分类
+    private ObservableList<BeanFoodType> getFoodTypes(){
+        ObservableList<BeanFoodType> foodTypes = FXCollections.observableArrayList();
+        List<BeanFoodType> list = KitchenSystemUtil.foodTypeController.loadAll();
+        for (BeanFoodType e: list){
+            foodTypes.add(e);
+        }
+        return foodTypes;
+    }
+
+
 
 //    private ObservableList<BeanService> getService(){
 //        ObservableList<BeanService> services = FXCollections.observableArrayList();
@@ -1222,15 +1257,6 @@ public class Main implements Initializable{
 //        return products;
 //    }
 
-//   分类
-//    private ObservableList<BeanCategory> getCategory(){
-//        ObservableList<BeanCategory> operators = FXCollections.observableArrayList();
-//        List<BeanCategory> list = KitchenSystemUtil.categoryController.loadAll();
-//        for (BeanCategory e: list){
-//            operators.add(e);
-//        }
-//        return operators;
-//    }
 
 //    private ObservableList<BeanOrderDetail> getOrderDetail(){
 //        ObservableList<BeanOrderDetail> details = FXCollections.observableArrayList();
@@ -1315,15 +1341,15 @@ public class Main implements Initializable{
 
     private ObservableList<String> getChoice2(){
         ObservableList<String> choice = FXCollections.observableArrayList();
-        choice.addAll("宠物","产品","类别","用户","服务","管理员");
+        choice.addAll("产品","服务", "类别","用户","食材","管理员");
         return choice;
     }
 
     private void loadData(){
         this.operators = getOperator();
         this.users = getUser();
-//        this.categories =  getCategory();
-//        this.pets =  getPet();
+        this.foodInfos = getFoodInfo();
+        this.foodTypes =  getFoodTypes();
 //        this.products = getProduct();
 //        this.services=  getService();
 //        this.orderDetails = getOrderDetail();
@@ -1367,32 +1393,34 @@ public class Main implements Initializable{
                     charContainer.getChildren().clear();
                     charContainer.getChildren().add(orderPie);
                     charContainer.getChildren().add(appointmentPie);
-                }else if(newValue.equals(appointmentTab)) {
 
+                }else if(newValue.equals(foodInfoTab)) {
+                    refreshFoodInfo(new ActionEvent());
+                    foodInfos = getFoodInfo();
+                }else if(newValue.equals(userTab)) {
+                    refreshUser(new ActionEvent());
+                }else if(newValue.equals(adminTab)){
+                    refreshOperator(new ActionEvent());
+                }else if(newValue.equals(foodTypeTab)){
+                    refreshFoodType(new ActionEvent());
                 }
+
+//                }
 //                    refreshAppointment(new ActionEvent());
 //                }else if(newValue.equals(adminTab)){
 //                    refreshOperator(new ActionEvent());
-//
+
 //                }else if(newValue.equals(categoryTab)){
 //                    refreshCategory(new ActionEvent());
 //
 //                }else if(newValue.equals(orderTab)){
 //                    refreshOrder(new ActionEvent());
 //
-//                }else if(newValue.equals(petTab)){
-//                    refreshPet(new ActionEvent());
-//
 //                }else if(newValue.equals(productTab)){
 //                    refreshProduct(new ActionEvent());
 //
 //                }else if (newValue.equals(serviceTab)){
 //                    refreshService(new ActionEvent());
-//
-//                }else if(newValue.equals(userTab)) {
-//                    refreshService(new ActionEvent());
-//
-//                }
             }
         });
 
@@ -1413,12 +1441,12 @@ public class Main implements Initializable{
     private void initStatics() {
         adminTotal.setText("管理员总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanOperator")));
         userTotal.setText("用户总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanMyUser")));
-//        PetTotal.setText("宠物总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanPet")));
+        foodInfoTotal.setText("食材信息个数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanFoodInfo")));
 //        orderTotal.setText("订单总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanMyOrder")));
 //        appointmentTotal.setText("预约总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanAppointment")));
 //        serviceTotal.setText("服务总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanService")));
 //        productTotal.setText("产品总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanProduct")));
-//        categoryTotal.setText("分类总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanCategory")));
+        foodTypeTotal.setText("分类总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanFoodType")));
     }
 
     private void initChart() {

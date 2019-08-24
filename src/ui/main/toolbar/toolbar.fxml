@@ -10,17 +10,22 @@
    <children>
       <JFXButton fx:id="btnAddAdmin" mnemonicParsing="false" onAction="#addAdminStarter" prefHeight="73.0" prefWidth="167.0" text="添加管理员">
          <graphic>
-            <FontAwesomeIcon glyphName="USER" size="40" translateX="-10.0" />
+            <FontAwesomeIcon glyphName="USER" size="40" text="" translateX="-10.0" />
          </graphic>
       </JFXButton>
       <JFXButton fx:id="addUser" mnemonicParsing="false" onAction="#addUserStarter" prefHeight="73.0" prefWidth="167.0" text="添加用户">
          <graphic>
-            <FontAwesomeIcon glyphName="GROUP" size="40" translateX="-10.0" />
+            <FontAwesomeIcon glyphName="GROUP" size="40" text="" translateX="-10.0" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnAddCategory" mnemonicParsing="false" onAction="#addCategoryStarter" prefHeight="73.0" prefWidth="167.0" text="添加分类">
+      <JFXButton fx:id="btnAddCategory" mnemonicParsing="false" onAction="#addFoodTypeStarter" prefHeight="73.0" prefWidth="167.0" text="添加分类">
          <graphic>
-            <FontAwesomeIcon glyphName="TAGS" size="40" translateX="-10.0" />
+            <FontAwesomeIcon glyphName="TAGS" size="40" text="" translateX="-10.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="btnAddFoodInfo" mnemonicParsing="false" onAction="#addFoodInfoStarter" prefHeight="73.0" prefWidth="167.0" text="添加食材">
+         <graphic>
+            <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
          </graphic>
       </JFXButton>
    </children>

@@ -1,5 +1,7 @@
 package util;
 
+import control.FoodInfoController;
+import control.FoodTypeController;
 import control.OperatorController;
 import control.UserController;
 import org.hibernate.Session;
@@ -13,11 +15,12 @@ public class KitchenSystemUtil {
 
     public static OperatorController operatorController = new OperatorController();
     public static UserController userController = new UserController();
+    public static FoodInfoController foodInfoController = new FoodInfoController();
+    public static FoodTypeController foodTypeController = new FoodTypeController();
 
 //    public static AppointmentController appointmentController = new AppointmentController();
-//    public static CategoryController categoryController = new CategoryController();
+
 //    public static OrderController orderController = new OrderController();
-//    public static PetController petController = new PetController();
 //    public static ProductController productController = new ProductController();
 //    public static ServiceController serviceController = new ServiceController();
 
@@ -42,7 +45,7 @@ public class KitchenSystemUtil {
     public static int getCount(String cate){
         Session session = getSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("from "+cate);
+        Query query = session.createQuery("from " + cate);
         int list = query.list().size();
         tx.commit();
         session.close();

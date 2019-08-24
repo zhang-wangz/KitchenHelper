@@ -43,12 +43,12 @@
                                              <children>
                                                 <Text fx:id="adminTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="管理员总数" textAlignment="CENTER" />
                                                 <Text fx:id="userTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="用户总数" textAlignment="CENTER" />
-                                                <Text fx:id="PetTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="宠物总数" textAlignment="CENTER" />
-                                                <Text fx:id="orderTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="订单总数" textAlignment="CENTER" />
-                                                <Text fx:id="appointmentTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="预约总数" textAlignment="CENTER" />
-                                                <Text fx:id="serviceTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="服务总数" textAlignment="CENTER" />
-                                                <Text fx:id="productTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="产品总数" textAlignment="CENTER" />
-                                                <Text fx:id="categoryTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="分类总数" textAlignment="CENTER" />
+                                                <Text fx:id="foodInfoTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="食材信息总数" textAlignment="CENTER" />
+<!--                                                <Text fx:id="orderTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="订单总数" textAlignment="CENTER" />-->
+<!--                                                <Text fx:id="appointmentTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="预约总数" textAlignment="CENTER" />-->
+<!--                                                <Text fx:id="serviceTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="服务总数" textAlignment="CENTER" />-->
+<!--                                                <Text fx:id="productTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="产品总数" textAlignment="CENTER" />-->
+                                                <Text fx:id="foodTypeTotal" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="分类总数" textAlignment="CENTER" />
                                              </children>
                                           </VBox>
                                           <VBox fx:id="charContainer" prefHeight="261.0" prefWidth="421.0">
@@ -242,6 +242,63 @@
                                           <MenuItem mnemonicParsing="false" onAction="#deleteUser" text="删除" />
                                           <MenuItem mnemonicParsing="false" onAction="#editUser" text="编辑" />
                                           <MenuItem mnemonicParsing="false" onAction="#refreshUser" text="刷新" />
+                                       </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="foodInfoTab" text="食材详情">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="foodInfoTableView" layoutX="26.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <columns>
+                                    <TableColumn fx:id="foodinfoidCol" prefWidth="75.0" text="id" />
+                                    <TableColumn fx:id="foodinfonameCol" prefWidth="75.0" text="name" />
+                                    <TableColumn fx:id="foodTypeNameOffoodInfoCol" prefWidth="75.0" text="foodTypeName" />
+                                    <TableColumn fx:id="foodinfopriceCol" prefWidth="75.0" text="price" />
+                                    <TableColumn fx:id="foodinfonumCol" prefWidth="75.0" text="num" />
+                                    <TableColumn fx:id="foodinfodesCol" prefWidth="75.0" text="des" />
+                                 </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" onAction="#deleteFoodInfo" text="删除" />
+                                          <MenuItem mnemonicParsing="false" onAction="#editFoodInfo" text="编辑" />
+                                          <MenuItem mnemonicParsing="false" onAction="#refreshFoodInfo" text="刷新" />
+                                       </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="foodTypeTab" text="分类详情">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="foodTypeTbl" layoutX="26.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <columns>
+                                    <TableColumn fx:id="foodTypeIdCol" prefWidth="75.0" text="foodTypeId" />
+                                    <TableColumn fx:id="foodTypeNameCol" prefWidth="75.0" text="名称" />
+                                    <TableColumn fx:id="foodTypeDesCol" prefWidth="75.0" text="描述详情" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" onAction="#deleteFoodType" text="删除" />
+                                          <MenuItem mnemonicParsing="false" onAction="#editFoodType" text="编辑" />
+                                          <MenuItem mnemonicParsing="false" onAction="#refreshFoodType" text="刷新" />
                                        </items>
                                     </ContextMenu>
                                  </contextMenu>
