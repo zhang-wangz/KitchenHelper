@@ -1,5 +1,7 @@
 package model;
 
+import util.KitchenSystemUtil;
+
 import java.io.Serializable;
 // 管理员 食材采购
 public class BeanBuyFood implements Serializable {
@@ -10,18 +12,19 @@ public class BeanBuyFood implements Serializable {
     private Integer num;
     private Integer status;
 
+    private String foodName;
+
+    public String getFoodName() {
+        return KitchenSystemUtil.foodInfoController.findFoodById(this.foodId).getFoodName();
+    }
+
     public String getBuyOrderId() {
         return buyOrderId;
     }
 
     @Override
     public String toString() {
-        return "BeanBuyFood{" +
-                "buyOrderId='" + buyOrderId + '\'' +
-                ", foodId='" + foodId + '\'' +
-                ", num=" + num +
-                ", status=" + status +
-                '}';
+        return getBuyOrderId();
     }
 
     public void setBuyOrderId(String buyOrderId) {

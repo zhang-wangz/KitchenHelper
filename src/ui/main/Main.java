@@ -4,6 +4,8 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.events.JFXDialogEvent;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import com.jfoenix.validation.NumberValidator;
+import enums.BuyFoodStatusEnum;
+import enums.FoodOrderStatusEnum;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -33,11 +35,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.*;
+import ui.add.addBuyFood.AddBuyFood;
 import ui.add.addFoodInfo.AddFoodInfo;
+import ui.add.addFoodOrder.AddFoodOrder;
 import ui.add.addFoodType.AddFoodType;
 import ui.add.addOperator.AddOperator;
 import ui.add.addUser.AddUser;
 import util.BaseException;
+import util.EnumUtils;
 import util.KitchenSystemUtil;
 
 import java.io.FileInputStream;
@@ -72,16 +77,26 @@ public class Main implements Initializable{
     @FXML
     private Tab foodTypeTab;
 
+    @FXML
+    private Tab orderTab;
 
+    @FXML
+    private Tab orderBuyTab;
 
+    //订单相关
+    @FXML
+    private Text orderStatusOfOrder;
 
 
     @FXML
-    private Text orderSata;
+    private Text orderStatusOfBuy;
+
 
     @FXML
     private Text appointmentSata;
 
+
+    //检索moudle
     @FXML
     private Text orderUser;
 
@@ -184,18 +199,40 @@ public class Main implements Initializable{
     @FXML
     private TableColumn<BeanFoodType, String> foodTypeDesCol;
 
+//订单相关
+    @FXML
+    private TableView<BeanOrderDetail> orderTbl;
+
+    @FXML
+    private JFXComboBox<BeanFoodOrder> orderBox;
+
+    @FXML
+    private TableView<BeanBuyFood> buyOrderTbl;
+
+    @FXML
+    private JFXComboBox<BeanBuyFood> buyOrderBox;
+
+//订单相关
+    @FXML
+    private TableColumn<BeanOrderDetail, BeanFoodInfo> orderProductCol;
+
+    @FXML
+    private TableColumn<BeanOrderDetail, Integer> orderNumCol;
+
+    @FXML
+    private TableColumn<BeanOrderDetail,Integer> orderPriceCol;
+
+    @FXML
+    private TableColumn<BeanOrderDetail, BeanFoodInfo> orderProductBuyCol;
+
+    @FXML
+    private TableColumn<BeanOrderDetail, Integer> orderNumBuyCol;
 
 //    @FXML
-//    private TableView<BeanOrderDetail> orderTbl;
-//
-//    @FXML
-//    private JFXComboBox<BeanMyOrder> orderBox;
-//
-//    @FXML
-//    private TableColumn<BeanOrderDetail, BeanProduct> orderProductCol;
-//
-//    @FXML
-//    private TableColumn<BeanOrderDetail, Integer> orderNumCol;
+//    private TableColumn<BeanOrderDetail,Integer> orderPriceBuyCol;
+
+
+
 //
 //    @FXML
 //    private JFXComboBox<BeanAppointment> appointmentBox;
@@ -259,15 +296,20 @@ public class Main implements Initializable{
     @FXML
     private Text foodTypeTotal;
 
+    //订单相关
     @FXML
     private Text orderTotal;
+
+    @FXML
+    private Text orderBuyTotal;
+
+
 
     @FXML
     private Text appointmentTotal;
 
     @FXML
     private Text serviceTotal;
-
 
     @FXML
     private Text productTotal;
@@ -285,11 +327,14 @@ public class Main implements Initializable{
     private ObservableList<BeanMyUser> users = null;
     private ObservableList<BeanFoodInfo> foodInfos = null;
     private ObservableList<BeanFoodType> foodTypes = null;
+    private ObservableList<BeanOrderDetail> orderDetails = null;
+    private ObservableList<BeanBuyFood> buyFoods = null;
+
 
 //    private ObservableList<BeanService> services = null;
 //    private ObservableList<BeanProduct> products = null;
 
-//    private ObservableList<BeanOrderDetail> orderDetails = null;
+
 //    private ObservableList<BeanAppointmentDetail> appointmentDetails = null;
     private PieChart orderPie = null;
     private PieChart appointmentPie = null;
@@ -422,6 +467,91 @@ public class Main implements Initializable{
         showConfirmDialog("是否要删除分类"+foodType.getFoodTypeName()+" ?", Arrays.asList(btnCancel, btnOK));
     }
 
+    @FXML
+    void deleteOrderDetail(ActionEvent event){
+        BeanOrderDetail orderDetail = orderTbl.getSelectionModel().getSelectedItem();
+
+        if(orderDetail == null){
+            showDialog("请选择要删除的订单货物");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("去意已决");
+        JFXButton btnCancel = new JFXButton("再想想");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("删除");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            Integer status = null;
+            try {
+                status = KitchenSystemUtil.foodOrderController.findOrderById(orderDetail.getOrderId()).getOrderStatus();
+                showDialog("订单状态异常，请稍后再试");
+            } catch (BaseException ex) {
+                ex.printStackTrace();
+            }
+            if(status != 0){
+                showDialog("订单货物" + orderDetail.getOrderId() + "未处于下单状态，无法删除");
+            }else {
+                KitchenSystemUtil.foodOrderController.delOrderDetail(orderDetail);
+                showDialog("订单货物" + orderDetail.getOrderId() + "已删除");
+            }
+
+        });
+        showConfirmDialog("是否要删除订单货物"+orderDetail.getFoodId()+" ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+
+
+
+    @FXML
+    void deleteBuyOrderDetail(ActionEvent event){
+        BeanBuyFood buyFood = buyOrderTbl.getSelectionModel().getSelectedItem();
+
+        if(buyFood == null){
+            showDialog("请选择要删除的采购单货物");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("去意已决");
+        JFXButton btnCancel = new JFXButton("再想想");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("删除");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+                Integer status = null;
+                KitchenSystemUtil.buyFoodController.delOrderDetail(buyFood);
+                showDialog("订单货物" + buyFood.getBuyOrderId() + "已删除");
+
+
+        });
+        showConfirmDialog("是否要删除订单货物"+buyFood.getFoodId()+" ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+
+
+    @FXML
+    void deleteOrder(ActionEvent event){
+        BeanFoodOrder order = orderBox.getSelectionModel().getSelectedItem();
+        if(order == null){
+            showDialog("请选择要删除的订单");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("去意已决");
+        JFXButton btnCancel = new JFXButton("再想想");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("删除");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            int num = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(order.getOrderId()).size();
+            if(num > 0){
+                showDialog("订单"+order.getOrderId()+"处于活跃状态，不可删除");
+            }else {
+                KitchenSystemUtil.foodOrderController.delOrder(order.getOrderId());
+                showDialog("订单" + order.getOrderId() + "已删除");
+            }
+        });
+        showConfirmDialog("是否要删除订单"+order.getOrderId()+" ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+
 
 
 //    @FXML
@@ -489,7 +619,7 @@ public class Main implements Initializable{
 //        });
 //        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
 //            try {
-//                KitchenSystemUtil.orderController.delOrderDetail(detail);
+//                KitchenSystemUtil.foodOrderController.delOrderDetail(detail);
 //            } catch (Exception exception) {
 //                showDialog("该产品目前处于活跃状态,不可删除");
 //                return;
@@ -504,27 +634,13 @@ public class Main implements Initializable{
 //            }
 //            showDialog("产品"+detail.getProduct().getProdName()+"已删除");
 //        });
+//
 //        showConfirmDialog("是否要删除产品"+detail.getProduct().getProdName()+" ?", Arrays.asList(btnCancel, btnOK));
 //    }
 
-//    @FXML
-//    void deleteOrder(ActionEvent event){
-//        BeanMyOrder order = orderBox.getSelectionModel().getSelectedItem();
-//        if(order == null){
-//            showDialog("请选择要操作的产品");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("去意已决");
-//        JFXButton btnCancel = new JFXButton("再想想");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("删除");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            KitchenSystemUtil.orderController.delOrder(order.getOrderId());
-//            showDialog("订单"+order.getOrderId()+"已删除");
-//        });
-//        showConfirmDialog("是否要删除订单"+order.getOrderId()+" ?", Arrays.asList(btnCancel, btnOK));
-//    }
+
+
+
 
 //    @FXML
 //    void deleteAppointmentService(ActionEvent event){
@@ -673,6 +789,52 @@ public class Main implements Initializable{
         }
     }
 
+        @FXML
+    void editOrder(ActionEvent event){
+        BeanFoodOrder order = orderBox.getSelectionModel().getSelectedItem();
+        if(order == null){
+            showDialog("请选择要操作的订单");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addOrder/addOrder.fxml"));
+            Parent parent = loader.load();
+            AddFoodOrder addOrder = (AddFoodOrder) loader.getController();
+            addOrder.inflateUI(order);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setTitle("编辑订单");
+            stage.setScene(new Scene(parent));
+            stage.show();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML
+    void editOrderBuy(ActionEvent event){
+        BeanBuyFood buyFood = (buyOrderBox.getSelectionModel().getSelectedItem());
+        if(buyFood == null){
+            showDialog("请选择要操作的采购单");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addBuyFood/addBuyFood.fxml"));
+            Parent parent = loader.load();
+            AddBuyFood addBuyFood = (AddBuyFood)loader.getController();
+            addBuyFood.inflateUI(buyFood);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setTitle("编辑采购单");
+            stage.setScene(new Scene(parent));
+            stage.show();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
 
 
 //    @FXML
@@ -720,28 +882,7 @@ public class Main implements Initializable{
 //    }
 //
 //
-//    @FXML
-//    void editOrder(ActionEvent event){
-//        BeanMyOrder order = orderBox.getSelectionModel().getSelectedItem();
-//        if(order == null){
-//            showDialog("请选择要操作的订单");
-//            return;
-//        }
-//
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addOrder/addOrder.fxml"));
-//            Parent parent = loader.load();
-//            AddOrder addOrder = (AddOrder) loader.getController();
-//            addOrder.inflateUI(order);
-//            Stage stage = new Stage(StageStyle.DECORATED);
-//            stage.setTitle("编辑订单");
-//            stage.setScene(new Scene(parent));
-//            stage.show();
-//
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
-//    }
+
 //
 //    @FXML
 //    void editAppointmentService(ActionEvent event){
@@ -808,14 +949,25 @@ public class Main implements Initializable{
 //    }
 
 //
-//    @FXML
-//    void refreshOrder(ActionEvent event){
-//        orderBox.getItems().clear();
-//        orderBox.setItems(getOrder());
-//        orderDetails.clear();
-//        orderDetails = getOrderDetail();
-//        orderTbl.setItems(orderDetails);
-//    }
+    @FXML
+    void refreshOrder(ActionEvent event){
+        orderBox.getItems().clear();
+        orderBox.setItems(getOrder());
+        orderDetails.clear();
+        orderDetails = getOrderDetail();
+        orderTbl.setItems(orderDetails);
+    }
+
+    @FXML
+    void refreshOrderBuy(ActionEvent event){
+        buyOrderBox.getItems().clear();
+        buyOrderBox.setItems(getOrderBuy()); //存储id
+        buyFoods.clear();
+        buyFoods = getOrderBuy();
+        buyOrderTbl.setItems(buyFoods);//存储全部
+    }
+
+
 //
 //    @FXML
 //    void refreshService(ActionEvent event){
@@ -845,45 +997,128 @@ public class Main implements Initializable{
     @FXML
     void levelDownOperator(ActionEvent event){}
 
-//    @FXML
-//    void sendOrder(ActionEvent event){
-//        BeanMyOrder order = orderBox.getSelectionModel().getSelectedItem();
-//        if(order == null){
-//            showDialog("请选择要操作的订单");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("是");
-//        JFXButton btnCancel = new JFXButton("否");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("发货");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            order.setOrderState("已发货");
-//            KitchenSystemUtil.update(order);
-//            showDialog("订单"+order.getOrderId()+"已发货");
-//        });
-//        showConfirmDialog("是否已将订单"+order.getOrderId()+"货物全部发出 ?", Arrays.asList(btnCancel, btnOK));
-//    }
+    @FXML
+    void sendOrder(ActionEvent event){
+        BeanFoodOrder order = orderBox.getSelectionModel().getSelectedItem();
+        if(order == null){
+            showDialog("请选择要操作的订单");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("是");
+        JFXButton btnCancel = new JFXButton("否");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("配送");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            order.setOrderStatus(1);
+            KitchenSystemUtil.update(order);
+            showDialog("订单"+order.getOrderId()+"开始配送");
+        });
+        showConfirmDialog("是否已将订单"+order.getOrderId()+"货物全部发出 ?", Arrays.asList(btnCancel, btnOK));
+    }
 
-//    @FXML
-//    void finishOrder(ActionEvent event){
-//        BeanMyOrder order = orderBox.getSelectionModel().getSelectedItem();
-//        if(order == null){
-//            showDialog("请选择要操作的订单");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("是");
-//        JFXButton btnCancel = new JFXButton("否");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("确认收货");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            order.setOrderState("已完成");
-//            KitchenSystemUtil.update(order);
-//            showDialog("订单"+order.getOrderId()+"已收货");
-//        });
-//        showConfirmDialog("订单"+order.getOrderId()+"货物全部确认收货 ?", Arrays.asList(btnCancel, btnOK));
-//    }
+
+    @FXML
+    void sendOrderBuy(ActionEvent event){
+        BeanBuyFood order = buyOrderBox.getSelectionModel().getSelectedItem();
+        if(order == null){
+            showDialog("请选择要操作的订单");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("是");
+        JFXButton btnCancel = new JFXButton("否");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("发货");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            order.setStatus(1);
+            KitchenSystemUtil.update(order);
+            showDialog("订单"+order.getBuyOrderId()+"开始发货");
+        });
+        showConfirmDialog("是否已将订单"+order.getBuyOrderId()+"货物全部发出 ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+    @FXML
+    void finishOrder(ActionEvent event){
+        BeanFoodOrder order = orderBox.getSelectionModel().getSelectedItem();
+        if(order == null){
+            showDialog("请选择要操作的订单");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("是");
+        JFXButton btnCancel = new JFXButton("否");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("确认送达");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            order.setOrderStatus(2);
+            KitchenSystemUtil.update(order);
+            showDialog("订单"+order.getOrderId()+"已送达");
+        });
+        showConfirmDialog("订单"+order.getOrderId()+"货物全部确认收货 ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+    @FXML
+    void finishOrderBuy(ActionEvent event){
+        BeanFoodOrder order = orderBox.getSelectionModel().getSelectedItem();
+        if(order == null){
+            showDialog("请选择要操作的采购单");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("是");
+        JFXButton btnCancel = new JFXButton("否");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("确认收货");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            order.setOrderStatus(2);
+            KitchenSystemUtil.update(order);
+            showDialog("订单"+order.getOrderId()+"已入库");
+        });
+        showConfirmDialog("订单"+order.getOrderId()+"货物全部确认收货 ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+    @FXML
+    void changeOrderToCancel(ActionEvent event){
+        BeanFoodOrder order = orderBox.getSelectionModel().getSelectedItem();
+        if(order == null){
+            showDialog("请选择要操作的订单");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("是");
+        JFXButton btnCancel = new JFXButton("否");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("确认退货");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            order.setOrderStatus(3);
+            KitchenSystemUtil.update(order);
+            showDialog("订单"+order.getOrderId()+"已退货");
+        });
+        showConfirmDialog("订单"+order.getOrderId()+"货物全部确认退货 ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+
+    @FXML
+    void changeOrderBuyToCancel(ActionEvent event){
+        BeanFoodOrder order = orderBox.getSelectionModel().getSelectedItem();
+        if(order == null){
+            showDialog("请选择要操作的采购单");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("是");
+        JFXButton btnCancel = new JFXButton("否");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("确认退货");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            order.setOrderStatus(3);
+            KitchenSystemUtil.update(order);
+            showDialog("订单"+order.getOrderId()+"已退货");
+        });
+        showConfirmDialog("订单"+order.getOrderId()+"货物全部确认退货 ?", Arrays.asList(btnCancel, btnOK));
+    }
+
 
 //    @FXML
 //    void finishAppointment(ActionEvent event){
@@ -1125,20 +1360,36 @@ public class Main implements Initializable{
         initStatics();
     }
 
-//
-//    @FXML
-//    void selectOrderId(ActionEvent event){
-//        BeanMyOrder order = orderBox.getSelectionModel().getSelectedItem();
-//        orderDetails.clear();
-//        if(order == null){
-//            orderDetails.clear();
-//            orderTbl.setItems(orderDetails);
-//        }else {
-//            orderSata.setText(order.getOrderState());
-//            orderDetails = getOrderDetail(order.getOrderId());
-//            orderTbl.setItems(orderDetails);
-//        }
-//    }
+
+    @FXML
+    void selectOrderId(ActionEvent event){
+        BeanFoodOrder order = orderBox.getSelectionModel().getSelectedItem();
+        orderDetails.clear();
+        if(order == null){
+            orderDetails.clear();
+            orderTbl.setItems(orderDetails);
+        }else {
+            orderStatusOfOrder.setText(EnumUtils.getByCode(order.getOrderStatus(),FoodOrderStatusEnum.class).getMsg());
+            orderDetails = getOrderDetail(order.getOrderId());
+            orderTbl.setItems(orderDetails);
+        }
+    }
+
+    @FXML
+    void selectOrderBuyId(ActionEvent event) throws BaseException {
+        BeanBuyFood order = buyOrderBox.getSelectionModel().getSelectedItem();
+        buyFoods.clear();
+        if(order == null){
+            buyFoods.clear();
+            buyOrderBox.setItems(buyFoods);
+        }else {
+            orderStatusOfOrder.setText(EnumUtils.getByCode(order.getStatus(), BuyFoodStatusEnum.class).getMsg());
+            buyFoods = getOrderBuyDetail(order.getBuyOrderId());
+            orderTbl.setItems(orderDetails);
+        }
+    }
+
+
 
 //    @FXML
 //    void selectAppointmentId(ActionEvent event){
@@ -1187,10 +1438,19 @@ public class Main implements Initializable{
         foodTypeDesCol.setCellValueFactory(new PropertyValueFactory<>("foodTypeDes"));
         foodTypeNameCol.setCellValueFactory(new PropertyValueFactory<>("foodTypeName"));
         foodTypeTbl.setItems(foodTypes);
-//
-//        orderProductCol.setCellValueFactory(new PropertyValueFactory<>("product"));
-//        orderNumCol.setCellValueFactory(new PropertyValueFactory<>("prodNum"));
-//        orderTbl.setItems(orderDetails);
+
+        //orderTbl显示的是订单详情
+        orderProductCol.setCellValueFactory(new PropertyValueFactory<>("foodName"));
+        orderNumCol.setCellValueFactory(new PropertyValueFactory<>("num"));
+        orderPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        orderTbl.setItems(orderDetails);
+
+
+        orderProductBuyCol.setCellValueFactory(new PropertyValueFactory<>("foodName"));
+        orderNumBuyCol.setCellValueFactory(new PropertyValueFactory<>("num"));
+//        orderPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        buyOrderTbl.setItems(buyFoods);
+
 //
 //        appointmentServiceCol.setCellValueFactory(new PropertyValueFactory<>("service"));
 //        appointmentDateCol.setCellValueFactory(new PropertyValueFactory<>("app_date"));
@@ -1258,32 +1518,52 @@ public class Main implements Initializable{
 //    }
 
 
-//    private ObservableList<BeanOrderDetail> getOrderDetail(){
-//        ObservableList<BeanOrderDetail> details = FXCollections.observableArrayList();
-//        List<BeanOrderDetail> list = KitchenSystemUtil.orderController.loadAllDetails();
-//        for (BeanOrderDetail e: list){
-//            details.add(e);
-//        }
-//        return details;
-//    }
+    private ObservableList<BeanOrderDetail> getOrderDetail(){
+        ObservableList<BeanOrderDetail> details = FXCollections.observableArrayList();
+        List<BeanOrderDetail> list = KitchenSystemUtil.foodOrderController.loadAllDetails();
+        for (BeanOrderDetail e: list){
+            details.add(e);
+        }
+        return details;
+    }
 
-//    private ObservableList<BeanMyOrder> getOrder(){
-//        ObservableList<BeanMyOrder> details = FXCollections.observableArrayList();
-//        List<BeanMyOrder> list = KitchenSystemUtil.orderController.loadAll();
-//        for (BeanMyOrder e: list){
-//            details.add(e);
-//        }
-//        return details;
-//    }
 
-//    private ObservableList<BeanOrderDetail> getOrderDetail(int orderId){
-//        ObservableList<BeanOrderDetail> details = FXCollections.observableArrayList();
-//        List<BeanOrderDetail> list = KitchenSystemUtil.orderController.loadDetailByOrderId(orderId);
-//        for (BeanOrderDetail e: list){
-//            details.add(e);
-//        }
-//        return details;
-//    }
+    private ObservableList<String> getOrderBuy(){
+        ObservableList<String> details = FXCollections.observableArrayList();
+        List<String> list = KitchenSystemUtil.buyFoodController.loadAllOnlyOne();
+        for (String e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
+    private ObservableList<BeanFoodOrder> getOrder(){
+        ObservableList<BeanFoodOrder> details = FXCollections.observableArrayList();
+        List<BeanFoodOrder> list = KitchenSystemUtil.foodOrderController.loadAll();
+        for (BeanFoodOrder e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
+    private ObservableList<BeanOrderDetail> getOrderDetail(String orderId){
+        ObservableList<BeanOrderDetail> details = FXCollections.observableArrayList();
+        List<BeanOrderDetail> list = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(orderId);
+        for (BeanOrderDetail e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
+    private ObservableList<BeanBuyFood> getOrderBuyDetail(String orderId) throws BaseException {
+        ObservableList<BeanBuyFood> details = FXCollections.observableArrayList();
+        List<BeanBuyFood> list = KitchenSystemUtil.buyFoodController.loadDetailByOrderId(orderId);
+        for (BeanBuyFood e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
 
 //    private ObservableList<BeanAppointmentDetail> getAppointmentDetail(){
 //        ObservableList<BeanAppointmentDetail> details = FXCollections.observableArrayList();
@@ -1310,15 +1590,15 @@ public class Main implements Initializable{
 
     private ObservableList<PieChart.Data> getOrderPieData(){
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
-//        int count1 = KitchenSystemUtil.orderController.getOrderCount("已完成");
-//        int count2 = KitchenSystemUtil.orderController.getOrderCount("已发货");
-//        int count3 = KitchenSystemUtil.orderController.getOrderCount("订单创建完成");
-        int count1 =1;
-        int count2 =1;
-        int count3 =1;
+        int count1 = KitchenSystemUtil.foodOrderController.getOrderCount(2);
+        int count2 = KitchenSystemUtil.foodOrderController.getOrderCount(1);
+        int count3 = KitchenSystemUtil.foodOrderController.getOrderCount(0);
+        int count4 = KitchenSystemUtil.foodOrderController.getOrderCount(4);
+
         data.add(new PieChart.Data("已完成订单 ( " + String.valueOf(count1) +" )",count1));
-        data.add(new PieChart.Data("已发货订单 ( " + String.valueOf(count2) +" )",count2));
-        data.add(new PieChart.Data("未发货订单 ( " + String.valueOf(count3) +" )",count3));
+        data.add(new PieChart.Data("已配送订单 ( " + String.valueOf(count2) +" )",count2));
+        data.add(new PieChart.Data("未配送订单 ( " + String.valueOf(count3) +" )",count3));
+        data.add(new PieChart.Data("已退货订单 ( " + String.valueOf(count3) +" )",count4));
         return data;
     }
 
@@ -1328,8 +1608,8 @@ public class Main implements Initializable{
 //        int count2 = KitchenSystemUtil.appointmentController.getAppointmentCount("已完成");
         int count1 = 1;
         int count2 = 2;
-        data.add(new PieChart.Data("未完成预约 ( "+String.valueOf(count1) +" )",count1));
-        data.add(new PieChart.Data("已完成预约 ( "+String.valueOf(count2) +" )",count2));
+        data.add(new PieChart.Data("未完成采购 ( "+String.valueOf(count1) +" )",count1));
+        data.add(new PieChart.Data("已完成采购 ( "+String.valueOf(count2) +" )",count2));
         return data;
     }
 
@@ -1352,9 +1632,11 @@ public class Main implements Initializable{
         this.foodTypes =  getFoodTypes();
 //        this.products = getProduct();
 //        this.services=  getService();
-//        this.orderDetails = getOrderDetail();
+        this.orderDetails = getOrderDetail();
+        this.buyFoods = getOrderBuy();
+
 //        this.appointmentDetails = getAppointmentDetail();
-//        orderBox.setItems(getOrder());
+        orderBox.setItems(getOrder());
 //        appointmentBox.setItems(getAppointment());
         choiceType1.setItems(getChoice1());
         choiceType2.setItems(getChoice2());
@@ -1403,6 +1685,10 @@ public class Main implements Initializable{
                     refreshOperator(new ActionEvent());
                 }else if(newValue.equals(foodTypeTab)){
                     refreshFoodType(new ActionEvent());
+                }else if(newValue.equals(orderTab)){
+                    refreshOrder(new ActionEvent());
+                }else if(newValue.equals(orderBuyTab)){
+                    refreshOrderBuy(new ActionEvent());
                 }
 
 //                }
@@ -1412,9 +1698,6 @@ public class Main implements Initializable{
 
 //                }else if(newValue.equals(categoryTab)){
 //                    refreshCategory(new ActionEvent());
-//
-//                }else if(newValue.equals(orderTab)){
-//                    refreshOrder(new ActionEvent());
 //
 //                }else if(newValue.equals(productTab)){
 //                    refreshProduct(new ActionEvent());
@@ -1442,7 +1725,8 @@ public class Main implements Initializable{
         adminTotal.setText("管理员总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanOperator")));
         userTotal.setText("用户总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanMyUser")));
         foodInfoTotal.setText("食材信息个数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanFoodInfo")));
-//        orderTotal.setText("订单总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanMyOrder")));
+        orderTotal.setText("订单总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanFoodOrder")));
+        orderBuyTotal.setText("采购总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanBuyFood")));
 //        appointmentTotal.setText("预约总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanAppointment")));
 //        serviceTotal.setText("服务总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanService")));
 //        productTotal.setText("产品总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanProduct")));

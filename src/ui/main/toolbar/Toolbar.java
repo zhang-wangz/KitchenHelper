@@ -37,6 +37,11 @@ public class Toolbar {
         showWindow("/ui/add/addFoodOrder/addFoodOrder.fxml","添加订单");
     }
 
+    @FXML
+    void addBuyOrderStarter(ActionEvent event) {
+        showWindow("/ui/add/addBuyFood/addBuyFood.fxml","添加采购");
+    }
+
 
 
     private void showWindow(String loc, String title){

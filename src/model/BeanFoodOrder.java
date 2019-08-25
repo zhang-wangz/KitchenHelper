@@ -60,4 +60,9 @@ public class BeanFoodOrder {
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
     }
+
+    @Override
+    public String toString() {
+        return getOrderId();
+    }
 }

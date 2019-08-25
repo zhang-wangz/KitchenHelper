@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.query.Query;
 import util.BaseException;
+import util.KitchenSystemUtil;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class FoodOrderController {
         return lsit;
     }
 
-    public void delOrder(int id) {
+    public void delOrder(String id) {
         Session session = getSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("delete BeanOrderDetail b where b.orderId = :id");
@@ -39,7 +40,7 @@ public class FoodOrderController {
         session.close();
     }
 
-    public BeanFoodOrder findOrderById(int id) throws BaseException {
+    public BeanFoodOrder findOrderById(String id) throws BaseException {
         BeanFoodOrder order = new BeanFoodOrder();
         Session session = getSession();
         Transaction tx = session.beginTransaction();
@@ -67,7 +68,7 @@ public class FoodOrderController {
     public List<BeanOrderDetail> loadDetailByOrderId(String orderId) {
         Session session = getSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("from BeanFoodOrder b where b.orderId = :id");
+        Query query = session.createQuery("from BeanOrderDetail b where b.orderId = :id");
         query.setParameter("id", orderId);
         List<BeanOrderDetail> list = query.list();
         tx.commit();
@@ -75,7 +76,9 @@ public class FoodOrderController {
         return list;
     }
 
+
     public void delOrderDetail(BeanOrderDetail detail) {
+        //BeanFoodOrder
         Session session = getSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("delete BeanOrderDetail b where b.foodId = :foodid and b.orderId= :orderid");
@@ -100,11 +103,13 @@ public class FoodOrderController {
                 .uniqueResult();
     }
 
-    public int getOrderCount(String cate){
+    public int getOrderCount(Integer cate1){
         Session session = getSession();
         Transaction rx = session.beginTransaction();
 
-        Query query = session.createQuery("from BeanFoodOrder b where b.orderStatus = '"+ cate+"'");
+//        Query query = session.createQuery("from BeanFoodOrder b where b.orderStatus = '"+ cate+"'");
+        Query query = session.createQuery("from BeanFoodOrder b where b.orderStatus = :cate");
+        query.setParameter("cate",cate1);
         int size = query.list().size();
         rx.commit();
         session.close();

@@ -15,6 +15,7 @@ public class KitchenSystemUtil {
     public static FoodInfoController foodInfoController = new FoodInfoController();
     public static FoodTypeController foodTypeController = new FoodTypeController();
     public static FoodOrderController foodOrderController = new FoodOrderController();
+    public static BuyFoodController buyFoodController = new BuyFoodController();
 
 //    public static AppointmentController appointmentController = new AppointmentController();
 //    public static OrderController orderController = new OrderController();
@@ -43,9 +44,14 @@ public class KitchenSystemUtil {
         Session session = getSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("from " + cate);
-        int list = query.list().size();
+        int size = query.list().size();
         tx.commit();
         session.close();
-        return list;
+        return size;
+    }
+
+    public static void main(String[] args) {
+        int size = getCount("BeanBuyFood");
+        System.out.println(size);
     }
 }

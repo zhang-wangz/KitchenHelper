@@ -4,14 +4,15 @@ package enums;
 
 public enum FoodOrderStatusEnum implements EnumCode {
 
-    XIADAN(0,"ä¸‹å•"),
-    PEISONG(1,"é…é€"),
-    SONGDA(2,"é€è¾¾"),
-    TUIHUO(3,"é€€è´§"),
+    XIADAN(0,"ÏÂµ¥"),
+    PEISONG(1,"ÅäËÍ"),
+    SONGDA(2,"ËÍ´ï"),
+    TUIHUO(3,"ÍË»õ"),
 
             ;
 
     private Integer code;
+    private String msg;
 
     @Override
     public Integer getCode() {
@@ -23,7 +24,7 @@ public enum FoodOrderStatusEnum implements EnumCode {
         return msg;
     }
 
-    private String msg;
+
 
     FoodOrderStatusEnum(Integer code, String message) {
         this.code = code;

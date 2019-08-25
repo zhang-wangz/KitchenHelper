@@ -142,7 +142,7 @@
                         <Insets top="3.0" />
                      </padding>
                   </JFXTextField>
-                  <JFXDatePicker fx:id="foodOrderSendTime" onAction="#orderAdd" prefHeight="27.0" prefWidth="99.0" promptText="时间" defaultColor="aquamarine" >
+                  <JFXDatePicker fx:id="foodOrderSendTime" onAction="#foodOrderSendTimeSelected" prefHeight="27.0" prefWidth="99.0" promptText="时间"  >
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>

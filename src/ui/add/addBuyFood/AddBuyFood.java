@@ -1,4 +1,4 @@
-package ui.add.addFoodOrder;
+package ui.add.addBuyFood;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -19,44 +19,23 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import model.BeanFoodInfo;
-import model.BeanFoodOrder;
-import model.BeanMyUser;
-import model.BeanOrderDetail;
+import model.*;
 import util.BaseException;
 import util.KeyUtil;
 import util.KitchenSystemUtil;
+
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AddFoodOrder implements Initializable{
+public class AddBuyFood implements Initializable{
 
     @FXML
     private AnchorPane rootPane;
 
 
-    @FXML
-    private JFXDatePicker foodOrderSendTime;
-
-//wait
-    @FXML
-    private JFXTextField foodDiscount;
-
-
-    @FXML
-    private  JFXTextField foodOrderUsrName;
-
-    @FXML
-    private JFXTextField foodOrderSendAddress;
-
-    @FXML
-    private JFXTextField foodOrderUserTel;
-
-    @FXML
-    private JFXTextField foodOrderOrderStatus;
 
 
     @FXML
@@ -64,7 +43,6 @@ public class AddFoodOrder implements Initializable{
 
     @FXML
     private JFXTextField productNum1;
-
     @FXML
     private Label productPrice1;
 
@@ -112,15 +90,13 @@ public class AddFoodOrder implements Initializable{
     @FXML
     private HBox hbox4;
 
-    @FXML
-    private HBox hbox5;
 
     private Double discount = 1.0;
     private BeanFoodInfo product1 = null;
     private BeanFoodInfo product2 = null;
     private BeanFoodInfo product3 = null;
     private BeanFoodInfo product4 = null;
-    private LocalDate foodsenddate = null;
+
 
     private int num1 = 0;
     private int num2 = 0;
@@ -132,25 +108,26 @@ public class AddFoodOrder implements Initializable{
     private int price4 = 0;
     private boolean isEditMode = false;
     private String foodid1 = "0";
-    private String orderid1 =  "0";
+    private Integer status1 = 0;
     private String foodid2 = "0";
-    private String orderid2 = "0";
+    private Integer status2 = 0;
     private String foodid3 = "0";
-    private String orderid3 = "0";
+    private Integer status3 = 0;
     private String foodid4 = "0";
-    private String orderid4 = "0";
+    private Integer status4 = 0;
 
-    private BeanFoodOrder order= null;
+    private String buyorderId = "0";
+
     private JFXDepthManager jfxDepthManager = null;
 
     private ObservableList<BeanFoodInfo> products = FXCollections.observableArrayList();
 
     private ObservableList<BeanMyUser> users = FXCollections.observableArrayList();
 
-    @FXML
-    void foodOrderSendTimeSelected(ActionEvent event) {
-        foodsenddate = foodOrderSendTime.getValue();
-    }
+//    @FXML
+//    void foodOrderSendTimeSelected(ActionEvent event) {
+//        foodsenddate = foodOrderSendTime.getValue();
+//    }
 
 
     private ObservableList<BeanFoodInfo> getProduct(){
@@ -179,7 +156,7 @@ public class AddFoodOrder implements Initializable{
 
     @FXML
     void orderAdd(ActionEvent event) throws BaseException {
-        if(foodOrderSendAddress == null || product1 == null || num1 == 0  || foodOrderUserTel == null){
+        if( product1 == null || num1 == 0  || discount == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("缺少信息");
@@ -195,113 +172,102 @@ public class AddFoodOrder implements Initializable{
         product3Selected(new ActionEvent());
         product4NumInput(new ActionEvent());
         product4Selected(new ActionEvent());
-        foodOrderSendTimeSelected(new ActionEvent());
+//        foodOrderSendTimeSelected(new ActionEvent());
 
 
-        if(!isEditMode)
-            order = new BeanFoodOrder();
-
-//        order.setOrderPrice(price1+price2+price3+price4);
-//        order.setOrderNum(num1+num2+num3+num4);
-        order.setOrderStatus(Integer.parseInt(foodOrderOrderStatus.getText()));
-        order.setOrderId(KeyUtil.getUniqueKey());
-        order.setSendAddress(foodOrderSendAddress.getText());
-        discount = Double.parseDouble(foodDiscount.getText());
-        if(!isEditMode){
-            if(foodsenddate.isBefore(LocalDate.now())){
-                beforeAlert();
-            }else{
-                order.setSendTime(Date.valueOf(foodsenddate));
-            }
-        }else{
-            order.setSendTime(Date.valueOf(foodsenddate));
+        if(!isEditMode) {
+            buyorderId = KeyUtil.getUniqueKey();
         }
 
-        order.setUserTel(foodOrderUserTel.getText());
-
-        //会有找不到用户的错误产生可能
-        order.setUserId(KitchenSystemUtil.userController.findUserByName(foodOrderUsrName.getText()).getUserId());
-
-
-        if(isEditMode){
-            KitchenSystemUtil.update(order);
-        }else{
-            KitchenSystemUtil.save(order);
-        }
+//
+//        if(isEditMode){
+//            KitchenSystemUtil.update(buyorder);
+//        }else{
+//            KitchenSystemUtil.save(buyorder);
+//        }
 
         if(product1!=null && num1 !=0){
-            BeanOrderDetail detail = new BeanOrderDetail();
-            detail.setOrderId(order.getOrderId());
-            detail.setFoodId(product1.getFoodId());
-            detail.setNum(num1);
-            detail.setPrice(price1);
-            discount = Double.parseDouble(foodDiscount.getText());
-            detail.setDiscount(discount);
+            BeanBuyFood buyFood = new BeanBuyFood();
+            buyFood.setBuyOrderId(buyorderId);
+            buyFood.setFoodId(product1.getFoodId());
+            buyFood.setNum(num1);
+            buyFood.setStatus(status1);
+
+
 
 
             if(isEditMode){
-                detail.setOrderId(orderid1);
-                detail.setFoodId(foodid1);
-                KitchenSystemUtil.update(detail);
+                buyFood.setBuyOrderId(buyorderId);
+                buyFood.setFoodId(foodid1);
+                KitchenSystemUtil.update(buyFood);
             }else{
-                KitchenSystemUtil.save(detail);
+                KitchenSystemUtil.save(buyFood);
             }
         }
 
         if(product2!=null && num2 !=0){
-            BeanOrderDetail detail = new BeanOrderDetail();
-            detail.setOrderId(order.getOrderId());
-            detail.setFoodId(product2.getFoodId());
-            detail.setNum(num2);
-            detail.setPrice(price2);
-            discount = Double.parseDouble(foodDiscount.getText());
-            detail.setDiscount(discount);
+            BeanBuyFood buyFood = new BeanBuyFood();
+            buyFood.setBuyOrderId(buyorderId);
+            buyFood.setFoodId(product2.getFoodId());
+            buyFood.setNum(num2);
+            buyFood.setStatus(status2);
+
+//            detail.setPrice(price2);
+
 
             if(isEditMode){
-                detail.setOrderId(orderid2);
-                detail.setFoodId(foodid2);
-                KitchenSystemUtil.update(detail);
+                buyFood.setBuyOrderId(buyorderId);
+                buyFood.setFoodId(foodid2);
+                KitchenSystemUtil.update(buyFood);
             }else{
-                KitchenSystemUtil.save(detail);
+                KitchenSystemUtil.save(buyFood);
             }
         }
 
         if(product3!=null && num3 !=0){
-            BeanOrderDetail detail = new BeanOrderDetail();
-            detail.setOrderId(order.getOrderId());
-            detail.setFoodId(product3.getFoodId());
-            detail.setNum(num3);
-            detail.setPrice(price3);
-            discount = Double.parseDouble(foodDiscount.getText());
-            detail.setDiscount(discount);
+            BeanBuyFood buyFood = new BeanBuyFood();
+            buyFood.setBuyOrderId(buyorderId);
+            buyFood.setFoodId(product1.getFoodId());
+            buyFood.setNum(num1);
+            buyFood.setStatus(status3);
+
+
+
+//            buyFood.setPrice(price3);
+//            discount = Double.parseDouble(foodDiscount.getText());
+//            detail.setDiscount(discount);
 
             if(isEditMode){
-                detail.setOrderId(orderid3);
-                detail.setFoodId(foodid3);
-                KitchenSystemUtil.update(detail);
+                buyFood.setBuyOrderId(buyorderId);
+                buyFood.setFoodId(foodid3);
+                KitchenSystemUtil.update(buyFood);
             }else{
-                KitchenSystemUtil.save(detail);
+                KitchenSystemUtil.save(buyFood);
+
             }
         }
 
 
         if(product4!=null && num4 !=0){
-            BeanOrderDetail detail = new BeanOrderDetail();
-            detail.setOrderId(order.getOrderId());
-            detail.setFoodId(product4.getFoodId());
-            detail.setNum(num4);
-            detail.setPrice(price4);
-            discount = Double.parseDouble(foodDiscount.getText());
-            detail.setDiscount(discount);
+            BeanBuyFood buyFood = new BeanBuyFood();
+            buyFood.setBuyOrderId(buyorderId);
+            buyFood.setFoodId(product1.getFoodId());
+            buyFood.setNum(num1);
+            buyFood.setStatus(status4);
+
+
+//            detail.setPrice(price4);
+//            discount = Double.parseDouble(foodDiscount.getText());
+//            detail.setDiscount(discount);
             if(isEditMode){
-                detail.setOrderId(orderid4);
-                detail.setFoodId(foodid4);
-                KitchenSystemUtil.update(detail);
+                buyFood.setBuyOrderId(buyorderId);
+                buyFood.setFoodId(foodid4);
+                KitchenSystemUtil.update(buyFood);
             }else{
-                KitchenSystemUtil.save(detail);
+                KitchenSystemUtil.save(buyFood);
+
             }
         }
-
         String contentText = "";
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -309,7 +275,7 @@ public class AddFoodOrder implements Initializable{
             contentText = "修改成功";
         else
             contentText = "添加成功";
-        alert.setContentText(contentText);
+            alert.setContentText(contentText);
         alert.showAndWait();
         cancel(new ActionEvent());
         return;
@@ -446,7 +412,7 @@ public class AddFoodOrder implements Initializable{
         jfxDepthManager.setDepth(hbox2,2);
         jfxDepthManager.setDepth(hbox3,2);
         jfxDepthManager.setDepth(hbox4,2);
-        jfxDepthManager.setDepth(hbox5,2);
+//        jfxDepthManager.setDepth(hbox5,2);
 
         this.products = getProduct();
 //        this.users = getUser();
@@ -463,8 +429,8 @@ public class AddFoodOrder implements Initializable{
 
         productBox1.getValidators().add(requiredFieldValidator);
         productNum1.getValidators().add(requiredFieldValidator);
-        foodOrderUsrName.getValidators().add(requiredFieldValidator);
-        foodDiscount.getValidators().add(requiredFieldValidator);
+//        foodOrderUsrName.getValidators().add(requiredFieldValidator);
+//        foodDiscount.getValidators().add(requiredFieldValidator);
         productNum1.getValidators().add(numberValidator);
         productNum2.getValidators().add(numberValidator);
         productNum3.getValidators().add(numberValidator);
@@ -473,23 +439,23 @@ public class AddFoodOrder implements Initializable{
 //        userBox.getValidators().add(requiredFieldValidator);
 
 
-        foodOrderUsrName.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue){
-                    foodOrderUsrName.validate();
-                }
-            }
-        });
+//        foodOrderUsrName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//                if(!newValue){
+//                    foodOrderUsrName.validate();
+//                }
+//            }
+//        });
 
-        foodDiscount.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue){
-                    foodDiscount.validate();
-                }
-            }
-        });
+//        foodDiscount.focusedProperty().addListener(new ChangeListener<Boolean>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//                if(!newValue){
+//                    foodDiscount.validate();
+//                }
+//            }
+//        });
 
         productBox1.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -537,93 +503,104 @@ public class AddFoodOrder implements Initializable{
         });
     }
 
-    public void inflateUI(BeanFoodOrder order) {
-        List<BeanOrderDetail> details = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(order.getOrderId());
-//        userBox.setValue(order.getOrderUser());
-        foodOrderUsrName.setText(KitchenSystemUtil.userController.findUserById(order.getOrderId()).getUserName());
+    public void inflateUI(BeanBuyFood order) {
+        List<BeanBuyFood> details = KitchenSystemUtil.buyFoodController.loadBuyDetailByOrderId(order.getBuyOrderId());
         int size = details.size();
         this.isEditMode = true;
+
         if(size == 1){
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getBuyOrderId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
             foodid1 = details.get(0).getFoodId();
-            orderid1 = details.get(0).getOrderId();
-            foodOrderSendTime.setValue(foodsenddate);
+            status1 = details.get(0).getStatus();
+            buyorderId = details.get(0).getBuyOrderId();
+
+//            orderid1 = details.get(0).getOrderId();
+//            foodOrderSendTime.setValue(foodsenddate);
             // orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
         }else if(size == 2) {
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getBuyOrderId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
             foodid1 = details.get(0).getFoodId();
-            orderid1 = details.get(0).getOrderId();
+            status1 = details.get(0).getStatus();
+            buyorderId = details.get(0).getBuyOrderId();
 
-            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getOrderId());
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getBuyOrderId());
             productBox2.setValue(product2);
             num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
             foodid2 = details.get(1).getFoodId();
-            orderid2 = details.get(1).getOrderId();
-            foodOrderSendTime.setValue(foodsenddate);
+            status2 = details.get(1).getStatus();
+            buyorderId = details.get(1).getBuyOrderId();
+//            foodOrderSendTime.setValue(foodsenddate);
 
         }else if(size == 3){
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getBuyOrderId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
             foodid1 = details.get(0).getFoodId();
-            orderid1 = details.get(0).getOrderId();
+            status1 = details.get(0).getStatus();
+            buyorderId = details.get(0).getBuyOrderId();
 
-            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getOrderId());
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getBuyOrderId());
             productBox2.setValue(product2);
             num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
             foodid2 = details.get(1).getFoodId();
-            orderid2 = details.get(1).getOrderId();
+            status2 = details.get(1).getStatus();
+            buyorderId = details.get(1).getBuyOrderId();
 
-            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getOrderId());
+            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getBuyOrderId());
             productBox3.setValue(product3);
             num3 = details.get(2).getNum();
             productNum3.setText(String.valueOf(num3));
             foodid3 = details.get(2).getFoodId();
-            orderid3 = details.get(2).getOrderId();
-            foodOrderSendTime.setValue(foodsenddate);
+            status3 = details.get(2).getStatus();
+            buyorderId = details.get(2).getBuyOrderId();
+//            foodOrderSendTime.setValue(foodsenddate);
 
         }else if(size == 4){
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getBuyOrderId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
             foodid1 = details.get(0).getFoodId();
-            orderid1 = details.get(0).getOrderId();
+            status1 = details.get(0).getStatus();
+            buyorderId = details.get(0).getBuyOrderId();
 
-            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getOrderId());
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getBuyOrderId());
             productBox2.setValue(product2);
             num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
             foodid2 = details.get(1).getFoodId();
-            orderid2 = details.get(1).getOrderId();
+            status2 = details.get(1).getStatus();
+            buyorderId = details.get(1).getBuyOrderId();
 
-            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getOrderId());
+            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getBuyOrderId());
             productBox3.setValue(product3);
             num3 = details.get(2).getNum();
             productNum3.setText(String.valueOf(num3));
             foodid3 = details.get(2).getFoodId();
-            orderid3 = details.get(2).getOrderId();
+            status3 = details.get(3).getStatus();
+            buyorderId = details.get(2).getBuyOrderId();
 
-            product4 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(3).getOrderId());
+            product4 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(3).getBuyOrderId());
             productBox4.setValue(product4);
-            num4= details.get(3).getNum();
-            productNum4.setText(String.valueOf(num4));
+            num4 = details.get(3).getNum();
+            productNum4.setText(String.valueOf(num3));
             foodid4 = details.get(3).getFoodId();
-            orderid4 = details.get(3).getOrderId();
-            foodOrderSendTime.setValue(foodsenddate);
+            status4 = details.get(3).getStatus();
+            buyorderId = details.get(3).getBuyOrderId();
+//            foodOrderSendTime.setValue(foodsenddate);
 
         }
 
-        this.order = order;
+//        this.order = order;
 
     }
 }

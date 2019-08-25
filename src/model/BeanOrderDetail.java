@@ -1,6 +1,8 @@
 package model;
 
 
+import util.KitchenSystemUtil;
+
 import java.io.Serializable;
 
 public class BeanOrderDetail implements Serializable {
@@ -11,6 +13,14 @@ public class BeanOrderDetail implements Serializable {
     private Integer num;
     private Integer price;
     private Double discount;
+
+
+    private String foodName;
+
+    public String getFoodName() {
+        return KitchenSystemUtil.foodInfoController.findFoodById(this.foodId).getFoodName();
+    }
+
 
     public String getOrderId() {
         return orderId;
