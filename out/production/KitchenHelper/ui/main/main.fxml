@@ -391,7 +391,7 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <JFXComboBox fx:id="buyOrderBox" focusColor="WHITE" labelFloat="true" onAction="#selectOrderId" prefHeight="27.0" prefWidth="320.0" promptText="订单ID" unFocusColor="WHITE">
+                                          <JFXComboBox fx:id="buyOrderBox" focusColor="WHITE" labelFloat="true" onAction="#selectOrderBuyId" prefHeight="27.0" prefWidth="320.0" promptText="订单ID" unFocusColor="WHITE">
                                              <opaqueInsets>
                                                 <Insets />
                                              </opaqueInsets>
@@ -404,7 +404,7 @@
                                                 <Insets left="10.0" top="10.0" />
                                              </HBox.margin>
                                           </Text>
-                                          <JFXButton buttonType="RAISED" onAction="#deleteOrder" text="删除订单">
+                                          <JFXButton buttonType="RAISED" onAction="#deleteBuyOrder" text="删除订单">
                                              <HBox.margin>
                                                 <Insets left="20.0" top="10.0" />
                                              </HBox.margin>

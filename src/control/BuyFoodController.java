@@ -69,6 +69,26 @@ public class BuyFoodController {
         session.close();
     }
 
+    public void cancelOrderDetail(BeanBuyFood detail) {
+
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("delete BeanBuyFood b where b.foodId = :foodId and b.BuyOrderId = :orderId");
+        query.setParameter("foodId", detail.getFoodId());
+        query.setParameter("orderId", detail.getBuyOrderId());
+        query.executeUpdate();
+
+        query = session.createQuery("update BeanFoodInfo b set b.foodNum = b.foodNum -:num where foodId =:foodId");
+        query.setParameter("num",detail.getNum());
+        query.setParameter("foodId",detail.getFoodId());
+
+        query.executeUpdate();
+
+        tx.commit();
+        session.close();
+    }
+
+
     public List<BeanBuyFood> loadAll(){
         List<BeanBuyFood> lsit = null;
         Session session = getSession();
@@ -91,6 +111,14 @@ public class BuyFoodController {
         return lsit;
     }
 
+
+    public void delOrder(String orderId){
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("delete from BeanBuyFood  b where b.BuyOrderId  = :orderid");
+        query.setParameter("orderid",orderId);
+        tx.commit();
+    }
 //    public BeanBuyFood findOrderByName(String userName) {
 //        Session session = getSession();
 //        Transaction tx = session.beginTransaction();

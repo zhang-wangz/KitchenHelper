@@ -79,11 +79,10 @@ public class FoodInfoController {
 
 
     public static void main(String[] args) {
-        List<BeanFoodInfo> list = new ArrayList<>();
-        list = KitchenSystemUtil.foodInfoController.loadAll();
-        for(BeanFoodInfo e : list){
-            System.out.println(e.getFoodName());
-        }
+       List<String> list = new ArrayList<>();
+       list.add("sdas");
+       list.clear();
+
     }
 
 }

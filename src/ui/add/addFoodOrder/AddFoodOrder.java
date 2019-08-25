@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.effects.JFXDepthManager;
 import com.jfoenix.validation.NumberValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
+import enums.FoodOrderStatusEnum;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -24,11 +25,13 @@ import model.BeanFoodOrder;
 import model.BeanMyUser;
 import model.BeanOrderDetail;
 import util.BaseException;
+import util.EnumUtils;
 import util.KeyUtil;
 import util.KitchenSystemUtil;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -198,15 +201,17 @@ public class AddFoodOrder implements Initializable{
         foodOrderSendTimeSelected(new ActionEvent());
 
 
-        if(!isEditMode)
+        if(!isEditMode) {
             order = new BeanFoodOrder();
-
-//        order.setOrderPrice(price1+price2+price3+price4);
-//        order.setOrderNum(num1+num2+num3+num4);
-        order.setOrderStatus(Integer.parseInt(foodOrderOrderStatus.getText()));
-        order.setOrderId(KeyUtil.getUniqueKey());
+            order.setOrderId(KeyUtil.getUniqueKey());
+            order.setOrderStatus(0);
+        }else{
+            order.setOrderStatus(EnumUtils.getByMsg(foodOrderOrderStatus.getText(),FoodOrderStatusEnum.class).getCode());
+        }
+        order.setOrderId(order.getOrderId());
         order.setSendAddress(foodOrderSendAddress.getText());
         discount = Double.parseDouble(foodDiscount.getText());
+
         if(!isEditMode){
             if(foodsenddate.isBefore(LocalDate.now())){
                 beforeAlert();
@@ -305,10 +310,12 @@ public class AddFoodOrder implements Initializable{
         String contentText = "";
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        if(isEditMode)
+        if(isEditMode) {
             contentText = "修改成功";
-        else
+
+        }else {
             contentText = "添加成功";
+        }
         alert.setContentText(contentText);
         alert.showAndWait();
         cancel(new ActionEvent());
@@ -438,6 +445,12 @@ public class AddFoodOrder implements Initializable{
 
     }
 
+    private LocalDate Date2LocalDate(java.util.Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -540,86 +553,91 @@ public class AddFoodOrder implements Initializable{
     public void inflateUI(BeanFoodOrder order) {
         List<BeanOrderDetail> details = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(order.getOrderId());
 //        userBox.setValue(order.getOrderUser());
-        foodOrderUsrName.setText(KitchenSystemUtil.userController.findUserById(order.getOrderId()).getUserName());
+        foodOrderUsrName.setText(KitchenSystemUtil.userController.findUserById(order.getUserId()).getUserName());
+        foodOrderSendAddress.setText(order.getSendAddress());
+        foodOrderUserTel.setText(order.getUserTel());
+        foodOrderOrderStatus.setText(EnumUtils.getByCode(order.getOrderStatus(), FoodOrderStatusEnum.class).getMsg());
+        foodDiscount.setText(details.get(0).getDiscount().toString());
+        foodOrderSendTime.setValue(Date2LocalDate(order.getSendTime()));
+
         int size = details.size();
         this.isEditMode = true;
         if(size == 1){
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
             foodid1 = details.get(0).getFoodId();
             orderid1 = details.get(0).getOrderId();
-            foodOrderSendTime.setValue(foodsenddate);
+
             // orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
         }else if(size == 2) {
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
             foodid1 = details.get(0).getFoodId();
             orderid1 = details.get(0).getOrderId();
-
-            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getOrderId());
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getFoodId());
             productBox2.setValue(product2);
             num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
             foodid2 = details.get(1).getFoodId();
             orderid2 = details.get(1).getOrderId();
-            foodOrderSendTime.setValue(foodsenddate);
+
 
         }else if(size == 3){
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
             foodid1 = details.get(0).getFoodId();
             orderid1 = details.get(0).getOrderId();
 
-            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getOrderId());
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getFoodId());
             productBox2.setValue(product2);
             num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
             foodid2 = details.get(1).getFoodId();
             orderid2 = details.get(1).getOrderId();
 
-            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getOrderId());
+            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getFoodId());
             productBox3.setValue(product3);
             num3 = details.get(2).getNum();
             productNum3.setText(String.valueOf(num3));
             foodid3 = details.get(2).getFoodId();
             orderid3 = details.get(2).getOrderId();
-            foodOrderSendTime.setValue(foodsenddate);
+
 
         }else if(size == 4){
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
             foodid1 = details.get(0).getFoodId();
             orderid1 = details.get(0).getOrderId();
 
-            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getOrderId());
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getFoodId());
             productBox2.setValue(product2);
             num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
             foodid2 = details.get(1).getFoodId();
             orderid2 = details.get(1).getOrderId();
 
-            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getOrderId());
+            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getFoodId());
             productBox3.setValue(product3);
             num3 = details.get(2).getNum();
             productNum3.setText(String.valueOf(num3));
             foodid3 = details.get(2).getFoodId();
             orderid3 = details.get(2).getOrderId();
 
-            product4 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(3).getOrderId());
+            product4 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(3).getFoodId());
             productBox4.setValue(product4);
             num4= details.get(3).getNum();
             productNum4.setText(String.valueOf(num4));
             foodid4 = details.get(3).getFoodId();
             orderid4 = details.get(3).getOrderId();
-            foodOrderSendTime.setValue(foodsenddate);
+
 
         }
 

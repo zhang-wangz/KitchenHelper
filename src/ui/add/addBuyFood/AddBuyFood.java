@@ -503,8 +503,8 @@ public class AddBuyFood implements Initializable{
         });
     }
 
-    public void inflateUI(BeanBuyFood order) {
-        List<BeanBuyFood> details = KitchenSystemUtil.buyFoodController.loadBuyDetailByOrderId(order.getBuyOrderId());
+    public void inflateUI(String orderId) {
+        List<BeanBuyFood> details = KitchenSystemUtil.buyFoodController.loadBuyDetailByOrderId(orderId);
         int size = details.size();
         this.isEditMode = true;
 
@@ -521,7 +521,7 @@ public class AddBuyFood implements Initializable{
 //            foodOrderSendTime.setValue(foodsenddate);
             // orderTotalPrice.setText("×Ü¼Û:"+String.valueOf(order.getOrderPrice())+"Ôª");
         }else if(size == 2) {
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getBuyOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
@@ -529,7 +529,7 @@ public class AddBuyFood implements Initializable{
             status1 = details.get(0).getStatus();
             buyorderId = details.get(0).getBuyOrderId();
 
-            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getBuyOrderId());
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getFoodId());
             productBox2.setValue(product2);
             num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
@@ -539,7 +539,7 @@ public class AddBuyFood implements Initializable{
 //            foodOrderSendTime.setValue(foodsenddate);
 
         }else if(size == 3){
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getBuyOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
@@ -547,7 +547,7 @@ public class AddBuyFood implements Initializable{
             status1 = details.get(0).getStatus();
             buyorderId = details.get(0).getBuyOrderId();
 
-            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getBuyOrderId());
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getFoodId());
             productBox2.setValue(product2);
             num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
@@ -555,7 +555,7 @@ public class AddBuyFood implements Initializable{
             status2 = details.get(1).getStatus();
             buyorderId = details.get(1).getBuyOrderId();
 
-            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getBuyOrderId());
+            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getFoodId());
             productBox3.setValue(product3);
             num3 = details.get(2).getNum();
             productNum3.setText(String.valueOf(num3));
@@ -565,7 +565,7 @@ public class AddBuyFood implements Initializable{
 //            foodOrderSendTime.setValue(foodsenddate);
 
         }else if(size == 4){
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getBuyOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
@@ -573,7 +573,7 @@ public class AddBuyFood implements Initializable{
             status1 = details.get(0).getStatus();
             buyorderId = details.get(0).getBuyOrderId();
 
-            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getBuyOrderId());
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getFoodId());
             productBox2.setValue(product2);
             num2 = details.get(1).getNum();
             productNum2.setText(String.valueOf(num2));
@@ -581,7 +581,7 @@ public class AddBuyFood implements Initializable{
             status2 = details.get(1).getStatus();
             buyorderId = details.get(1).getBuyOrderId();
 
-            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getBuyOrderId());
+            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getFoodId());
             productBox3.setValue(product3);
             num3 = details.get(2).getNum();
             productNum3.setText(String.valueOf(num3));
@@ -589,7 +589,7 @@ public class AddBuyFood implements Initializable{
             status3 = details.get(3).getStatus();
             buyorderId = details.get(2).getBuyOrderId();
 
-            product4 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(3).getBuyOrderId());
+            product4 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(3).getFoodId());
             productBox4.setValue(product4);
             num4 = details.get(3).getNum();
             productNum4.setText(String.valueOf(num3));
@@ -600,7 +600,7 @@ public class AddBuyFood implements Initializable{
 
         }
 
-//        this.order = order;
+
 
     }
 }
