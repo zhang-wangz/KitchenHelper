@@ -465,7 +465,7 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <JFXComboBox fx:id="recipeBox" focusColor="WHITE" labelFloat="true" onAction="#selectRecepeId" prefHeight="27.0" prefWidth="320.0" promptText="菜谱Id" unFocusColor="WHITE">
+                                          <JFXComboBox fx:id="recipeBox" focusColor="WHITE" labelFloat="true" onAction="#selectRecepeId" prefHeight="27.0" prefWidth="320.0" promptText="菜谱名称" unFocusColor="WHITE">
                                              <opaqueInsets>
                                                 <Insets />
                                              </opaqueInsets>
@@ -494,7 +494,7 @@
                                              </HBox.margin>
                                           </JFXButton>
 
-                                          <JFXButton buttonType="RAISED" onAction="#changeOrderToCancel" text="暂无">
+                                          <JFXButton buttonType="RAISED" onAction="#createFoodOrderByRecipe" text="一键下单">
                                              <HBox.margin>
                                                 <Insets left="20.0" top="10.0" />
                                              </HBox.margin>
@@ -541,7 +541,7 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <JFXComboBox fx:id="recipeBox1" focusColor="WHITE" labelFloat="true" onAction="#selectRecipe1IdforSteps" prefHeight="27.0" prefWidth="320.0" promptText="菜谱Id" unFocusColor="WHITE">
+                                          <JFXComboBox fx:id="recipeBox1" focusColor="WHITE" labelFloat="true" onAction="#selectRecipe1IdforSteps" prefHeight="27.0" prefWidth="320.0" promptText="菜谱名称" unFocusColor="WHITE">
                                              <opaqueInsets>
                                                 <Insets />
                                              </opaqueInsets>

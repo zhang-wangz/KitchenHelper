@@ -1015,13 +1015,13 @@ public class Main implements Initializable{
             return;
         }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeInfo/addRecipeInfo.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addFoodOrder/addFoodOrder.fxml"));
             Parent parent = loader.load();
             AddFoodOrder addFoodOrder = (AddFoodOrder) loader.getController();
-            addFoodOrder.inflateUI(recipe);
+            addFoodOrder.inflateUIAdd(recipe);
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.getIcons().add(new Image("/ui/icons/icon.png"));
-            stage.setTitle("生成菜谱");
+            stage.setTitle("生成订单");
             stage.setScene(new Scene(parent));
             stage.show();
         } catch (Exception exception) {

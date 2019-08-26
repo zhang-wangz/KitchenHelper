@@ -20,10 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import model.BeanFoodInfo;
-import model.BeanFoodOrder;
-import model.BeanMyUser;
-import model.BeanOrderDetail;
+import model.*;
 import util.BaseException;
 import util.EnumUtils;
 import util.KeyUtil;
@@ -207,8 +204,9 @@ public class AddFoodOrder implements Initializable{
             order.setOrderStatus(0);
         }else{
             order.setOrderStatus(EnumUtils.getByMsg(foodOrderOrderStatus.getText(),FoodOrderStatusEnum.class).getCode());
+            order.setOrderId(order.getOrderId());
         }
-        order.setOrderId(order.getOrderId());
+
         order.setSendAddress(foodOrderSendAddress.getText());
         discount = Double.parseDouble(foodDiscount.getText());
 
@@ -225,7 +223,10 @@ public class AddFoodOrder implements Initializable{
         order.setUserTel(foodOrderUserTel.getText());
 
         //会有找不到用户的错误产生可能
-        order.setUserId(KitchenSystemUtil.userController.findUserByName(foodOrderUsrName.getText()).getUserId());
+        if(BeanOperator.currentOperator == null)
+            order.setUserId(KitchenSystemUtil.userController.findUserByName(foodOrderUsrName.getText()).getUserId());
+        else
+            order.setUserId(KitchenSystemUtil.operatorController.findOperatorByName(foodOrderUsrName.getText()).getOpId());
 
 
         if(isEditMode){
@@ -551,8 +552,8 @@ public class AddFoodOrder implements Initializable{
     }
 
     public void inflateUI(BeanFoodOrder order) {
+
         List<BeanOrderDetail> details = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(order.getOrderId());
-//        userBox.setValue(order.getOrderUser());
         foodOrderUsrName.setText(KitchenSystemUtil.userController.findUserById(order.getUserId()).getUserName());
         foodOrderSendAddress.setText(order.getSendAddress());
         foodOrderUserTel.setText(order.getUserTel());
@@ -562,6 +563,7 @@ public class AddFoodOrder implements Initializable{
 
         int size = details.size();
         this.isEditMode = true;
+
         if(size == 1){
             product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
             productBox1.setValue(product1);
@@ -643,6 +645,93 @@ public class AddFoodOrder implements Initializable{
 
         this.order = order;
     }
+
+
+    public void inflateUIAdd(BeanRecipe recipe) {
+        List<BeanRecipematerials> details = KitchenSystemUtil.recipeController.loadRecipeDetailByRecipeId(recipe.getRecipeId());
+        foodOrderUsrName.setText(recipe.getContriUsr());
+        int size = details.size();
+        this.isEditMode = false;
+        if(size == 1){
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
+            productBox1.setValue(product1);
+            num1 = details.get(0).getNumOfFood();
+            productNum1.setText(String.valueOf(num1));
+            foodid1 = details.get(0).getFoodId();
+//            orderid1 = details.get(0).getRecipeId();
+
+        }else if(size == 2) {
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
+            productBox1.setValue(product1);
+            num1 = details.get(0).getNumOfFood();
+            productNum1.setText(String.valueOf(num1));
+            foodid1 = details.get(0).getFoodId();
+//            orderid1 = details.get(0).getOrderId();
+
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getFoodId());
+            productBox2.setValue(product2);
+            num2 = details.get(1).getNumOfFood();
+            productNum2.setText(String.valueOf(num2));
+            foodid2 = details.get(1).getFoodId();
+//            orderid2 = details.get(1).getOrderId();
+
+
+        }else if(size == 3){
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
+            productBox1.setValue(product1);
+            num1 = details.get(0).getNumOfFood();
+            productNum1.setText(String.valueOf(num1));
+            foodid1 = details.get(0).getFoodId();
+//            orderid1 = details.get(0).getOrderId();
+
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getFoodId());
+            productBox2.setValue(product2);
+            num2 = details.get(1).getNumOfFood();
+            productNum2.setText(String.valueOf(num2));
+            foodid2 = details.get(1).getFoodId();
+//            orderid2 = details.get(1).getOrderId();
+
+            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getFoodId());
+            productBox3.setValue(product3);
+            num3 = details.get(2).getNumOfFood();
+            productNum3.setText(String.valueOf(num3));
+            foodid3 = details.get(2).getFoodId();
+//            orderid3 = details.get(2).getOrderId();
+
+
+        }else if(size == 4){
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
+            productBox1.setValue(product1);
+            num1 = details.get(0).getNumOfFood();
+            productNum1.setText(String.valueOf(num1));
+            foodid1 = details.get(0).getFoodId();
+//            orderid1 = details.get(0).getOrderId();
+
+            product2 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(1).getFoodId());
+            productBox2.setValue(product2);
+            num2 = details.get(1).getNumOfFood();
+            productNum2.setText(String.valueOf(num2));
+            foodid2 = details.get(1).getFoodId();
+//            orderid2 = details.get(1).getOrderId();
+
+            product3 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(2).getFoodId());
+            productBox3.setValue(product3);
+            num3 = details.get(2).getNumOfFood();
+            productNum3.setText(String.valueOf(num3));
+            foodid3 = details.get(2).getFoodId();
+//            orderid3 = details.get(2).getOrderId();
+
+            product4 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(3).getFoodId());
+            productBox4.setValue(product4);
+            num4= details.get(3).getNumOfFood();
+            productNum4.setText(String.valueOf(num4));
+            foodid4 = details.get(3).getFoodId();
+//            orderid4 = details.get(3).getOrderId();
+
+        }
+
+    }
+
 
 
 }

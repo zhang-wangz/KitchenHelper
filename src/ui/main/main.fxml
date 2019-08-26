@@ -494,7 +494,7 @@
                                              </HBox.margin>
                                           </JFXButton>
 
-                                          <JFXButton buttonType="RAISED" onAction="#changeOrderToCancel" text="一键下单">
+                                          <JFXButton buttonType="RAISED" onAction="#createFoodOrderByRecipe" text="一键下单">
                                              <HBox.margin>
                                                 <Insets left="20.0" top="10.0" />
                                              </HBox.margin>
