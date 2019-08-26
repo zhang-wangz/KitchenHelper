@@ -119,15 +119,16 @@ public class BuyFoodController {
         query.setParameter("orderid",orderId);
         tx.commit();
     }
-//    public BeanBuyFood findOrderByName(String userName) {
-//        Session session = getSession();
-//        Transaction tx = session.beginTransaction();
-//        Query query = session.createQuery("from BeanBuyFood b where b.foodId = :name");
-//        query.setParameter("name", userName);
-//        BeanBuyFood buyFood = (BeanBuyFood) query.list().get(0);
-//        tx.commit();
-//        session.close();
-//        return buyFood;
-//    }
+    public int getBuyOrderCount(Integer cate1){
+        Session session = getSession();
+        Transaction rx = session.beginTransaction();
+        Query query = session.createQuery("from BeanBuyFood b where b.status = :cate");
+        query.setParameter("cate",cate1);
+        int size = query.list().size();
+        rx.commit();
+        session.close();
+        return size;
+    }
+
 
 }

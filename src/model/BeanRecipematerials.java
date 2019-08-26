@@ -1,5 +1,7 @@
 package model;
 
+import util.KitchenSystemUtil;
+
 import java.io.Serializable;
 
 //菜谱用料
@@ -9,6 +11,12 @@ public class BeanRecipematerials implements Serializable {
     private String foodId;
     private Integer numOfFood;
     private String workAddress;//单位
+
+    private String foodName;
+
+    public String getFoodName() {
+        return KitchenSystemUtil.foodInfoController.findFoodById(this.foodId).getFoodName();
+    }
 
     public BeanRecipematerials() {
     }
@@ -31,7 +39,7 @@ public class BeanRecipematerials implements Serializable {
     }
 
     public void setNumOfFood(Integer numOfFood) {
-        numOfFood = numOfFood;
+        this.numOfFood = numOfFood;
     }
 
     public String getWorkAddress() {

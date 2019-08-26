@@ -316,7 +316,7 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <JFXComboBox fx:id="orderBox" focusColor="WHITE" labelFloat="true" onAction="#selectOrderId" prefHeight="27.0" prefWidth="320.0" promptText="订单ID" unFocusColor="WHITE">
+                                          <JFXComboBox fx:id="orderBox" focusColor="WHITE" labelFloat="true" onAction="#selectOrderId" prefHeight="27.0" prefWidth="320.0" promptText="订单Id" unFocusColor="WHITE">
                                              <opaqueInsets>
                                                 <Insets />
                                              </opaqueInsets>
@@ -391,7 +391,7 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <JFXComboBox fx:id="buyOrderBox" focusColor="WHITE" labelFloat="true" onAction="#selectOrderBuyId" prefHeight="27.0" prefWidth="320.0" promptText="订单ID" unFocusColor="WHITE">
+                                          <JFXComboBox fx:id="buyOrderBox" focusColor="WHITE" labelFloat="true" onAction="#selectOrderBuyId" prefHeight="27.0" prefWidth="320.0" promptText="采购单Id" unFocusColor="WHITE">
                                              <opaqueInsets>
                                                 <Insets />
                                              </opaqueInsets>
@@ -446,6 +446,137 @@
                                                 <MenuItem mnemonicParsing="false" onAction="#refreshOrderBuy" text="刷新" />
                                              </items>
                                           </ContextMenu>
+                                       </contextMenu>
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                       </VBox.margin>
+                                    </TableView>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="recipeTab" text="菜谱用料详情">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="551.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <JFXComboBox fx:id="recipeBox" focusColor="WHITE" labelFloat="true" onAction="#selectRecepeId" prefHeight="27.0" prefWidth="320.0" promptText="菜谱Id" unFocusColor="WHITE">
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <HBox.margin>
+                                                <Insets bottom="5.0" left="20.0" right="10.0" top="10.0" />
+                                             </HBox.margin>
+                                          </JFXComboBox>
+                                          <Text fx:id="recipeStatusScore" fill="WHITE" text="综合评分">
+                                             <HBox.margin>
+                                                <Insets left="10.0" top="10.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                          <Text fx:id="recipeStatusColl" fill="WHITE" text="收藏人数">
+                                             <HBox.margin>
+                                                <Insets left="10.0" top="10.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                          <Text fx:id="recipeStatusBrow" fill="WHITE" text="浏览人数">
+                                             <HBox.margin>
+                                                <Insets left="10.0" top="10.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                          <JFXButton buttonType="RAISED" onAction="#deleteRecipe" text="删除菜谱">
+                                             <HBox.margin>
+                                                <Insets left="20.0" top="10.0" />
+                                             </HBox.margin>
+                                          </JFXButton>
+
+                                          <JFXButton buttonType="RAISED" onAction="#changeOrderToCancel" text="暂无">
+                                             <HBox.margin>
+                                                <Insets left="20.0" top="10.0" />
+                                             </HBox.margin>
+                                          </JFXButton>
+
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <TableView fx:id="recipeTbl" prefHeight="541.0" prefWidth="775.0" style="-fx-border-color: #1976D2;">
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                       <columns>
+                                          <TableColumn fx:id="recipeProductCol" prefWidth="75.0" text="食材" />
+                                          <TableColumn fx:id="recipeNumCol" prefWidth="75.0" text="数量" />
+                                          <TableColumn fx:id="recipeUnitCol" prefWidth="75" text="单位" />
+                                       </columns>
+                                       <contextMenu>
+                                          <ContextMenu>
+                                             <items>
+                                                <MenuItem mnemonicParsing="false" onAction="#deleteRecipeDetail" text="删除" />
+                                                <MenuItem mnemonicParsing="false" onAction="#editRecipe" text="编辑" />
+                                                <MenuItem mnemonicParsing="false" onAction="#refreshRecipe" text="刷新" />
+                                             </items>
+                                          </ContextMenu>
+                                       </contextMenu>
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                       </VBox.margin>
+                                    </TableView>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="recipeStepTab" text="菜谱步骤详情">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="551.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <JFXComboBox fx:id="recipeBox1" focusColor="WHITE" labelFloat="true" onAction="#selectRecipe1IdforSteps" prefHeight="27.0" prefWidth="320.0" promptText="菜谱Id" unFocusColor="WHITE">
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <HBox.margin>
+                                                <Insets bottom="5.0" left="20.0" right="10.0" top="10.0" />
+                                             </HBox.margin>
+                                          </JFXComboBox>
+                                          <JFXButton buttonType="RAISED" onAction="#createRecipeStep" text="增加步骤">
+                                             <HBox.margin>
+                                                <Insets left="20.0" top="10.0" />
+                                             </HBox.margin>
+                                          </JFXButton>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <TableView fx:id="recipeStepTbl" prefHeight="541.0" prefWidth="775.0" style="-fx-border-color: #1976D2;">
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                       <columns>
+                                          <TableColumn fx:id="recipeStepIdCol" prefWidth="75.0" text="步骤顺序" />
+                                          <TableColumn fx:id="recipeStepDesCol" prefWidth="75.0" text="步骤描述" />
+                                       </columns>
+                                       <contextMenu>
+
+                                          <ContextMenu>
+                                             <items>
+                                                <MenuItem mnemonicParsing="false" onAction="#deleteRecipeStep" text="删除" />
+                                                <MenuItem mnemonicParsing="false" onAction="#editRecipeStep" text="编辑" />
+                                                <MenuItem mnemonicParsing="false" onAction="#refreshRecipeSteps" text="刷新" />
+                                             </items>
+                                          </ContextMenu>
+
                                        </contextMenu>
                                        <VBox.margin>
                                           <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

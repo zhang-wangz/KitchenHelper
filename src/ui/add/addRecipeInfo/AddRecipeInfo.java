@@ -119,10 +119,10 @@ public class AddRecipeInfo implements Initializable{
     private BeanFoodInfo product4 = null;
 //    private LocalDate foodsenddate = null;
 
-    private int num1 = 0;
-    private int num2 = 0;
-    private int num3 = 0;
-    private int num4 = 0;
+    private Integer num1 = 0;
+    private Integer num2 = 0;
+    private Integer num3 = 0;
+    private Integer num4 = 0;
 //    private int price1 = 0;
 //    private int price2 = 0;
 //    private int price3 = 0;
@@ -219,7 +219,6 @@ public class AddRecipeInfo implements Initializable{
             if(BeanOperator.currentOperator == null)    recipe.setContriUsr(BeanMyUser.currentUser.getUserName());
             else recipe.setContriUsr(BeanOperator.currentOperator.getOpName());
             recipe.setRecipeId(KeyUtil.getUniqueKey());
-
         }else{
             recipe.setRecipeId(recipe.getRecipeId());
             recipe.setContriUsr(recipe.getRecipeName());
@@ -242,22 +241,27 @@ public class AddRecipeInfo implements Initializable{
         }
 
 
-        if( recipeName == null){
+        if(product1 == null || num1 == 0 || recipeName == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("»±…Ÿ–≈œ¢");
             alert.showAndWait();
-            return;
         }
 
 
-        if(product1!=null && num1 !=0){
+        if(product1!=null && num1 != 0){
+
+            System.out.println(product1.getFoodName() + " "+ num1);
+
+
+            product1 = productBox1.getSelectionModel().getSelectedItem();
             BeanRecipematerials detail = new BeanRecipematerials();
             detail.setRecipeId(recipe.getRecipeId());
             detail.setFoodId(product1.getFoodId());
-            if(num1 !=0)
-                detail.setNumOfFood(Integer.parseInt(productNum1.getText()));
+            detail.setNumOfFood(num1);
             detail.setWorkAddress(productunit1.getText());
+
+            System.out.println(detail.getNumOfFood() + detail.getWorkAddress());
 //            discount = Double.parseDouble(foodDiscount.getText());
 //            detail.setDiscount(discount);
 
@@ -272,6 +276,7 @@ public class AddRecipeInfo implements Initializable{
         }
 
         if(product2!=null && num2 !=0){
+            product2 = productBox2.getSelectionModel().getSelectedItem();
             BeanRecipematerials detail = new BeanRecipematerials();
             detail.setRecipeId(recipe.getRecipeId());
             detail.setFoodId(product2.getFoodId());
@@ -292,6 +297,7 @@ public class AddRecipeInfo implements Initializable{
         }
 
         if(product3!=null && num3 !=0){
+            product3 = productBox3.getSelectionModel().getSelectedItem();
             BeanRecipematerials detail = new BeanRecipematerials();
             detail.setRecipeId(recipe.getRecipeId());
             detail.setFoodId(product3.getFoodId());
@@ -312,6 +318,7 @@ public class AddRecipeInfo implements Initializable{
 
 
         if(product4!=null && num4 !=0){
+            product4 = productBox4.getSelectionModel().getSelectedItem();
             BeanRecipematerials detail = new BeanRecipematerials();
             detail.setRecipeId(recipe.getRecipeId());
             detail.setFoodId(product4.getFoodId());
@@ -574,7 +581,7 @@ public class AddRecipeInfo implements Initializable{
     }
 
     public void inflateUI(BeanRecipe recipe) {
-        List<BeanRecipematerials> details = KitchenSystemUtil.recipeController.loadRecipeDetailByOrderId(recipe.getRecipeId());
+        List<BeanRecipematerials> details = KitchenSystemUtil.recipeController.loadRecipeDetailByRecipeId(recipe.getRecipeId());
 //        userBox.setValue(order.getOrderUser());
         recipeName.setText(recipe.getRecipeName());
         recipeDes.setText(recipe.getRecipeDes());

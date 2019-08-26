@@ -17,6 +17,7 @@ public class KitchenSystemUtil {
     public static FoodOrderController foodOrderController = new FoodOrderController();
     public static BuyFoodController buyFoodController = new BuyFoodController();
     public static RecipeController recipeController = new RecipeController();
+    public static RecipeStepController recipeStepController = new RecipeStepController();
 
 //    public static AppointmentController appointmentController = new AppointmentController();
 //    public static OrderController orderController = new OrderController();

@@ -49,6 +49,11 @@ public class Toolbar {
     }
 
 
+    @FXML
+    void addRecipeSteps(ActionEvent event){
+        showWindow("/ui/add/addRecipeSteps/addRecipeSteps.fxml","Ìí¼ÓÊ³Æ×²½Öè");
+    }
+
 
     private void showWindow(String loc, String title){
         try {
