@@ -50,7 +50,7 @@ public class AddFoodOrder implements Initializable{
 
 
     @FXML
-    private  JFXTextField foodOrderUsrName;
+    private JFXTextField foodOrderUsrName;
 
     @FXML
     private JFXTextField foodOrderSendAddress;
@@ -642,6 +642,7 @@ public class AddFoodOrder implements Initializable{
         }
 
         this.order = order;
-
     }
+
+
 }

@@ -1,4 +1,4 @@
-package ui.main.toolbar;
+package ui.mainUser.toolbar;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,7 +29,7 @@ public class Toolbar {
 
     @FXML
     void addUserStarter(ActionEvent event) {
-        showWindow("/ui/add/addUser/addUser.fxml","添加用户");
+        showWindow("/ui/add/addUser/addUser.fxml","用户注册");
     }
 
     @FXML
@@ -40,12 +40,6 @@ public class Toolbar {
     @FXML
     void addBuyOrderStarter(ActionEvent event) {
         showWindow("/ui/add/addBuyFood/addBuyFood.fxml","添加采购");
-    }
-
-    
-    @FXML
-    void addRecipe(ActionEvent event) {
-        showWindow("/ui/add/addRecipeInfo/addRecipeInfo.fxml","添加食谱");
     }
 
 

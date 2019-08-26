@@ -10,7 +10,6 @@ public class Stater extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/ui/login/login.fxml"));
-
         Scene scene = new Scene(root,350,220);
         primaryStage.getIcons().add(new Image("/ui/icons/icon.png"));
         primaryStage.setScene(scene);

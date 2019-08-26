@@ -55,12 +55,15 @@ public class Login {
                 loadMain();
                 BeanOperator operator = KitchenSystemUtil.operatorController.findOperatorByName(userName);
                 BeanOperator.currentOperator = operator;
+                BeanMyUser.currentUser = null;
                 ((Stage) username.getScene().getWindow()).close();//获取当前的scene并且销毁
+
             }else{
                 KitchenSystemUtil.userController.login(userName, passWord);
                 loadMain();
                 BeanMyUser myUser = KitchenSystemUtil.userController.findUserByName(userName);
                 BeanMyUser.currentUser = myUser;
+                BeanOperator.currentOperator = null;
                 ((Stage) username.getScene().getWindow()).close();//获取当前的scene并且销毁
             }
 
@@ -71,8 +74,13 @@ public class Login {
     }
 
     void loadMain(){
+        Parent parent = null;
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource("/ui/main/main.fxml"));
+            if(isAdmin.isSelected()) {
+                 parent = FXMLLoader.load(getClass().getResource("/ui/main/main.fxml"));
+            }else{
+                 parent = FXMLLoader.load(getClass().getResource("/ui/mainUser/main.fxml"));
+            }
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.setTitle("厨房小帮手管理系统");
             stage.setScene(new Scene(parent));

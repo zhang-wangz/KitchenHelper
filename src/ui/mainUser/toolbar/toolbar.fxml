@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="585.0" prefWidth="152.0" style="-fx-background-color: #1976D2;" stylesheets="@../../theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.main.toolbar.Toolbar">
+   <children>
+      <JFXButton fx:id="addUser" mnemonicParsing="false" onAction="#addUserStarter" prefHeight="73.0" prefWidth="167.0" text="用户注册">
+         <graphic>
+            <FontAwesomeIcon glyphName="GROUP" size="40" text="" translateX="-10.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="btnAddFoodOrder" mnemonicParsing="false" onAction="#addFoodOrderStarter" prefHeight="73.0" prefWidth="167.0" text="添加订单">
+         <graphic>
+            <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
+         </graphic>
+      </JFXButton>
+   </children>
+</VBox>

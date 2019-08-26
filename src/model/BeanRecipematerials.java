@@ -15,12 +15,7 @@ public class BeanRecipematerials implements Serializable {
 
     @Override
     public String toString() {
-        return "BeanRecipematerials{" +
-                "recipeId='" + recipeId + '\'' +
-                ", foodId='" + foodId + '\'' +
-                ", NumOfFood=" + numOfFood +
-                ", workAddress='" + workAddress + '\'' +
-                '}';
+        return getFoodId();
     }
 
     public String getFoodId() {

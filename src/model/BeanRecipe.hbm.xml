@@ -6,7 +6,7 @@
 
     <class name="model.BeanRecipe" table="recipe" schema="KitchenHelper">
         <id name="recipeId">
-            <column name="op_id" sql-type="int(11)"/>
+            <column name="recipeId" sql-type="varchar(1024)"/>
             <generator class="assigned" />
         </id>
 
