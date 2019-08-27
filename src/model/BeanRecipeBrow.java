@@ -2,10 +2,28 @@ package model;
 
 public class BeanRecipeBrow {
 
-    BeanMyUser user;
-    BeanOperator operator;
-    String recipeId;
+    private String browId;
+    private String browUserId;
+    private String recipeId;
+    private boolean isBrow;
 
+
+
+    public String getBrowId() {
+        return browId;
+    }
+
+    public void setBrowId(String browId) {
+        this.browId = browId;
+    }
+
+    public boolean getIsBrow() {
+        return isBrow;
+    }
+
+    public void setIsBrow(boolean brow) {
+        isBrow = brow;
+    }
 
     public String getRecipeId() {
         return recipeId;
@@ -15,12 +33,11 @@ public class BeanRecipeBrow {
         this.recipeId = recipeId;
     }
 
-    public BeanMyUser getUser() {
-        return user;
+    public String getBrowUserId() {
+        return browUserId;
     }
 
-    public void setUser(BeanMyUser user) {
-        this.user = user;
+    public void setBrowUserId(String browUserId) {
+        this.browUserId = browUserId;
     }
-
 }

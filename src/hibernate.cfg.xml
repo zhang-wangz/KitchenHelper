@@ -27,6 +27,8 @@
         <mapping resource="model/BeanRecipeComment.hbm.xml"/>
         <mapping resource="model/BeanRecipematerials.hbm.xml"/>
         <mapping resource="model/BeanRecipeStep.hbm.xml"/>
-
+        <mapping resource="model/BeanRecipeBrow.hbm.xml"/>
+        <mapping resource="model/BeanRecipeColl.hbm.xml"/>
+        
     </session-factory>
 </hibernate-configuration>

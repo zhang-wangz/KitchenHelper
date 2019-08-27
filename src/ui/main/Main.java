@@ -37,6 +37,7 @@ import ui.add.addFoodInfo.AddFoodInfo;
 import ui.add.addFoodOrder.AddFoodOrder;
 import ui.add.addFoodType.AddFoodType;
 import ui.add.addOperator.AddOperator;
+import ui.add.addRecipeComment.AddRecipeComment;
 import ui.add.addRecipeInfo.AddRecipeInfo;
 import ui.add.addRecipeSteps.AddRecipeSteps;
 import ui.add.addUser.AddUser;
@@ -89,6 +90,10 @@ public class Main implements Initializable{
 
     @FXML
     private Tab recipeTab;
+
+
+    @FXML
+    private Tab recipeCommentTab;
 
     //订单相关
     @FXML
@@ -236,12 +241,17 @@ public class Main implements Initializable{
     private JFXComboBox<BeanRecipe> recipeBox;
 
 
-
     @FXML
     private TableView<BeanRecipeStep> recipeStepTbl;
 
     @FXML
     private JFXComboBox<BeanRecipe> recipeBox1;
+
+    @FXML
+    private TableView<BeanRecipeComment> recipeCommentTbl;
+
+    @FXML
+    private JFXComboBox<BeanRecipe> recipeBox2;
 
 
 
@@ -280,6 +290,24 @@ public class Main implements Initializable{
 
     @FXML
     private TableColumn<BeanRecipeStep,String> recipeStepDesCol;
+
+
+
+    @FXML
+    private TableColumn<BeanRecipeComment, String> usernameCommentCol;
+
+    @FXML
+    private TableColumn<BeanRecipeComment,String> recipeCommentDesCol;
+
+    @FXML
+    private TableColumn<BeanRecipeComment,String> recipeBrowSig;
+
+    @FXML
+    private TableColumn<BeanRecipeComment,String> recipeCollSig;
+
+    @FXML
+    private TableColumn<BeanRecipeComment,Integer> RecipeCommentScore;
+
 
 
 
@@ -388,6 +416,7 @@ public class Main implements Initializable{
     private ObservableList<BeanRecipematerials> recipematerials = null;
     private ObservableList<BeanBuyFood> buyFoods = null;
     private ObservableList<BeanRecipeStep> recipeSteps = null;
+    private ObservableList<BeanRecipeComment> recipeComments = null;
 
 
 //    private ObservableList<BeanService> services = null;
@@ -695,6 +724,39 @@ public class Main implements Initializable{
             }
         });
         showConfirmDialog("是否要删除菜谱"+recipe.getRecipeName()+" ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+
+    @FXML
+    void deleteRecipeComment(ActionEvent event){
+        BeanRecipeComment recipeComment = recipeCommentTbl.getSelectionModel().getSelectedItem();
+        if(recipeComment == null){
+            showDialog("请选择要删除的菜谱评论");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("去意已决");
+        JFXButton btnCancel = new JFXButton("再想想");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("删除");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            int num = KitchenSystemUtil.recipeCommentController.loadRecipeCommentDetailByRecipeId(recipeComment.getRecipeId()).size();
+            Boolean isCreated = null;
+            if(BeanOperator.currentOperator == null)
+                isCreated = BeanMyUser.currentUser.getUserName().equals(recipeComment.getUserId());
+            else
+                //万能管理员权限
+                isCreated = true;
+
+            if(!isCreated){
+                showDialog("该菜谱评论并非由当前登陆账户所建立,无法删除");
+                return;
+            }
+            KitchenSystemUtil.recipeCommentController.delRecipeComment(recipeComment.getRecipeId(),recipeComment.getUserId());
+            showDialog("菜谱评论" + recipeComment.getCommentContent() + "已删除");
+
+        });
+        showConfirmDialog("是否要删除菜谱评论"+recipeComment.getCommentContent()+" ?", Arrays.asList(btnCancel, btnOK));
     }
 
 
@@ -1008,6 +1070,46 @@ public class Main implements Initializable{
     }
 
     @FXML
+    void createRecipeComment(ActionEvent event){
+        BeanRecipe recipe = recipeBox2.getSelectionModel().getSelectedItem();
+        if(recipe == null){
+            showDialog("请选择你所要操作的菜谱");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeComment/addRecipeComment.fxml"));
+            Parent parent = loader.load();
+            AddRecipeComment addRecipeComment = (AddRecipeComment) loader.getController();
+            addRecipeComment.inflateUIAdd(recipe);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.getIcons().add(new Image("/ui/icons/icon.png"));
+            stage.setTitle("生成菜谱评论");
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    void createRecipeColl(ActionEvent event){
+        String userId;
+        BeanRecipe recipe = recipeBox2.getSelectionModel().getSelectedItem();
+        String status = KitchenSystemUtil.recipeController.AddRecipeColl(recipe);
+        if(BeanMyUser.currentUser == null) userId = BeanOperator.currentOperator.getOpId();
+        else userId = BeanMyUser.currentUser.getUserId();
+        if(status.equals("ok")) {
+            KitchenSystemUtil.recipeCollAndBrowController.changeColSig(userId,recipe.getRecipeId());
+            showDialog("收藏成功");
+        }else {
+            KitchenSystemUtil.recipeCollAndBrowController.changeColSig(recipe.getRecipeId(), status);
+            showDialog("已经收藏过，请不要重复收藏");
+        }
+    }
+
+
+    @FXML
     void createFoodOrderByRecipe(ActionEvent event){
         BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
         if(recipe == null){
@@ -1075,6 +1177,31 @@ public class Main implements Initializable{
             exception.printStackTrace();
         }
     }
+
+
+    @FXML
+    void editRecipeComment(ActionEvent event){
+        BeanRecipeComment recipeComment = recipeCommentTbl.getSelectionModel().getSelectedItem();
+        if(recipeComment == null){
+            showDialog("请选择要操作的菜谱评论");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeComment/addRecipeComment.fxml"));
+            Parent parent = loader.load();
+            AddRecipeComment addRecipeComment = (AddRecipeComment) loader.getController();
+            addRecipeComment.inflateUI(recipeComment);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setTitle("编辑菜谱评论");
+            stage.setScene(new Scene(parent));
+            stage.show();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
 
 
 
@@ -1213,6 +1340,15 @@ public class Main implements Initializable{
         recipeSteps.clear();
         recipeSteps = getRecipeSteps();
         recipeStepTbl.setItems(recipeSteps);
+    }
+
+    @FXML
+    void refreshRecipeComment(ActionEvent event){
+        recipeBox2.getItems().clear();
+        recipeBox2.setItems(getRecipe());
+        recipeComments.clear();
+        recipeComments = getRecipeComment();
+        recipeCommentTbl.setItems(recipeComments);
     }
 
 
@@ -1676,12 +1812,18 @@ public class Main implements Initializable{
     @FXML
     void selectRecepeId(ActionEvent event){
         BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
+        recipe.setRecipeBrow(recipe.getRecipeBrow()+1);
+        recipe.setRecipeColl(KitchenSystemUtil.recipeCollAndBrowController.countCollnum(recipe.getRecipeId()));
+        KitchenSystemUtil.update(recipe);
+        KitchenSystemUtil.recipeController.AddRecipeBrow(recipe);
         recipematerials.clear();
         if(recipe == null){
             recipematerials.clear();
             recipeTbl.setItems(recipematerials);
         }else {
-//            orderStatusOfOrder.setText(EnumUtils.getByCode(order.getOrderStatus(),FoodOrderStatusEnum.class).getMsg());
+            recipeStatusBrow.setText("浏览人数:"+recipe.getRecipeBrow().toString());
+            recipeStatusColl.setText("收藏人数"+recipe.getRecipeColl().toString());
+            recipeStatusScore.setText("综合评分"+recipe.getRecipeScore().toString());
             recipematerials = getRecipeDetail(recipe.getRecipeId());
             recipeTbl.setItems(recipematerials);
         }
@@ -1699,6 +1841,20 @@ public class Main implements Initializable{
 //            orderStatusOfOrder.setText(EnumUtils.getByCode(order.getOrderStatus(),FoodOrderStatusEnum.class).getMsg());
             recipeSteps = getRecipeSteps(recipe.getRecipeId());
             recipeStepTbl.setItems(recipeSteps);
+        }
+    }
+
+    @FXML
+    void selectRecipe2IdforComments(ActionEvent event){
+        BeanRecipe recipe = recipeBox2.getSelectionModel().getSelectedItem();
+        recipeSteps.clear();
+        if(recipe == null){
+            recipeComments.clear();
+            recipeCommentTbl.setItems(recipeComments);
+        }else {
+//            orderStatusOfOrder.setText(EnumUtils.getByCode(order.getOrderStatus(),FoodOrderStatusEnum.class).getMsg());
+            recipeComments = getRecipeComments(recipe.getRecipeId());
+            recipeCommentTbl.setItems(recipeComments);
         }
     }
 
@@ -1781,6 +1937,13 @@ public class Main implements Initializable{
         buyOrderTbl.setItems(buyFoods);
 
 
+        usernameCommentCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        recipeCommentDesCol.setCellValueFactory(new PropertyValueFactory<>("commentContent"));
+        recipeBrowSig.setCellValueFactory(new PropertyValueFactory<>("browseSig"));
+        recipeCollSig.setCellValueFactory(new PropertyValueFactory<>("collSig"));
+        RecipeCommentScore.setCellValueFactory(new PropertyValueFactory<>("commentScore"));
+        recipeCommentTbl.setItems(recipeComments);
+
 
 //
 //        appointmentServiceCol.setCellValueFactory(new PropertyValueFactory<>("service"));
@@ -1820,6 +1983,15 @@ public class Main implements Initializable{
         ObservableList<BeanRecipeStep> foodInfos = FXCollections.observableArrayList();
         List<BeanRecipeStep> list = KitchenSystemUtil.recipeStepController.loadAll();
         for (BeanRecipeStep e: list){
+            foodInfos.add(e);
+        }
+        return foodInfos;
+    }
+
+    private ObservableList<BeanRecipeComment> getRecipeComment(){
+        ObservableList<BeanRecipeComment> foodInfos = FXCollections.observableArrayList();
+        List<BeanRecipeComment> list = KitchenSystemUtil.recipeCommentController.loadAll();
+        for (BeanRecipeComment e: list){
             foodInfos.add(e);
         }
         return foodInfos;
@@ -1940,6 +2112,15 @@ public class Main implements Initializable{
         return details;
     }
 
+    private ObservableList<BeanRecipeComment> getRecipeComments(String recipeId){
+        ObservableList<BeanRecipeComment> details = FXCollections.observableArrayList();
+        List<BeanRecipeComment> list = KitchenSystemUtil.recipeCommentController.loadRecipeCommentDetailByRecipeId(recipeId);
+        for (BeanRecipeComment e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
 
 
     private ObservableList<BeanBuyFood> getOrderBuyDetail(String orderId) throws BaseException {
@@ -2022,6 +2203,7 @@ public class Main implements Initializable{
         this.orderDetails = getOrderDetail();
         this.recipematerials = getRecipeDetail();
         this.recipeSteps = getRecipeSteps();
+        this.recipeComments = getRecipeComment();
         this.buyFoods = getOrderBuyDetail();
 
         orderBox.setItems(getOrder());
@@ -2082,6 +2264,8 @@ public class Main implements Initializable{
                     refreshRecipe(new ActionEvent());
                 }else if(newValue.equals(recipeStepTab)){
                     refreshRecipeSteps(new ActionEvent());
+                }else if(newValue.equals(recipeCommentTab)){
+                    refreshRecipeComment(new ActionEvent());
                 }
             }
         });

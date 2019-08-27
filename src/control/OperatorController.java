@@ -90,7 +90,7 @@ public class OperatorController {
         session.close();
     }
 
-    public BeanOperator findOperatorById(int id) {
+    public BeanOperator findOperatorById(String id) {
         BeanOperator operator = null;
         Session session = getSession();
         Transaction tx = session.beginTransaction();

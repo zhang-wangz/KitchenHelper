@@ -18,12 +18,8 @@ public class KitchenSystemUtil {
     public static BuyFoodController buyFoodController = new BuyFoodController();
     public static RecipeController recipeController = new RecipeController();
     public static RecipeStepController recipeStepController = new RecipeStepController();
-
-//    public static AppointmentController appointmentController = new AppointmentController();
-//    public static OrderController orderController = new OrderController();
-//    public static ProductController productController = new ProductController();
-//    public static ServiceController serviceController = new ServiceController();
-
+    public static RecipeCollAndBrowController recipeCollAndBrowController = new RecipeCollAndBrowController();
+    public static RecipeCommentController recipeCommentController = new RecipeCommentController();
 
 
     public static void update(Object o) {

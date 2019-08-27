@@ -1,5 +1,7 @@
 package model;
 
+import util.KitchenSystemUtil;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,9 +11,18 @@ public class BeanRecipeComment  implements Serializable {
     private String recipeId;
     private String userId;
     private String commentContent = "该菜谱暂时没有评价";
-    private Integer browseSig;
-    private Integer collSig;
+    private Integer browseSig; //0 未浏览 1 已浏览
+    private Integer collSig;//0 未收藏 1 已收藏
     private Integer commentScore;
+
+
+    private String userName;
+
+    public String getUserName() {
+        return KitchenSystemUtil.userController.findUserById(this.userId) == null?
+                KitchenSystemUtil.operatorController.findOperatorById(this.userId).getOpName():
+                KitchenSystemUtil.userController.findUserById(this.userId).getUserName();
+    }
 
     @Override
     public String toString() {

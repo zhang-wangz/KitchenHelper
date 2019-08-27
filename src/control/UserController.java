@@ -50,7 +50,9 @@ public class UserController {
         Transaction tx = session.beginTransaction();
         Query query  = session.createQuery("from BeanMyUser b where  b.userId = :id");
         query.setParameter("id",id);
-        user = (BeanMyUser) query.list().get(0);
+        int size = query.list().size();
+        if(size == 0) return null;
+        else  user = (BeanMyUser) query.list().get(0);
         tx.commit();
         session.close();
         return user;

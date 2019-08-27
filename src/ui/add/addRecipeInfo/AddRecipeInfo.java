@@ -261,7 +261,7 @@ public class AddRecipeInfo implements Initializable{
             detail.setNumOfFood(num1);
             detail.setWorkAddress(productunit1.getText());
 
-            System.out.println(detail.getNumOfFood() + detail.getWorkAddress());
+//            System.out.println(detail.getNumOfFood() + detail.getWorkAddress());
 //            discount = Double.parseDouble(foodDiscount.getText());
 //            detail.setDiscount(discount);
 
