@@ -5,3 +5,6 @@
 
 
 - when download the projects,please after rm the .DS_Store file , then run the projects.
+
+- enviroments:
+    mysql:5.7及以上
