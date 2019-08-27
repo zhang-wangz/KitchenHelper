@@ -4,4 +4,4 @@
 - the project lib is here: https://pan.baidu.com/s/1Rxf4DMy4PK1VHYjICKd2-w 提取码: 6qmt
 
 
-- when download the projects,please after rm the .DS_Store file ,run again
+- when download the projects,please after rm the .DS_Store file , then run the projects.
