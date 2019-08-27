@@ -649,7 +649,10 @@ public class AddFoodOrder implements Initializable{
 
     public void inflateUIAdd(BeanRecipe recipe) {
         List<BeanRecipematerials> details = KitchenSystemUtil.recipeController.loadRecipeDetailByRecipeId(recipe.getRecipeId());
-        foodOrderUsrName.setText(recipe.getContriUsr());
+        String usrName;
+        if(BeanMyUser.currentUser == null) usrName = BeanOperator.currentOperator.getOpName();
+        else usrName = BeanMyUser.currentUser.getUserName();
+        foodOrderUsrName.setText(usrName);
         int size = details.size();
         this.isEditMode = false;
         if(size == 1){

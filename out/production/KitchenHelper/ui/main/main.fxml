@@ -82,8 +82,7 @@
                                           <VBox alignment="CENTER" prefHeight="275.0" prefWidth="297.0">
                                              <children>
                                                 <JFXComboBox fx:id="choiceType1" focusColor="WHITE" labelFloat="true" onAction="#OrderOrAppointmentChoice" prefHeight="22.0" prefWidth="294.0" promptText="类型" unFocusColor="WHITE" />
-                                                <JFXTextField fx:id="orderId" labelFloat="true" onAction="#levelDownOperator" promptText="订单或预约ID">
-<!--                                                   loadOrderOrAppointmentInfo wz-->
+                                                <JFXTextField fx:id="orderId" labelFloat="true" onAction="#loadOrderOrAppointmentInfo" promptText="订单或采购单ID">
                                                    <VBox.margin>
                                                       <Insets top="40.0" />
                                                    </VBox.margin></JFXTextField>
@@ -140,9 +139,8 @@
                                                    </VBox.margin>
                                                 </JFXComboBox>
 
-<!--                                                wz-->
-                                                <JFXTextField fx:id="keyword" labelFloat="true" onAction="#levelDownOperator" promptText="检索关键词" />
-<!--                                                loadOtherInfo-->
+                                                <JFXTextField fx:id="keyword" labelFloat="true" onAction="#loadOtherInfo" promptText="检索关键词" />
+
 
                                              </children>
                                           </VBox>
@@ -488,13 +486,12 @@
                                                 <Insets left="10.0" top="10.0" />
                                              </HBox.margin>
                                           </Text>
-                                          <JFXButton buttonType="RAISED" onAction="#deleteRecipe" text="删除菜谱">
+                                          <JFXButton buttonType="RAISED" onAction="#showRecipeInfo" text="查看具体信息">
                                              <HBox.margin>
                                                 <Insets left="20.0" top="10.0" />
                                              </HBox.margin>
                                           </JFXButton>
-
-                                          <JFXButton buttonType="RAISED" onAction="#createFoodOrderByRecipe" text="一键下单">
+                                          <JFXButton buttonType="RAISED" onAction="#deleteRecipe" text="删除菜谱">
                                              <HBox.margin>
                                                 <Insets left="20.0" top="10.0" />
                                              </HBox.margin>

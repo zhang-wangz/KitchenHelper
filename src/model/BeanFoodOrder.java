@@ -1,5 +1,7 @@
 package model;
 
+import util.KitchenSystemUtil;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -11,6 +13,12 @@ public class BeanFoodOrder {
     private String userTel;
     private Integer orderStatus;
 
+
+    private String  userName;
+
+    public String getUserName() {
+        return KitchenSystemUtil.userController.findUserById(userId).getUserName();
+    }
 
     public String getUserId() {
         return userId;

@@ -18,10 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
@@ -40,12 +37,17 @@ import ui.add.addFoodInfo.AddFoodInfo;
 import ui.add.addFoodOrder.AddFoodOrder;
 import ui.add.addFoodType.AddFoodType;
 import ui.add.addOperator.AddOperator;
+import ui.add.addRecipeComment.AddRecipeComment;
+import ui.add.addRecipeInfo.AddRecipeInfo;
+import ui.add.addRecipeSteps.AddRecipeSteps;
 import ui.add.addUser.AddUser;
+import ui.show.showRecipe.ShowRecipe;
 import util.BaseException;
 import util.EnumUtils;
 import util.KitchenSystemUtil;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -83,6 +85,17 @@ public class Main implements Initializable{
     @FXML
     private Tab orderBuyTab;
 
+    @FXML
+    private Tab recipeStepTab;
+
+
+    @FXML
+    private Tab recipeTab;
+
+
+    @FXML
+    private Tab recipeCommentTab;
+
     //订单相关
     @FXML
     private Text orderStatusOfOrder;
@@ -90,6 +103,16 @@ public class Main implements Initializable{
 
     @FXML
     private Text orderStatusOfBuy;
+
+
+    @FXML
+    private Text recipeStatusScore;
+
+    @FXML
+    private Text recipeStatusBrow;
+
+    @FXML
+    private Text recipeStatusColl;
 
 
     @FXML
@@ -199,7 +222,7 @@ public class Main implements Initializable{
     @FXML
     private TableColumn<BeanFoodType, String> foodTypeDesCol;
 
-//订单相关
+    //订单相关
     @FXML
     private TableView<BeanOrderDetail> orderTbl;
 
@@ -212,7 +235,28 @@ public class Main implements Initializable{
     @FXML
     private JFXComboBox<String> buyOrderBox;
 
-//订单相关
+    @FXML
+    private TableView<BeanRecipematerials> recipeTbl;
+
+    @FXML
+    private JFXComboBox<BeanRecipe> recipeBox;
+
+
+    @FXML
+    private TableView<BeanRecipeStep> recipeStepTbl;
+
+    @FXML
+    private JFXComboBox<BeanRecipe> recipeBox1;
+
+    @FXML
+    private TableView<BeanRecipeComment> recipeCommentTbl;
+
+    @FXML
+    private JFXComboBox<BeanRecipe> recipeBox2;
+
+
+
+    //订单相关
     @FXML
     private TableColumn<BeanOrderDetail, BeanFoodInfo> orderProductCol;
 
@@ -227,6 +271,48 @@ public class Main implements Initializable{
 
     @FXML
     private TableColumn<BeanOrderDetail, Integer> orderNumBuyCol;
+
+
+
+
+    @FXML
+    private TableColumn<BeanRecipematerials, BeanFoodInfo> recipeProductCol;
+
+    @FXML
+    private TableColumn<BeanRecipematerials, Integer> recipeNumCol;
+
+    @FXML
+    private TableColumn<BeanRecipematerials,String> recipeUnitCol;
+
+
+
+    @FXML
+    private TableColumn<BeanRecipeStep,Integer> recipeStepIdCol;
+
+    @FXML
+    private TableColumn<BeanRecipeStep,String> recipeStepDesCol;
+
+
+
+    @FXML
+    private TableColumn<BeanRecipeComment, String> usernameCommentCol;
+
+    @FXML
+    private TableColumn<BeanRecipeComment,String> recipeCommentDesCol;
+
+    @FXML
+    private TableColumn<BeanRecipeComment,String> recipeBrowSig;
+
+    @FXML
+    private TableColumn<BeanRecipeComment,String> recipeCollSig;
+
+    @FXML
+    private TableColumn<BeanRecipeComment,Integer> RecipeCommentScore;
+
+
+
+
+
 
 //    @FXML
 //    private TableColumn<BeanOrderDetail,Integer> orderPriceBuyCol;
@@ -328,20 +414,23 @@ public class Main implements Initializable{
     private ObservableList<BeanFoodInfo> foodInfos = null;
     private ObservableList<BeanFoodType> foodTypes = null;
     private ObservableList<BeanOrderDetail> orderDetails = null;
+    private ObservableList<BeanRecipematerials> recipematerials = null;
     private ObservableList<BeanBuyFood> buyFoods = null;
+    private ObservableList<BeanRecipeStep> recipeSteps = null;
+    private ObservableList<BeanRecipeComment> recipeComments = null;
 
 
 //    private ObservableList<BeanService> services = null;
 //    private ObservableList<BeanProduct> products = null;
 
 
-//    private ObservableList<BeanAppointmentDetail> appointmentDetails = null;
-//    private PieChart orderPie = null;
+    //    private ObservableList<BeanAppointmentDetail> appointmentDetails = null;
+    private PieChart orderPie = null;
     private PieChart appointmentPie = null;
     private String choice1 = "";
     private String choice2 = "";
 
-//    @FXML
+    //    @FXML
 //    void showProductBarcode(ActionEvent event) {
 //        BeanProduct product = productTbl.getSelectionModel().getSelectedItem();
 //        if(product == null){
@@ -467,6 +556,34 @@ public class Main implements Initializable{
         showConfirmDialog("是否要删除分类"+foodType.getFoodTypeName()+" ?", Arrays.asList(btnCancel, btnOK));
     }
 
+
+    @FXML
+    void deleteRecipeStep(ActionEvent event){
+        BeanRecipeStep recipeStep = recipeStepTbl.getSelectionModel().getSelectedItem();
+        if(recipeStep == null){
+            showDialog("请选择要删除的菜谱步骤");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("去意已决");
+        JFXButton btnCancel = new JFXButton("再想想");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("删除");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            try {
+                KitchenSystemUtil.recipeStepController.delRecipeStep(recipeStep);
+            } catch (Exception exception) {
+                showDialog("该分类目前处于活跃状态,不可删除");
+                return;
+            }
+            recipeSteps.remove(recipeStep);
+            showDialog("该食谱步骤"+recipeStep.getStepId()+"已删除");
+        });
+        showConfirmDialog("是否要删除该食谱步骤"+recipeStep.getStepId()+" ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+
+
     @FXML
     void deleteOrderDetail(ActionEvent event){
         BeanOrderDetail orderDetail = orderTbl.getSelectionModel().getSelectedItem();
@@ -492,13 +609,36 @@ public class Main implements Initializable{
                 showDialog("订单货物" + orderDetail.getOrderId() + "未处于下单状态，无法删除");
             }else {
                 KitchenSystemUtil.foodOrderController.delOrderDetail(orderDetail);
-                showDialog("订单货物" + orderDetail.getOrderId() + "已删除");
+                showDialog("订单货物" + orderDetail.getFoodId() + "已删除");
             }
 
         });
         showConfirmDialog("是否要删除订单货物"+orderDetail.getFoodId()+" ?", Arrays.asList(btnCancel, btnOK));
     }
 
+
+    @FXML
+    void deleteRecipeDetail(ActionEvent event){
+        BeanRecipematerials recipematerials = recipeTbl.getSelectionModel().getSelectedItem();
+
+        if(recipematerials == null){
+            showDialog("请选择要删除的菜谱内容");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("去意已决");
+        JFXButton btnCancel = new JFXButton("再想想");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("删除");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+
+            KitchenSystemUtil.recipeController.delRecipeDetail(recipematerials);
+            showDialog("菜谱内容" + recipematerials.getFoodId() + "已删除");
+
+
+        });
+        showConfirmDialog("是否要删除菜谱内容"+recipematerials.getFoodId()+" ?", Arrays.asList(btnCancel, btnOK));
+    }
 
 
 
@@ -516,9 +656,9 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-                Integer status = null;
-                KitchenSystemUtil.buyFoodController.delOrderDetail(buyFood);
-                showDialog("订单货物" + buyFood.getBuyOrderId() + "已删除");
+            Integer status = null;
+            KitchenSystemUtil.buyFoodController.delOrderDetail(buyFood);
+            showDialog("订单货物" + buyFood.getBuyOrderId() + "已删除");
 
 
         });
@@ -550,6 +690,76 @@ public class Main implements Initializable{
         });
         showConfirmDialog("是否要删除订单"+order.getOrderId()+" ?", Arrays.asList(btnCancel, btnOK));
     }
+
+
+
+    @FXML
+    void deleteRecipe(ActionEvent event){
+        BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
+        if(recipe == null){
+            showDialog("请选择要删除的菜谱");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("去意已决");
+        JFXButton btnCancel = new JFXButton("再想想");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("删除");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            int num = KitchenSystemUtil.recipeController.loadRecipeDetailByRecipeId(recipe.getRecipeId()).size();
+            Boolean isCreated = null;
+            if(BeanOperator.currentOperator == null)
+                isCreated = BeanMyUser.currentUser.getUserName() == recipe.getContriUsr();
+            else
+                isCreated = BeanOperator.currentOperator.getOpName() == recipe.getContriUsr();
+
+            if(!isCreated){
+                showDialog("该菜谱并非由当前登陆账户所建立,无法删除");
+            }
+
+            if(num > 0){
+                showDialog("菜谱"+recipe.getRecipeName()+"处于活跃状态，不可删除");
+            }else {
+                KitchenSystemUtil.foodOrderController.delOrder(recipe.getRecipeName());
+                showDialog("菜谱" + recipe.getRecipeName() + "已删除");
+            }
+        });
+        showConfirmDialog("是否要删除菜谱"+recipe.getRecipeName()+" ?", Arrays.asList(btnCancel, btnOK));
+    }
+
+
+    @FXML
+    void deleteRecipeComment(ActionEvent event){
+        BeanRecipeComment recipeComment = recipeCommentTbl.getSelectionModel().getSelectedItem();
+        if(recipeComment == null){
+            showDialog("请选择要删除的菜谱评论");
+            return;
+        }
+        JFXButton btnOK = new JFXButton("去意已决");
+        JFXButton btnCancel = new JFXButton("再想想");
+        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            showCancelDialog("删除");
+        });
+        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            int num = KitchenSystemUtil.recipeCommentController.loadRecipeCommentDetailByRecipeId(recipeComment.getRecipeId()).size();
+            Boolean isCreated = null;
+            if(BeanOperator.currentOperator == null)
+                isCreated = BeanMyUser.currentUser.getUserName().equals(recipeComment.getUserId());
+            else
+                //万能管理员权限
+                isCreated = true;
+
+            if(!isCreated){
+                showDialog("该菜谱评论并非由当前登陆账户所建立,无法删除");
+                return;
+            }
+            KitchenSystemUtil.recipeCommentController.delRecipeComment(recipeComment.getRecipeId(),recipeComment.getUserId());
+            showDialog("菜谱评论" + recipeComment.getCommentContent() + "已删除");
+
+        });
+        showConfirmDialog("是否要删除菜谱评论"+recipeComment.getCommentContent()+" ?", Arrays.asList(btnCancel, btnOK));
+    }
+
 
 
     @FXML
@@ -768,7 +978,7 @@ public class Main implements Initializable{
             exception.printStackTrace();
         }
 
-       // refreshFoodInfo(new ActionEvent());
+        // refreshFoodInfo(new ActionEvent());
     }
 
     @FXML
@@ -815,7 +1025,118 @@ public class Main implements Initializable{
         }
     }
 
-        @FXML
+
+    @FXML
+    void editRecipeStep(ActionEvent event){
+        BeanRecipeStep recipeStep = recipeStepTbl.getSelectionModel().getSelectedItem();
+        if(recipeStep == null){
+            showDialog("请选择要操作的菜谱步骤");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeSteps/addRecipeSteps.fxml"));
+            Parent parent = loader.load();
+            AddRecipeSteps addRecipeSteps = (AddRecipeSteps) loader.getController();
+            addRecipeSteps.inflateUI(recipeStep);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.getIcons().add(new Image("/ui/icons/icon.png"));
+            stage.setTitle("编辑菜谱步骤");
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML
+    void createRecipeStep(ActionEvent event){
+        BeanRecipe recipe = recipeBox1.getSelectionModel().getSelectedItem();
+        if(recipe == null){
+            showDialog("请选择你所要操作的菜谱");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeSteps/addRecipeSteps.fxml"));
+            Parent parent = loader.load();
+            AddRecipeSteps addRecipeSteps = (AddRecipeSteps) loader.getController();
+            addRecipeSteps.inflateUIAdd(recipe);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.getIcons().add(new Image("/ui/icons/icon.png"));
+            stage.setTitle("生成菜谱步骤");
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML
+    void createRecipeComment(ActionEvent event){
+        BeanRecipe recipe = recipeBox2.getSelectionModel().getSelectedItem();
+        if(recipe == null){
+            showDialog("请选择你所要操作的菜谱");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeComment/addRecipeComment.fxml"));
+            Parent parent = loader.load();
+            AddRecipeComment addRecipeComment = (AddRecipeComment) loader.getController();
+            addRecipeComment.inflateUIAdd(recipe);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.getIcons().add(new Image("/ui/icons/icon.png"));
+            stage.setTitle("生成菜谱评论");
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    void createRecipeColl(ActionEvent event){
+        String userId;
+        BeanRecipe recipe = recipeBox2.getSelectionModel().getSelectedItem();
+        if(recipe == null){
+            showDialog("请选择要操作的菜谱");
+            return;
+        }
+        String status = KitchenSystemUtil.recipeController.AddRecipeColl(recipe);
+        if(BeanMyUser.currentUser == null) userId = BeanOperator.currentOperator.getOpId();
+        else userId = BeanMyUser.currentUser.getUserId();
+        if(status.equals("ok")) {
+            KitchenSystemUtil.recipeCollAndBrowController.changeColSig(userId,recipe.getRecipeId());
+            showDialog("收藏成功");
+        }else {
+            KitchenSystemUtil.recipeCollAndBrowController.changeColSig(recipe.getRecipeId(), status);
+            showDialog("已经收藏过，请不要重复收藏");
+        }
+    }
+
+
+    @FXML
+    void createFoodOrderByRecipe(ActionEvent event){
+        BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
+        if(recipe == null){
+            showDialog("请选择你所要操作的菜谱");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addFoodOrder/addFoodOrder.fxml"));
+            Parent parent = loader.load();
+            AddFoodOrder addFoodOrder = (AddFoodOrder) loader.getController();
+            addFoodOrder.inflateUIAdd(recipe);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.getIcons().add(new Image("/ui/icons/icon.png"));
+            stage.setTitle("生成订单");
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML
     void editOrder(ActionEvent event){
         BeanFoodOrder order = orderBox.getSelectionModel().getSelectedItem();
         if(order == null){
@@ -837,6 +1158,57 @@ public class Main implements Initializable{
             exception.printStackTrace();
         }
     }
+
+
+    @FXML
+    void editRecipe(ActionEvent event){
+        BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
+        if(recipe == null){
+            showDialog("请选择要操作的菜谱");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeInfo/addRecipeInfo.fxml"));
+            Parent parent = loader.load();
+            AddRecipeInfo addRecipeInfo = (AddRecipeInfo) loader.getController();
+            addRecipeInfo.inflateUI(recipe);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setTitle("编辑菜谱");
+            stage.setScene(new Scene(parent));
+            stage.show();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    void editRecipeComment(ActionEvent event){
+        BeanRecipeComment recipeComment = recipeCommentTbl.getSelectionModel().getSelectedItem();
+        if(recipeComment == null){
+            showDialog("请选择要操作的菜谱评论");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeComment/addRecipeComment.fxml"));
+            Parent parent = loader.load();
+            AddRecipeComment addRecipeComment = (AddRecipeComment) loader.getController();
+            addRecipeComment.inflateUI(recipeComment);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setTitle("编辑菜谱评论");
+            stage.setScene(new Scene(parent));
+            stage.show();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+
+
 
     @FXML
     void editOrderBuy(ActionEvent event) throws BaseException {
@@ -966,6 +1338,24 @@ public class Main implements Initializable{
         foodTypeTbl.setItems(foodTypes);
     }
 
+    @FXML
+    void refreshRecipeSteps(ActionEvent event){
+        recipeBox1.getItems().clear();
+        recipeBox1.setItems(getRecipe());
+        recipeSteps.clear();
+        recipeSteps = getRecipeSteps();
+        recipeStepTbl.setItems(recipeSteps);
+    }
+
+    @FXML
+    void refreshRecipeComment(ActionEvent event){
+        recipeBox2.getItems().clear();
+        recipeBox2.setItems(getRecipe());
+        recipeComments.clear();
+        recipeComments = getRecipeComment();
+        recipeCommentTbl.setItems(recipeComments);
+    }
+
 
 
 //    @FXML
@@ -975,7 +1365,7 @@ public class Main implements Initializable{
 //        productTbl.setItems(products);
 //    }
 
-//
+    //
     @FXML
     void refreshOrder(ActionEvent event){
         orderBox.getItems().clear();
@@ -985,6 +1375,17 @@ public class Main implements Initializable{
         orderTbl.setItems(orderDetails);
     }
 
+
+    @FXML
+    void refreshRecipe(ActionEvent event){
+        recipeBox.getItems().clear();
+        recipeBox.setItems(getRecipe());
+        recipematerials.clear();
+        recipematerials = getRecipeDetail();
+        recipeTbl.setItems(recipematerials);
+    }
+
+
     @FXML
     void refreshOrderBuy(ActionEvent event){
         buyOrderBox.getItems().clear();
@@ -993,6 +1394,7 @@ public class Main implements Initializable{
         buyFoods = getOrderBuyDetail();
         buyOrderTbl.setItems(buyFoods);//存储全部
     }
+
 
 
 //
@@ -1044,6 +1446,28 @@ public class Main implements Initializable{
         showConfirmDialog("是否已将订单"+order.getOrderId()+"货物全部发出 ?", Arrays.asList(btnCancel, btnOK));
     }
 
+    @FXML
+    void showRecipeInfo(ActionEvent event){
+        BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
+        if(recipe == null){
+            showDialog("请选择要操作的菜谱");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/show/showRecipe/showRecipe.fxml"));
+            Parent parent = loader.load();
+            ShowRecipe showRecipe = (ShowRecipe) loader.getController();
+            showRecipe.inflateUI(recipe);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setTitle("查看菜谱具体信息");
+            stage.setScene(new Scene(parent));
+            stage.show();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 
     @FXML
     void sendOrderBuy(ActionEvent event) throws BaseException {
@@ -1241,154 +1665,79 @@ public class Main implements Initializable{
         rootAnchorPane.setEffect(blur);
     }
 
-//    @FXML
-//    void loadOrderOrAppointmentInfo(ActionEvent event) {
-//        if(choice1.isEmpty()){
-//            showDialog("没有选择要查询数据类型");
-//            return;
-//        }
-//
-//        try{
-//            int id = Integer.parseInt(orderId.getText());
-//            if(choice1.equals("预约")){
-//                BeanAppointment appointment = null;
-//                appointment = KitchenSystemUtil.appointmentController.findAppointmentById(id);
-//                orderUser.setText("用户名: "+appointment.getUser().getUserName());
-//                orderPrice.setText("价格: "+appointment.getAppState());
-//            }else{
-//                BeanMyOrder order = null;
-//                order = KitchenSystemUtil.orderController.findOrderById(id);
-//                orderUser.setText("用户名: "+order.getOrderUser().getUserName());
-//                orderPrice.setText("价格: "+order.getOrderPrice().toString());
-//                orderStatus.setText("状态: "+order.getOrderState());
-//                orderTel.setText("联系电话: "+order.getOrderUser().getUserTel().toString());
-//            }
-//        }catch (Exception exception){
-//            showDialog("sorry! nothing found.");
-//        }
-//    }
-//
-//    @FXML
-//    void loadOtherInfo(ActionEvent event){
-//        if(choice2.isEmpty()){
-//            showDialog("没有选择要查询的数据类型");
-//            return;
-//        }
-//        try{
-//            if(choice2.equals("管理员")){
-//                List<BeanOperator> list = KitchenSystemUtil.operatorController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanOperator b: list){
-//                        ones += (b.getOpName()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanOperator b = list.get(0);
-//                appUser.setText("用户名: "+b.getOpName());
-//                appDate.setText("");
-//                appPet.setText("等级: "+b.getOpLevel().toString());
-//                appStatus.setText("");
-//            }else if(choice2 .equals("类别")){
-//                List<BeanCategory> list = KitchenSystemUtil.categoryController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanCategory b: list){
-//                        ones += (b.getCateName()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanCategory b = list.get(0);
-//                appUser.setText("名称: "+b.getCateName());
-//                appDate.setText("");
-//                appPet.setText("详情: "+b.getCateDetail());
-//                appStatus.setText("");
-//            }else if(choice2.equals("宠物")){
-//                List<BeanPet> list = KitchenSystemUtil.petController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanPet b: list){
-//                        ones += (b.getPetNikename()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanPet b = list.get(0);
-//                appUser.setText("昵称: "+b.getPetNikename());
-//                appDate.setText("主人名称: "+b.getUser().getUserName());
-//                appPet.setText("宠物别名: "+b.getPetAlias());
-//                appStatus.setText("");
-//            }else if(choice2.equals("产品")){
-//                List<BeanProduct> list = KitchenSystemUtil.productController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanProduct b: list){
-//                        ones += (b.getProdName()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanProduct b = list.get(0);
-//                appUser.setText("类别: "+b.getProdCategory().getCateName());
-//                appDate.setText("价格: "+b.getProdPrice().toString());
-//                appPet.setText("名称: "+b.getProdName());
-//                appStatus.setText("品牌: "+b.getProdBrand());
-//            }else if(choice2.equals("服务")){
-//                List<BeanService> list = KitchenSystemUtil.serviceController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanService b: list){
-//                        ones += (b.getServName()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanService b = list.get(0);
-//                appUser.setText("名称: "+b.getServName());
-//                appDate.setText("类别: "+b.getCategory().getCateName());
-//                appPet.setText("价格: "+b.getServPrice().toString());
-//                appStatus.setText("");
-//            }else if(choice2.equals("用户")){
-//                List<BeanMyUser> list = KitchenSystemUtil.userController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanMyUser b: list){
-//                        ones += (b.getUserName()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanMyUser b = list.get(0);
-//                appUser.setText("用户名: "+b.getUserName());
-//                appDate.setText("联系方式: "+b.getUserTel().toString());
-//                appPet.setText("电子邮件: "+b.getUserEmail());
-//                appStatus.setText("其他联系方式: "+b.getUserContact());
-//            }
-//        }catch (Exception e){
-//            showDialog("Oops sth bad occur!");
-//            e.printStackTrace();
-//        }
-//    }
+
+    @FXML
+    void loadOtherInfo(ActionEvent event){
+        if(choice2.isEmpty()){
+            showDialog("没有选择要查询的数据类型");
+            return;
+        }
+        try{
+            if(choice2 .equals("类别")){
+                List<BeanFoodType> list = KitchenSystemUtil.foodTypeController.search(keyword.getText());
+                if(list.size()==0){
+                    showDialog("啥都没有找到!");
+                    return;
+                }
+                if(list.size()>1){
+                    String ones = "";
+                    for (BeanFoodType b: list){
+                        ones += (b.getFoodTypeName()+", ");
+                    }
+                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
+                }
+                BeanFoodType b = list.get(0);
+                appUser.setText("名称: "+b.getFoodTypeName());
+                appDate.setText("");
+                appPet.setText("详情: "+b.getFoodTypeDes());
+                appStatus.setText("");
+            }else if(choice2.equals("菜谱")){
+                List<BeanRecipe> list = KitchenSystemUtil.recipeController.search(keyword.getText());
+                if(list.size()==0){
+                    showDialog("啥都没有找到!");
+                    return;
+                }
+                if(list.size()>1){
+                    String ones = "";
+                    for (BeanRecipe b: list){
+                        ones += (b.getRecipeName()+", ");
+                    }
+                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
+                }
+                BeanRecipe b = list.get(0);
+                appUser.setText("菜谱名称: "+b.getRecipeName());
+                appDate.setText("贡献用户: "+b.getContriUsr());
+                appPet.setText("详情: "+b.getRecipeDes());
+                appStatus.setText("");
+            }
+        }catch (Exception e){
+            showDialog("Oops sth bad occur!");
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    void loadOrderOrAppointmentInfo(ActionEvent event) {
+        if(choice1.isEmpty()){
+            showDialog("没有选择要查询数据类型");
+            return;
+        }
+
+        try{
+            String id = (orderId.getText());
+            if(choice1.equals("订单")){
+                BeanFoodOrder foodOrder = null;
+                foodOrder = KitchenSystemUtil.foodOrderController.findOrderById(id);
+                orderUser.setText("用户名: "+ foodOrder.getUserName());
+                orderPrice.setText("状态:"+ EnumUtils.getByCode(foodOrder.getOrderStatus(),FoodOrderStatusEnum.class).getMsg());
+                orderTel.setText("联系电话: " + foodOrder.getUserTel());
+            }else {
+                showDialog("sorry! the part is closed");
+            }
+        }catch (Exception exception){
+            showDialog("sorry! nothing found.");
+        }
+    }
+
 
     @FXML
     void refreshHomeTab(ActionEvent e){
@@ -1410,6 +1759,59 @@ public class Main implements Initializable{
             orderTbl.setItems(orderDetails);
         }
     }
+
+
+    @FXML
+    void selectRecepeId(ActionEvent event){
+        BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
+        recipe.setRecipeBrow(recipe.getRecipeBrow()+1);
+        recipe.setRecipeColl(KitchenSystemUtil.recipeCollAndBrowController.countCollnum(recipe.getRecipeId()));
+        KitchenSystemUtil.update(recipe);
+        KitchenSystemUtil.recipeController.AddRecipeBrow(recipe);
+        recipematerials.clear();
+        if(recipe == null){
+            recipematerials.clear();
+            recipeTbl.setItems(recipematerials);
+        }else {
+            recipeStatusBrow.setText("浏览人数:"+recipe.getRecipeBrow().toString());
+            recipeStatusColl.setText("收藏人数"+recipe.getRecipeColl().toString());
+            recipeStatusScore.setText("综合评分"+recipe.getRecipeScore().toString());
+            recipematerials = getRecipeDetail(recipe.getRecipeId());
+            recipeTbl.setItems(recipematerials);
+        }
+    }
+
+
+    @FXML
+    void selectRecipe1IdforSteps(ActionEvent event){
+        BeanRecipe recipe = recipeBox1.getSelectionModel().getSelectedItem();
+        recipeSteps.clear();
+        if(recipe == null){
+            recipeSteps.clear();
+            recipeStepTbl.setItems(recipeSteps);
+        }else {
+//            orderStatusOfOrder.setText(EnumUtils.getByCode(order.getOrderStatus(),FoodOrderStatusEnum.class).getMsg());
+            recipeSteps = getRecipeSteps(recipe.getRecipeId());
+            recipeStepTbl.setItems(recipeSteps);
+        }
+    }
+
+    @FXML
+    void selectRecipe2IdforComments(ActionEvent event){
+        BeanRecipe recipe = recipeBox2.getSelectionModel().getSelectedItem();
+        recipeSteps.clear();
+        if(recipe == null){
+            recipeComments.clear();
+            recipeCommentTbl.setItems(recipeComments);
+        }else {
+//            orderStatusOfOrder.setText(EnumUtils.getByCode(order.getOrderStatus(),FoodOrderStatusEnum.class).getMsg());
+            recipeComments = getRecipeComments(recipe.getRecipeId());
+            recipeCommentTbl.setItems(recipeComments);
+        }
+    }
+
+
+
 
     @FXML
     void selectOrderBuyId(ActionEvent event) throws BaseException {
@@ -1442,7 +1844,7 @@ public class Main implements Initializable{
 //        OperatornameCol.setCellValueFactory(new PropertyValueFactory<>("opName"));
 //        OPeratorlevCol.setCellValueFactory(new PropertyValueFactory<>("opLevel"));
 //        operatorTbl.setItems(operators);
-
+//
 //        UserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
 //        UsernameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
 //        UserEmailCol.setCellValueFactory(new PropertyValueFactory<>("userEmail"));
@@ -1458,18 +1860,6 @@ public class Main implements Initializable{
         foodinfodesCol.setCellValueFactory(new PropertyValueFactory<>("foodDes"));
         foodInfoTableView.setItems(foodInfos);
 
-//        ServiceIdCol.setCellValueFactory(new PropertyValueFactory<>("servId"));
-//        ServiceNameCol.setCellValueFactory(new PropertyValueFactory<>("servName"));
-//        ServicePriceCol.setCellValueFactory(new PropertyValueFactory<>("servPrice"));
-//        serviceTbl.setItems(services);
-//
-//        ProductIdCol.setCellValueFactory(new PropertyValueFactory<>("prodId"));
-//        ProductNameCol.setCellValueFactory(new PropertyValueFactory<>("prodName"));
-//        ProductBrandCol.setCellValueFactory(new PropertyValueFactory<>("prodBrand"));
-//        ProductBarcodeCol.setCellValueFactory(new PropertyValueFactory<>("prodBarcode"));
-//        ProductPriceCol.setCellValueFactory(new PropertyValueFactory<>("prodPrice"));
-//        ProductCategory.setCellValueFactory(new PropertyValueFactory<>("prodCategory"));
-//        productTbl.setItems(products);
 //
         foodTypeIdCol.setCellValueFactory(new PropertyValueFactory<>("foodTypeId"));
         foodTypeDesCol.setCellValueFactory(new PropertyValueFactory<>("foodTypeDes"));
@@ -1483,10 +1873,29 @@ public class Main implements Initializable{
         orderTbl.setItems(orderDetails);
 
 
+        recipeProductCol.setCellValueFactory(new PropertyValueFactory<>("foodName"));
+        recipeNumCol.setCellValueFactory(new PropertyValueFactory<>("numOfFood"));
+        recipeUnitCol.setCellValueFactory(new PropertyValueFactory<>("workAddress"));
+        recipeTbl.setItems(recipematerials);
+
+        recipeStepIdCol.setCellValueFactory(new PropertyValueFactory<>("stepId"));
+        recipeStepDesCol.setCellValueFactory(new PropertyValueFactory<>("stepDes"));
+        recipeStepTbl.setItems(recipeSteps);
+
+
 //        orderProductBuyCol.setCellValueFactory(new PropertyValueFactory<>("foodName"));
 //        orderNumBuyCol.setCellValueFactory(new PropertyValueFactory<>("num"));
 ////        orderPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 //        buyOrderTbl.setItems(buyFoods);
+
+
+        usernameCommentCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        recipeCommentDesCol.setCellValueFactory(new PropertyValueFactory<>("commentContent"));
+        recipeBrowSig.setCellValueFactory(new PropertyValueFactory<>("browseSig"));
+        recipeCollSig.setCellValueFactory(new PropertyValueFactory<>("collSig"));
+        RecipeCommentScore.setCellValueFactory(new PropertyValueFactory<>("commentScore"));
+        recipeCommentTbl.setItems(recipeComments);
+
 
 //
 //        appointmentServiceCol.setCellValueFactory(new PropertyValueFactory<>("service"));
@@ -1517,6 +1926,24 @@ public class Main implements Initializable{
         ObservableList<BeanFoodInfo> foodInfos = FXCollections.observableArrayList();
         List<BeanFoodInfo> list = KitchenSystemUtil.foodInfoController.loadAll();
         for (BeanFoodInfo e: list){
+            foodInfos.add(e);
+        }
+        return foodInfos;
+    }
+
+    private ObservableList<BeanRecipeStep> getRecipeSteps(){
+        ObservableList<BeanRecipeStep> foodInfos = FXCollections.observableArrayList();
+        List<BeanRecipeStep> list = KitchenSystemUtil.recipeStepController.loadAll();
+        for (BeanRecipeStep e: list){
+            foodInfos.add(e);
+        }
+        return foodInfos;
+    }
+
+    private ObservableList<BeanRecipeComment> getRecipeComment(){
+        ObservableList<BeanRecipeComment> foodInfos = FXCollections.observableArrayList();
+        List<BeanRecipeComment> list = KitchenSystemUtil.recipeCommentController.loadAll();
+        for (BeanRecipeComment e: list){
             foodInfos.add(e);
         }
         return foodInfos;
@@ -1564,6 +1991,15 @@ public class Main implements Initializable{
         return details;
     }
 
+    private ObservableList<BeanRecipematerials> getRecipeDetail(){
+        ObservableList<BeanRecipematerials> details = FXCollections.observableArrayList();
+        List<BeanRecipematerials> list = KitchenSystemUtil.recipeController.loadAllDetails();
+        for (BeanRecipematerials e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
 
     private ObservableList<String> getOrderBuy(){
         ObservableList<String> details = FXCollections.observableArrayList();
@@ -1592,6 +2028,15 @@ public class Main implements Initializable{
         return details;
     }
 
+    private ObservableList<BeanRecipe> getRecipe(){
+        ObservableList<BeanRecipe> details = FXCollections.observableArrayList();
+        List<BeanRecipe> list = KitchenSystemUtil.recipeController.loadAll();
+        for (BeanRecipe e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
     private ObservableList<BeanOrderDetail> getOrderDetail(String orderId){
         ObservableList<BeanOrderDetail> details = FXCollections.observableArrayList();
         List<BeanOrderDetail> list = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(orderId);
@@ -1600,6 +2045,35 @@ public class Main implements Initializable{
         }
         return details;
     }
+
+    private ObservableList<BeanRecipematerials> getRecipeDetail(String recipeId){
+        ObservableList<BeanRecipematerials> details = FXCollections.observableArrayList();
+        List<BeanRecipematerials> list = KitchenSystemUtil.recipeController.loadRecipeDetailByRecipeId(recipeId);
+        for (BeanRecipematerials e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
+    private ObservableList<BeanRecipeStep> getRecipeSteps(String recipeId){
+        ObservableList<BeanRecipeStep> details = FXCollections.observableArrayList();
+        List<BeanRecipeStep> list = KitchenSystemUtil.recipeStepController.loadRecipeStepsByRecipeId(recipeId);
+        for (BeanRecipeStep e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
+    private ObservableList<BeanRecipeComment> getRecipeComments(String recipeId){
+        ObservableList<BeanRecipeComment> details = FXCollections.observableArrayList();
+        List<BeanRecipeComment> list = KitchenSystemUtil.recipeCommentController.loadRecipeCommentDetailByRecipeId(recipeId);
+        for (BeanRecipeComment e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
+
 
     private ObservableList<BeanBuyFood> getOrderBuyDetail(String orderId) throws BaseException {
         ObservableList<BeanBuyFood> details = FXCollections.observableArrayList();
@@ -1650,24 +2124,26 @@ public class Main implements Initializable{
 
     private ObservableList<PieChart.Data> getAppointmentPieData(){
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
-//        int count1 = KitchenSystemUtil.appointmentController.getAppointmentCount("预约创建完成");
-//        int count2 = KitchenSystemUtil.appointmentController.getAppointmentCount("已完成");
-        int count1 = 1;
-        int count2 = 2;
-        data.add(new PieChart.Data("未完成采购 ( "+String.valueOf(count1) +" )",count1));
-        data.add(new PieChart.Data("已完成采购 ( "+String.valueOf(count2) +" )",count2));
+//        int count1 = KitchenSystemUtil.buyFoodController.getBuyOrderCount(1);
+//        int count3 = KitchenSystemUtil.buyFoodController.getBuyOrderCount(3);
+//        int count4 = KitchenSystemUtil.buyFoodController.getBuyOrderCount(0);
+//
+//        int count2 = KitchenSystemUtil.buyFoodController.getBuyOrderCount(2);
+//
+//        data.add(new PieChart.Data("未完成采购 ( "+String.valueOf(count1+count3+count4) +" )",count1+count3+count4));
+//        data.add(new PieChart.Data("已完成采购 ( "+String.valueOf(count2) +" )",count2));
         return data;
     }
 
     private ObservableList<String> getChoice1(){
         ObservableList<String> choice = FXCollections.observableArrayList();
-        choice.addAll("订单","预约");
+        choice.addAll("订单","采购单");
         return choice;
     }
 
     private ObservableList<String> getChoice2(){
         ObservableList<String> choice = FXCollections.observableArrayList();
-        choice.addAll("产品","服务", "类别","用户","食材","管理员");
+        choice.addAll( "食材类别","食材","菜谱");
         return choice;
     }
 
@@ -1676,14 +2152,15 @@ public class Main implements Initializable{
         this.users = getUser();
         this.foodInfos = getFoodInfo();
         this.foodTypes =  getFoodTypes();
-//        this.products = getProduct();
-//        this.services=  getService();
         this.orderDetails = getOrderDetail();
+        this.recipematerials = getRecipeDetail();
+        this.recipeSteps = getRecipeSteps();
+        this.recipeComments = getRecipeComment();
         this.buyFoods = getOrderBuyDetail();
 
-//        this.appointmentDetails = getAppointmentDetail();
         orderBox.setItems(getOrder());
-//        appointmentBox.setItems(getAppointment());
+        recipeBox.setItems(getRecipe());
+        recipeBox1.setItems(getRecipe());
         choiceType1.setItems(getChoice1());
         choiceType2.setItems(getChoice2());
     }
@@ -1719,7 +2196,7 @@ public class Main implements Initializable{
                     initChart();
                     initStatics();
                     charContainer.getChildren().clear();
-//                    charContainer.getChildren().add(orderPie);
+                    charContainer.getChildren().add(orderPie);
                     charContainer.getChildren().add(appointmentPie);
 
                 }else if(newValue.equals(foodInfoTab)) {
@@ -1735,21 +2212,13 @@ public class Main implements Initializable{
                     refreshOrder(new ActionEvent());
                 }else if(newValue.equals(orderBuyTab)){
                     refreshOrderBuy(new ActionEvent());
+                }else if(newValue.equals(recipeTbl)){
+                    refreshRecipe(new ActionEvent());
+                }else if(newValue.equals(recipeStepTab)){
+                    refreshRecipeSteps(new ActionEvent());
+                }else if(newValue.equals(recipeCommentTab)){
+                    refreshRecipeComment(new ActionEvent());
                 }
-
-//                }
-//                    refreshAppointment(new ActionEvent());
-//                }else if(newValue.equals(adminTab)){
-//                    refreshOperator(new ActionEvent());
-
-//                }else if(newValue.equals(categoryTab)){
-//                    refreshCategory(new ActionEvent());
-//
-//                }else if(newValue.equals(productTab)){
-//                    refreshProduct(new ActionEvent());
-//
-//                }else if (newValue.equals(serviceTab)){
-//                    refreshService(new ActionEvent());
             }
         });
 
@@ -1763,38 +2232,34 @@ public class Main implements Initializable{
 
         initStatics();
 
-//        charContainer.getChildren().add(orderPie);
+        charContainer.getChildren().add(orderPie);
         charContainer.getChildren().add(appointmentPie);
     }
 
     private void initStatics() {
-
 //        adminTotal.setText("管理员总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanOperator")));
 //        userTotal.setText("用户总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanMyUser")));
         foodInfoTotal.setText("食材信息个数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanFoodInfo")));
 //        orderTotal.setText("订单总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanFoodOrder")));
 //        orderBuyTotal.setText("采购总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanBuyFood")));
-//        appointmentTotal.setText("预约总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanAppointment")));
-//        serviceTotal.setText("服务总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanService")));
-//        productTotal.setText("产品总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanProduct")));
         foodTypeTotal.setText("分类总数: "+ String.valueOf(KitchenSystemUtil.getCount("BeanFoodType")));
     }
 
     private void initChart() {
-//        orderPie = new PieChart(getOrderPieData());
-//        orderPie.autosize();
+        orderPie = new PieChart(getOrderPieData());
+        orderPie.autosize();
         appointmentPie = new PieChart(getAppointmentPieData());
         appointmentPie.autosize();
     }
 
     private void initDrawer() {
         try {
-            VBox toolbar = FXMLLoader.load(getClass().getResource("/ui/mainUser/toolbar/toolbar.fxml"));
+            VBox toolbar = FXMLLoader.load(getClass().getResource("/ui/main/toolbar/toolbar.fxml"));
             drawer.setSidePane(toolbar);
             drawer.setDefaultDrawerSize(150);
             HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(hamburger);
             task.setRate(-1);
-            hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> {
+            hamburger.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, (Event event) -> {
                 task.setRate(task.getRate() * -1);
                 task.play();
                 if(drawer.isClosed()){
@@ -1810,5 +2275,24 @@ public class Main implements Initializable{
             exception.printStackTrace();
         }
 
+    }
+
+    @FXML
+    void addRecipeSteps(ActionEvent event){
+        showWindow("/ui/add/addRecipeSteps/addRecipeSteps.fxml","添加食谱步骤");
+    }
+
+    private void showWindow(String loc, String title){
+        try {
+            Parent parent = FXMLLoader.load(getClass().getResource(loc));
+            Stage stage = new Stage(StageStyle.DECORATED); //default style
+            stage.getIcons().add(new Image("/ui/icons/icon.png"));
+            stage.setTitle(title);
+            stage.setResizable(false);
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

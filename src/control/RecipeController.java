@@ -123,6 +123,18 @@ public class RecipeController {
         return "ok";
     }
 
+
+    public List<BeanRecipe> search(String text) {
+        Session session = getSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from BeanRecipe b where b.recipeName like :text");
+        query.setParameter("text","%"+text+"%");
+        List<BeanRecipe> list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
+
     public static void main(String[] args) throws BaseException {
         RecipeController recipeController = new RecipeController();
         UserController userController = new UserController();

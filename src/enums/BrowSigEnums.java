@@ -1,8 +1,8 @@
 package enums;
 
 public enum BrowSigEnums implements EnumCode{
-    YILIULAN(0,"“—‰Ø¿¿"),
-    WEILIULAN(1,"Œ¥‰Ø¿¿"),
+    WEILIULAN(0,"Œ¥‰Ø¿¿"),
+    YILIULAN(1,"“—‰Ø¿¿"),
 
     ;
 

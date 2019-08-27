@@ -41,6 +41,7 @@ import ui.add.addRecipeComment.AddRecipeComment;
 import ui.add.addRecipeInfo.AddRecipeInfo;
 import ui.add.addRecipeSteps.AddRecipeSteps;
 import ui.add.addUser.AddUser;
+import ui.show.showRecipe.ShowRecipe;
 import util.BaseException;
 import util.EnumUtils;
 import util.KitchenSystemUtil;
@@ -114,8 +115,6 @@ public class Main implements Initializable{
     private Text recipeStatusColl;
 
 
-    @FXML
-    private Text appointmentSata;
 
 
     //检索moudle
@@ -307,66 +306,6 @@ public class Main implements Initializable{
 
     @FXML
     private TableColumn<BeanRecipeComment,Integer> RecipeCommentScore;
-
-
-
-
-
-
-//    @FXML
-//    private TableColumn<BeanOrderDetail,Integer> orderPriceBuyCol;
-
-
-
-//
-//    @FXML
-//    private JFXComboBox<BeanAppointment> appointmentBox;
-//
-//    @FXML
-//    private TableView<BeanAppointmentDetail> appointmentTbl;
-//
-//    @FXML
-//    private TableColumn<BeanAppointmentDetail, BeanService> appointmentServiceCol;
-//
-//    @FXML
-//    private TableColumn<BeanAppointmentDetail, BeanPet> appointmentPetCol;
-//
-//    @FXML
-//    private TableColumn<BeanAppointmentDetail, LocalDate> appointmentDateCol;
-//
-//    @FXML
-//    private TableView<BeanService> serviceTbl;
-//
-//    @FXML
-//    private TableColumn<BeanService, Integer> ServiceIdCol;
-//
-//    @FXML
-//    private TableColumn<BeanService, String> ServiceNameCol;
-//
-//    @FXML
-//    private TableColumn<BeanService, Integer> ServicePriceCol;
-//
-//    @FXML
-//    private TableView<BeanProduct> productTbl;
-//
-//    @FXML
-//    private TableColumn<BeanProduct, Integer> ProductIdCol;
-//
-//    @FXML
-//    private TableColumn<BeanProduct, String> ProductNameCol;
-//
-//    @FXML
-//    private TableColumn<BeanProduct, String> ProductBrandCol;
-//
-//    @FXML
-//    private TableColumn<BeanProduct, Integer> ProductPriceCol;
-//
-//    @FXML
-//    private TableColumn<BeanProduct, String> ProductBarcodeCol;
-//
-//    @FXML
-//    private TableColumn<BeanProduct, BeanCategory> ProductCategory;
-//
 
 
     @FXML
@@ -789,147 +728,6 @@ public class Main implements Initializable{
 
 
 
-//    @FXML
-//    void deleteProduct(ActionEvent event){
-//        BeanProduct product = productTbl.getSelectionModel().getSelectedItem();
-//        if(product == null){
-//            showDialog("请选择要操作的产品");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("去意已决");
-//        JFXButton btnCancel = new JFXButton("再想想");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("删除");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            try {
-//                KitchenSystemUtil.productController.delProduct(product.getProdId());
-//            } catch (Exception exception1) {
-//                showDialog("该产品目前处于活跃状态,不可删除");
-//                return;
-//            }
-//            products.remove(product);
-//            showDialog("产品"+product.getProdName()+"已删除");
-//        });
-//        showConfirmDialog("是否要删除产品"+product.getProdName()+" ?", Arrays.asList(btnCancel, btnOK));
-//    }
-
-
-//    @FXML
-//    void deleteService(ActionEvent event){
-//        BeanService service = serviceTbl.getSelectionModel().getSelectedItem();
-//        if(service == null){
-//            showDialog("请选择要操作的服务");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("去意已决");
-//        JFXButton btnCancel = new JFXButton("再想想");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("删除");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            try {
-//                KitchenSystemUtil.serviceController.delService(service.getServId());
-//            } catch (Exception exception) {
-//                showDialog("该服务目前处于活跃状态,不可删除");
-//                return;
-//            }
-//            services.remove(service);
-//            showDialog("服务"+service.getServName()+"已删除");
-//        });
-//        showConfirmDialog("是否要删除服务"+service.getServName()+" ?", Arrays.asList(btnCancel, btnOK));
-//    }
-//
-//    @FXML
-//    void deleteOrderProduct(ActionEvent event){
-//        BeanOrderDetail detail = orderTbl.getSelectionModel().getSelectedItem();
-//        if(detail == null){
-//            showDialog("请选择要操作的产品");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("去意已决");
-//        JFXButton btnCancel = new JFXButton("再想想");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("删除");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            try {
-//                KitchenSystemUtil.foodOrderController.delOrderDetail(detail);
-//            } catch (Exception exception) {
-//                showDialog("该产品目前处于活跃状态,不可删除");
-//                return;
-//            }
-//            orderDetails.remove(detail);
-//
-//            List<BeanAppointment> list = KitchenSystemUtil.appointmentController.loadAll();
-//            for(BeanAppointment a1 : list){
-//                List<BeanAppointmentDetail> details = KitchenSystemUtil.appointmentController.loadDetailByAppointmentId(a1.getAppId());
-//                if(details.size() == 0)
-//                    KitchenSystemUtil.appointmentController.delAppointment(a1.getAppId());
-//            }
-//            showDialog("产品"+detail.getProduct().getProdName()+"已删除");
-//        });
-//
-//        showConfirmDialog("是否要删除产品"+detail.getProduct().getProdName()+" ?", Arrays.asList(btnCancel, btnOK));
-//    }
-
-
-
-
-
-//    @FXML
-//    void deleteAppointmentService(ActionEvent event){
-//        BeanAppointmentDetail detail = appointmentTbl.getSelectionModel().getSelectedItem();
-//        if(detail == null){
-//            showDialog("请选择要操作的产品");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("去意已决");
-//        JFXButton btnCancel = new JFXButton("再想想");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("删除");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            try {
-//                KitchenSystemUtil.appointmentController.delAppointmentDetail(detail);
-//            } catch (Exception exception) {
-//                showDialog("该预约目前处于活跃状态,不可删除");
-//                return;
-//            }
-//            appointmentDetails.remove(detail);
-//
-//            List<BeanAppointment> list = KitchenSystemUtil.appointmentController.loadAll();
-//            for(BeanAppointment a1 : list){
-//                List<BeanAppointmentDetail> details = KitchenSystemUtil.appointmentController.loadDetailByAppointmentId(a1.getAppId());
-//                if(details.size() == 0) {
-//                    KitchenSystemUtil.appointmentController.delAppointment(a1.getAppId());
-//                }
-//            }
-//
-//            showDialog("预约"+detail.getService().getServName()+"已删除");
-//        });
-//        showConfirmDialog("是否要删除预约"+detail.getService().getServName()+" ?", Arrays.asList(btnCancel, btnOK));
-//    }
-
-//    @FXML
-//    void deleteAppointment(ActionEvent event){
-//        BeanAppointment appointment = appointmentBox.getSelectionModel().getSelectedItem();
-//        if(appointment == null){
-//            showDialog("请选择要操作的产品");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("去意已决");
-//        JFXButton btnCancel = new JFXButton("再想想");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("删除");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            KitchenSystemUtil.appointmentController.delAppointment(appointment.getAppId());
-//            showDialog("预约"+appointment.getAppId()+"已删除");
-//        });
-//        showConfirmDialog("是否要删除预约"+appointment.getAppId()+" ?", Arrays.asList(btnCancel, btnOK));
-//    }
-
     /*
      *  Edit operation
      * */
@@ -979,6 +777,8 @@ public class Main implements Initializable{
 
        // refreshFoodInfo(new ActionEvent());
     }
+
+
 
     @FXML
     void editUser(ActionEvent event){
@@ -1109,27 +909,27 @@ public class Main implements Initializable{
     }
 
 
-    @FXML
-    void createFoodOrderByRecipe(ActionEvent event){
-        BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
-        if(recipe == null){
-            showDialog("请选择你所要操作的菜谱");
-            return;
-        }
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addFoodOrder/addFoodOrder.fxml"));
-            Parent parent = loader.load();
-            AddFoodOrder addFoodOrder = (AddFoodOrder) loader.getController();
-            addFoodOrder.inflateUIAdd(recipe);
-            Stage stage = new Stage(StageStyle.DECORATED);
-            stage.getIcons().add(new Image("/ui/icons/icon.png"));
-            stage.setTitle("生成订单");
-            stage.setScene(new Scene(parent));
-            stage.show();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
+//    @FXML
+//    void createFoodOrderByRecipe(ActionEvent event){
+//        BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
+//        if(recipe == null){
+//            showDialog("请选择你所要操作的菜谱");
+//            return;
+//        }
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addFoodOrder/addFoodOrder.fxml"));
+//            Parent parent = loader.load();
+//            AddFoodOrder addFoodOrder = (AddFoodOrder) loader.getController();
+//            addFoodOrder.inflateUIAdd(recipe);
+//            Stage stage = new Stage(StageStyle.DECORATED);
+//            stage.getIcons().add(new Image("/ui/icons/icon.png"));
+//            stage.setTitle("生成订单");
+//            stage.setScene(new Scene(parent));
+//            stage.show();
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
+//    }
 
         @FXML
     void editOrder(ActionEvent event){
@@ -1170,6 +970,29 @@ public class Main implements Initializable{
             addRecipeInfo.inflateUI(recipe);
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.setTitle("编辑菜谱");
+            stage.setScene(new Scene(parent));
+            stage.show();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML
+    void showRecipeInfo(ActionEvent event){
+        BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
+        if(recipe == null){
+            showDialog("请选择要操作的菜谱");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/show/showRecipe/showRecipe.fxml"));
+            Parent parent = loader.load();
+            ShowRecipe showRecipe = (ShowRecipe) loader.getController();
+            showRecipe.inflateUI(recipe);
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setTitle("查看菜谱具体信息");
             stage.setScene(new Scene(parent));
             stage.show();
 
@@ -1553,25 +1376,6 @@ public class Main implements Initializable{
     }
 
 
-//    @FXML
-//    void finishAppointment(ActionEvent event){
-//        BeanAppointment order = appointmentBox.getSelectionModel().getSelectedItem();
-//        if(order == null){
-//            showDialog("请选择要操作的预约");
-//            return;
-//        }
-//        JFXButton btnOK = new JFXButton("是");
-//        JFXButton btnCancel = new JFXButton("否");
-//        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            showCancelDialog("预约完成");
-//        });
-//        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-//            order.setAppState("已完成");
-//            KitchenSystemUtil.update(order);
-//            showDialog("预约"+order.getAppId()+"已完成");
-//        });
-//        showConfirmDialog("预约"+order.getAppId()+"服务全部完成 ?", Arrays.asList(btnCancel, btnOK));
-//    }
 
     @FXML
     void OrderOrAppointmentChoice(ActionEvent event){
@@ -1638,154 +1442,114 @@ public class Main implements Initializable{
         rootAnchorPane.setEffect(blur);
     }
 
-//    @FXML
-//    void loadOrderOrAppointmentInfo(ActionEvent event) {
-//        if(choice1.isEmpty()){
-//            showDialog("没有选择要查询数据类型");
-//            return;
-//        }
-//
-//        try{
-//            int id = Integer.parseInt(orderId.getText());
-//            if(choice1.equals("预约")){
-//                BeanAppointment appointment = null;
-//                appointment = KitchenSystemUtil.appointmentController.findAppointmentById(id);
-//                orderUser.setText("用户名: "+appointment.getUser().getUserName());
-//                orderPrice.setText("价格: "+appointment.getAppState());
-//            }else{
-//                BeanMyOrder order = null;
-//                order = KitchenSystemUtil.orderController.findOrderById(id);
-//                orderUser.setText("用户名: "+order.getOrderUser().getUserName());
-//                orderPrice.setText("价格: "+order.getOrderPrice().toString());
-//                orderStatus.setText("状态: "+order.getOrderState());
-//                orderTel.setText("联系电话: "+order.getOrderUser().getUserTel().toString());
-//            }
-//        }catch (Exception exception){
-//            showDialog("sorry! nothing found.");
-//        }
-//    }
-//
-//    @FXML
-//    void loadOtherInfo(ActionEvent event){
-//        if(choice2.isEmpty()){
-//            showDialog("没有选择要查询的数据类型");
-//            return;
-//        }
-//        try{
-//            if(choice2.equals("管理员")){
-//                List<BeanOperator> list = KitchenSystemUtil.operatorController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanOperator b: list){
-//                        ones += (b.getOpName()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanOperator b = list.get(0);
-//                appUser.setText("用户名: "+b.getOpName());
-//                appDate.setText("");
-//                appPet.setText("等级: "+b.getOpLevel().toString());
-//                appStatus.setText("");
-//            }else if(choice2 .equals("类别")){
-//                List<BeanCategory> list = KitchenSystemUtil.categoryController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanCategory b: list){
-//                        ones += (b.getCateName()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanCategory b = list.get(0);
-//                appUser.setText("名称: "+b.getCateName());
-//                appDate.setText("");
-//                appPet.setText("详情: "+b.getCateDetail());
-//                appStatus.setText("");
-//            }else if(choice2.equals("宠物")){
-//                List<BeanPet> list = KitchenSystemUtil.petController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanPet b: list){
-//                        ones += (b.getPetNikename()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanPet b = list.get(0);
-//                appUser.setText("昵称: "+b.getPetNikename());
-//                appDate.setText("主人名称: "+b.getUser().getUserName());
-//                appPet.setText("宠物别名: "+b.getPetAlias());
-//                appStatus.setText("");
-//            }else if(choice2.equals("产品")){
-//                List<BeanProduct> list = KitchenSystemUtil.productController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanProduct b: list){
-//                        ones += (b.getProdName()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanProduct b = list.get(0);
-//                appUser.setText("类别: "+b.getProdCategory().getCateName());
-//                appDate.setText("价格: "+b.getProdPrice().toString());
-//                appPet.setText("名称: "+b.getProdName());
-//                appStatus.setText("品牌: "+b.getProdBrand());
-//            }else if(choice2.equals("服务")){
-//                List<BeanService> list = KitchenSystemUtil.serviceController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanService b: list){
-//                        ones += (b.getServName()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanService b = list.get(0);
-//                appUser.setText("名称: "+b.getServName());
-//                appDate.setText("类别: "+b.getCategory().getCateName());
-//                appPet.setText("价格: "+b.getServPrice().toString());
-//                appStatus.setText("");
-//            }else if(choice2.equals("用户")){
-//                List<BeanMyUser> list = KitchenSystemUtil.userController.search(keyword.getText());
-//                if(list.size()==0){
-//                    showDialog("啥都么找到!");
-//                    return;
-//                }
-//                if(list.size()>1){
-//                    String ones = "";
-//                    for (BeanMyUser b: list){
-//                        ones += (b.getUserName()+", ");
-//                    }
-//                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
-//                }
-//                BeanMyUser b = list.get(0);
-//                appUser.setText("用户名: "+b.getUserName());
-//                appDate.setText("联系方式: "+b.getUserTel().toString());
-//                appPet.setText("电子邮件: "+b.getUserEmail());
-//                appStatus.setText("其他联系方式: "+b.getUserContact());
-//            }
-//        }catch (Exception e){
-//            showDialog("Oops sth bad occur!");
-//            e.printStackTrace();
-//        }
-//    }
+    @FXML
+    void loadOrderOrAppointmentInfo(ActionEvent event) {
+        if(choice1.isEmpty()){
+            showDialog("没有选择要查询数据类型");
+            return;
+        }
+
+        try{
+            String id = (orderId.getText());
+            if(choice1.equals("订单")){
+                BeanFoodOrder foodOrder = null;
+                foodOrder = KitchenSystemUtil.foodOrderController.findOrderById(id);
+                orderUser.setText("用户名: "+ foodOrder.getUserName());
+                orderPrice.setText("状态:"+ EnumUtils.getByCode(foodOrder.getOrderStatus(),FoodOrderStatusEnum.class).getMsg());
+                orderTel.setText("联系电话: " + foodOrder.getUserTel());
+            }else {
+                showDialog("sorry! the part is closed");
+            }
+        }catch (Exception exception){
+            showDialog("sorry! nothing found.");
+        }
+    }
+
+    @FXML
+    void loadOtherInfo(ActionEvent event){
+        if(choice2.isEmpty()){
+            showDialog("没有选择要查询的数据类型");
+            return;
+        }
+        try{
+            if(choice2.equals("管理员")){
+                List<BeanOperator> list = KitchenSystemUtil.operatorController.search(keyword.getText());
+                if(list.size()==0){
+                    showDialog("啥都没有找到!");
+                    return;
+                }
+                if(list.size()>1){
+                    String ones = "";
+                    for (BeanOperator b: list){
+                        ones += (b.getOpName()+", ");
+                    }
+                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
+                }
+                BeanOperator b = list.get(0);
+                appUser.setText("用户名: "+b.getOpName());
+                appDate.setText("");
+                appPet.setText("等级: "+b.getOpLevel().toString());
+                appStatus.setText("");
+            }else if(choice2 .equals("类别")){
+                List<BeanFoodType> list = KitchenSystemUtil.foodTypeController.search(keyword.getText());
+                if(list.size()==0){
+                    showDialog("啥都没有找到!");
+                    return;
+                }
+                if(list.size()>1){
+                    String ones = "";
+                    for (BeanFoodType b: list){
+                        ones += (b.getFoodTypeName()+", ");
+                    }
+                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
+                }
+                BeanFoodType b = list.get(0);
+                appUser.setText("名称: "+b.getFoodTypeName());
+                appDate.setText("");
+                appPet.setText("详情: "+b.getFoodTypeDes());
+                appStatus.setText("");
+            }else if(choice2.equals("菜谱")){
+                List<BeanRecipe> list = KitchenSystemUtil.recipeController.search(keyword.getText());
+                if(list.size()==0){
+                    showDialog("啥都没有找到!");
+                    return;
+                }
+                if(list.size()>1){
+                    String ones = "";
+                    for (BeanRecipe b: list){
+                        ones += (b.getRecipeName()+", ");
+                    }
+                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
+                }
+                BeanRecipe b = list.get(0);
+                appUser.setText("菜谱名称: "+b.getRecipeName());
+                appDate.setText("贡献用户: "+b.getContriUsr());
+                appPet.setText("详情: "+b.getRecipeDes());
+                appStatus.setText("");
+            }else if(choice2.equals("用户")){
+                List<BeanMyUser> list = KitchenSystemUtil.userController.search(keyword.getText());
+                if(list.size()==0){
+                    showDialog("啥都么找到!");
+                    return;
+                }
+                if(list.size()>1){
+                    String ones = "";
+                    for (BeanMyUser b: list){
+                        ones += (b.getUserName()+", ");
+                    }
+                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
+                }
+                BeanMyUser b = list.get(0);
+                appUser.setText("用户名: "+b.getUserName());
+                appDate.setText("联系方式: "+b.getUserTel().toString());
+                appPet.setText("电子邮件: "+b.getUserEmail());
+                appStatus.setText("其他联系方式: "+b.getUserContact());
+            }
+        }catch (Exception e){
+            showDialog("Oops sth bad occur!");
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void refreshHomeTab(ActionEvent e){
@@ -2185,13 +1949,13 @@ public class Main implements Initializable{
 
     private ObservableList<String> getChoice1(){
         ObservableList<String> choice = FXCollections.observableArrayList();
-        choice.addAll("订单","预约");
+        choice.addAll("订单","采购单");
         return choice;
     }
 
     private ObservableList<String> getChoice2(){
         ObservableList<String> choice = FXCollections.observableArrayList();
-        choice.addAll("产品","服务", "类别","用户","食材","管理员");
+        choice.addAll( "食材类别","用户","食材","管理员","菜谱");
         return choice;
     }
 

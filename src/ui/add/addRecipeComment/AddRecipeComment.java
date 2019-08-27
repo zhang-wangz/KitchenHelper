@@ -99,6 +99,7 @@ public class AddRecipeComment implements Initializable {
 
 
         KitchenSystemUtil.recipeCollAndBrowController.changeScore(recipeId);
+
     }
     private ObservableList<Integer> getScoreList(){
         ObservableList<Integer> score = FXCollections.observableArrayList();
@@ -119,8 +120,6 @@ public class AddRecipeComment implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.scoreList = getScoreList();
         commentScore.setItems(scoreList);
-        recipeCollSig.setText(EnumUtils.getByCode(collSig, CollSigEnums.class).getMsg());
-        recipeBroeSig.setText(EnumUtils.getByCode(browSig, BrowSigEnums.class).getMsg());
         ScoreSelected(new ActionEvent());
     }
 
@@ -129,12 +128,16 @@ public class AddRecipeComment implements Initializable {
 
         if(BeanMyUser.currentUser == null) userId = BeanOperator.currentOperator.getOpId();
         else userId = BeanMyUser.currentUser.getUserId();
+        this.recipeId = recipe.getRecipeId();
         recipeName.setText(recipe.getRecipeName());
+        this.collSig = KitchenSystemUtil.recipeCollAndBrowController.findrecipeCollByreIdandUsrId(userId,recipeId) == null? 0:1;
+        this.browSig = KitchenSystemUtil.recipeCollAndBrowController.findrecipeBrowByBrIdandUsrId(userId,recipeId) == null? 0:1;
+        recipeCollSig.setText(EnumUtils.getByCode(this.collSig, CollSigEnums.class).getMsg());
+        recipeBroeSig.setText(EnumUtils.getByCode(this.browSig, BrowSigEnums.class).getMsg());
         this.recipeId = recipe.getRecipeId();
         isEditMode = false;
-        BeanRecipeComment recipeComment = KitchenSystemUtil.recipeCommentController.findRecipeCommentByRecipeIdandUsrId(recipeId,userId);
-        this.collSig = recipeComment == null ? 0:recipeComment.getCollSig();
-        this.browSig = recipeComment == null? 0:recipeComment.getBrowseSig();
+//        BeanRecipeComment recipeComment = KitchenSystemUtil.recipeCommentController.findRecipeCommentByRecipeIdandUsrId(recipeId,userId);
+
 
     }
 

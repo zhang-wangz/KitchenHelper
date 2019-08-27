@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="rootPane" prefWidth="350.0" stylesheets="@../../theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.show.showRecipe.ShowRecipe">
+   <children>
+      <VBox layoutY="2.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="recipeName" prefWidth="313.0" text="菜谱名称">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="25.0" />
+               </VBox.margin>
+            </Label>
+
+            <Label fx:id="recipeDes" prefWidth="313.0" text="菜谱描述">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="25.0" />
+               </VBox.margin>
+            </Label>
+
+            <Label fx:id="recipeFoodInfo" prefWidth="313.0" text="菜谱食材">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="25.0" />
+               </VBox.margin>
+            </Label>
+
+            <Label fx:id="recipeSteps" prefWidth="313.0" text="菜谱步骤">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="25.0" />
+               </VBox.margin>
+            </Label>
+
+
+            <HBox prefHeight="55.0" prefWidth="340.0">
+               <children>
+                  <Label fx:id="recipeBroeSig" prefHeight="30.0" prefWidth="313.0" text="浏览" />
+                  <Label fx:id="recipeCollSig" prefHeight="27.0" prefWidth="313.0" text="收藏" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+
+            <HBox nodeOrientation="LEFT_TO_RIGHT" prefHeight="55.0" prefWidth="340.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <children>
+                  
+                        <JFXButton fx:id="btnCancel" alignment="CENTER" contentDisplay="CENTER" onAction="#cancel" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #2196F3;" text="取消" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets left="240.0" top="20.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

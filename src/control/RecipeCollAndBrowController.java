@@ -14,16 +14,23 @@ import util.KitchenSystemUtil;
 import java.util.List;
 
 public class RecipeCollAndBrowController {
+
+
+
+
+
+
+
     public BeanRecipeBrow findrecipeBrowByBrIdandUsrId(String userId,String recipeId){
         Session session = HibernateUtil.getSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("from BeanRecipeBrow where  recipeId=:reId and browUserId = :usrId");
         query.setParameter("reId",recipeId);
         query.setParameter("usrId",userId);
-        BeanRecipeBrow beanRecipeBrow= null;
+        BeanRecipeBrow beanRecipeBrow ;
         int size = query.list().size();
         if(size == 0) return null;
-        beanRecipeBrow = (BeanRecipeBrow) query.list().get(0);
+        else  beanRecipeBrow = (BeanRecipeBrow) query.list().get(0);
         return beanRecipeBrow;
     }
 
@@ -91,9 +98,13 @@ public class RecipeCollAndBrowController {
         else {
             BeanRecipeBrow recipeBrow = (BeanRecipeBrow) query.list().get(0);
             BeanRecipeComment recipeComment = KitchenSystemUtil.recipeCommentController.findRecipeCommentByRecipeIdandUsrId(recipeBrow.getRecipeId(),recipeBrow.getBrowUserId());
-            if(recipeComment.getBrowseSig() == 1) return;
-            recipeComment.setBrowseSig(1);
-            KitchenSystemUtil.update(recipeComment);
+            if(recipeComment !=null && recipeComment.getBrowseSig() == 1) return;
+            if(recipeComment != null) {
+                recipeComment.setBrowseSig(1);
+                KitchenSystemUtil.update(recipeComment);
+            }else{
+                KitchenSystemUtil.save(recipeComment);
+            }
         }
     }
 
@@ -122,8 +133,9 @@ public class RecipeCollAndBrowController {
         RecipeCollAndBrowController recipeCollAndBrowController = new RecipeCollAndBrowController();
         RecipeController recipeController = new RecipeController();
 //        recipeCollAndBrowController.changeColSig("1","1566799194372454792");
-        recipeCollAndBrowController.changeScore("1566799194372454792");
-
+//      int b  = KitchenSystemUtil.recipeCollAndBrowController.findrecipeBrowByBrIdandUsrId("1","1566799194372454792");
+//        System.out.println(b.getBrowUserId());
+//        System.out.println(b);
 
     }
 
