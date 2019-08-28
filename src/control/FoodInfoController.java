@@ -26,6 +26,20 @@ public class FoodInfoController {
         return foodInfo;
     }
 
+
+    public BeanFoodInfo findFoodByFoodTypeName(String foodTypeName){
+        BeanFoodInfo foodInfo = null;
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("from BeanFoodInfo b where b.foodTypeNameOfFoodInfo = :name");
+        query.setParameter("name", foodTypeName);
+        if(query.list().size()==0) return null;
+        foodInfo = (BeanFoodInfo) query.list().get(0);
+        tx.commit();
+        session.close();
+        return foodInfo;
+    }
+
     public BeanFoodInfo findFoodById(String id) {
         BeanFoodInfo foodInfo = null;
         Session session = getSession();

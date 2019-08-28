@@ -50,6 +50,68 @@ public class RecipeController {
         session.close();
     }
 
+
+    public void delBeanRecipe(String recipeId) {
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("delete  BeanRecipe  where recipeId = :recipeId");
+        query.setParameter("recipeId", recipeId);
+        query.executeUpdate();
+
+        tx.commit();
+        session.close();
+    }
+
+    public void delBeanRecipeComment(String recipeId) {
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("delete  BeanRecipeComment  where recipeId = :recipeId");
+        query.setParameter("recipeId", recipeId);
+        query.executeUpdate();
+        tx.commit();
+        session.close();
+    }
+
+    public void delBeanRecipeColl(String recipeId) {
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("delete  BeanRecipeColl  where recipeId = :recipeId");
+        query.setParameter("recipeId", recipeId);
+        query.executeUpdate();
+        tx.commit();
+        session.close();
+    }
+
+    public void delBeanRecipeBrow(String recipeId) {
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("delete  BeanRecipeBrow  where recipeId = :recipeId");
+        query.setParameter("recipeId", recipeId);
+        query.executeUpdate();
+        tx.commit();
+        session.close();
+    }
+
+    public void delBeanRecipeStep(String recipeId) {
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("delete  BeanRecipeStep  where recipeId = :recipeId");
+        query.setParameter("recipeId", recipeId);
+        query.executeUpdate();
+        tx.commit();
+        session.close();
+    }
+
+    public void delBeanRecipematerials(String recipeId) {
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("delete  BeanRecipematerials  where recipeId = :recipeId");
+        query.setParameter("recipeId", recipeId);
+        query.executeUpdate();
+        tx.commit();
+        session.close();
+    }
+
     public BeanRecipematerials findRecipeDetail (BeanRecipematerials detail){
         Session session = getSession();
         Transaction tx = session.beginTransaction();
@@ -87,6 +149,36 @@ public class RecipeController {
         session.close();
         return recipe;
     }
+
+    public List<BeanRecipe> findRecipeByuserName(String userName){
+        Session session = getSession();
+        List<BeanRecipe> recipeList = null;
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("from BeanRecipe b where b.contriUsr = :userName");
+        query.setParameter("userName",userName);
+        int size = query.list().size();
+        if(size == 0) recipeList = null;
+        else recipeList =  query.list();
+        tx.commit();
+        session.close();
+        return recipeList;
+    }
+
+    public List<BeanRecipematerials> findRecipeByFoodId(String foodId){
+        Session session = getSession();
+        List<BeanRecipematerials> recipeList = null;
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("from BeanRecipematerials b where b.foodId = :foodId");
+        query.setParameter("foodId",foodId);
+        int size = query.list().size();
+        if(size == 0) recipeList = null;
+        else recipeList =  query.list();
+        tx.commit();
+        session.close();
+        return recipeList;
+    }
+
+
 
     public List<BeanRecipematerials> loadAllDetails() {
         Session session = getSession();
@@ -149,11 +241,12 @@ public class RecipeController {
 
     public static void main(String[] args) throws BaseException {
         RecipeController recipeController = new RecipeController();
-        UserController userController = new UserController();
-        BeanRecipe recipe = recipeController.findRecipeByRecipeId("1566799194372454792");
-        BeanMyUser.currentUser = userController.findUserByName("wzw");
-        String i = recipeController.AddRecipeColl(recipe);
-        System.out.println(i);
+//        UserController userController = new UserController();
+//        BeanRecipe recipe = recipeController.findRecipeByRecipeId("1566799194372454792");
+//        BeanMyUser.currentUser = userController.findUserByName("wzw");
+//        String i = recipeController.AddRecipeColl(recipe);
+        recipeController.delBeanRecipe("1566990061983189127");
+//        System.out.println(i);
     }
 
 

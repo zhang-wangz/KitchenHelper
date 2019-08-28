@@ -86,6 +86,19 @@ public class OperatorController {
         Query query = session.createQuery("delete BeanOperator b where b.opId = :id");
         query.setParameter("id",id);
         query.executeUpdate();
+
+        query = session.createQuery("delete BeanRecipeColl u where u.collUserId = :id");
+        query.setParameter("id",id);
+        query.executeUpdate();
+
+        query = session.createQuery("delete BeanRecipeBrow u where u.browUserId = :id");
+        query.setParameter("id",id);
+        query.executeUpdate();
+
+        query = session.createQuery("delete BeanRecipeComment u where u.userId = :id");
+        query.setParameter("id",id);
+        query.executeUpdate();
+
         tx.commit();
         session.close();
     }

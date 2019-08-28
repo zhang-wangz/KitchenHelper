@@ -495,7 +495,7 @@ public class Main implements Initializable{
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
             try {
-                KitchenSystemUtil.userController.delUser(user.getUserId());
+                KitchenSystemUtil.userController.delUser(user);
             } catch (Exception exception1) {
                 showDialog("该用户目前处于活跃状态,不可删除");
             }
@@ -1161,6 +1161,7 @@ public class Main implements Initializable{
             showDialog("请选择要操作的订单");
             return;
         }
+
         boolean isCreate = BeanMyUser.currentUser.getUserId().equals(KitchenSystemUtil.foodOrderController.findOrderById(order.getOrderId()).getUserId());
         if(!isCreate){
             showDialog("该订单不是您所创建的，无法修改");

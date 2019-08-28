@@ -132,12 +132,26 @@ public class UserController {
         }
 
 
-    public void delUser(String userId){
+    public void delUser(BeanMyUser user){
+
         Session session = getSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("delete BeanMyUser u where u.userId = :id");
-        query.setParameter("id",userId);
+        query.setParameter("id",user.getUserId());
         query.executeUpdate();
+
+        query = session.createQuery("delete BeanRecipeColl u where u.collUserId = :id");
+        query.setParameter("id",user.getUserId());
+        query.executeUpdate();
+
+        query = session.createQuery("delete BeanRecipeBrow u where u.browUserId = :id");
+        query.setParameter("id",user.getUserId());
+        query.executeUpdate();
+
+        query = session.createQuery("delete BeanRecipeComment u where u.userId = :id");
+        query.setParameter("id",user.getUserId());
+        query.executeUpdate();
+
         tx.commit();
         session.close();
     }

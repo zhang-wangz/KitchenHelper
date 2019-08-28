@@ -238,7 +238,7 @@
                                  <contextMenu>
                                     <ContextMenu>
                                        <items>
-<!--                                          <MenuItem mnemonicParsing="false" onAction="#deleteUser" text="删除" />-->
+                                          <MenuItem mnemonicParsing="false" onAction="#deleteUser" text="删除" />
 <!--                                          <MenuItem mnemonicParsing="false" onAction="#editUser" text="编辑" />-->
                                           <MenuItem mnemonicParsing="false" onAction="#refreshUser" text="刷新" />
                                        </items>
@@ -368,8 +368,8 @@
                                        <contextMenu>
                                           <ContextMenu>
                                              <items>
-                                                <MenuItem mnemonicParsing="false" onAction="#deleteOrderDetail" text="删除" />
-                                                <MenuItem mnemonicParsing="false" onAction="#editOrder" text="编辑" />
+<!--                                                <MenuItem mnemonicParsing="false" onAction="#deleteOrderDetail" text="删除" />-->
+<!--                                                <MenuItem mnemonicParsing="false" onAction="#editOrder" text="编辑" />-->
                                                 <MenuItem mnemonicParsing="false" onAction="#refreshOrder" text="刷新" />
                                              </items>
                                           </ContextMenu>
@@ -515,7 +515,7 @@
                                           <ContextMenu>
                                              <items>
                                                 <MenuItem mnemonicParsing="false" onAction="#deleteRecipeDetail" text="删除" />
-                                                <MenuItem mnemonicParsing="false" onAction="#editRecipe" text="编辑" />
+<!--                                                <MenuItem mnemonicParsing="false" onAction="#editRecipe" text="编辑" />-->
                                                 <MenuItem mnemonicParsing="false" onAction="#refreshRecipe" text="刷新" />
                                              </items>
                                           </ContextMenu>

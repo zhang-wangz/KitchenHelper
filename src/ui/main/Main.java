@@ -402,6 +402,11 @@ public class Main implements Initializable{
             showDialog("请选择要操作的管理员");
             return;
         }
+        if(operator.getOpId().equals(BeanOperator.currentOperator.getOpId())){
+            showDialog("当前在线管理员无法删除");
+            return;
+        }
+
         JFXButton btnOK = new JFXButton("去意已决");
         JFXButton btnCancel = new JFXButton("再想想");
         btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
@@ -426,6 +431,14 @@ public class Main implements Initializable{
             showDialog("请选择要操作的用户");
             return;
         }
+        if(KitchenSystemUtil.recipeController.findRecipeByuserName(user.getUserName())!=null){
+            showDialog("该用户存在相关贡献菜谱，无法删除");
+            return;
+        }
+        if(KitchenSystemUtil.foodOrderController.findOrderByUserId(user.getUserId()) != null){
+            showDialog("该用户存在相关订单，无法删除");
+            return;
+        }
         JFXButton btnOK = new JFXButton("去意已决");
         JFXButton btnCancel = new JFXButton("再想想");
         btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
@@ -433,7 +446,7 @@ public class Main implements Initializable{
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
             try {
-                KitchenSystemUtil.userController.delUser(user.getUserId());
+                KitchenSystemUtil.userController.delUser(user);
             } catch (Exception exception1) {
                 showDialog("该用户目前处于活跃状态,不可删除");
             }
@@ -449,6 +462,18 @@ public class Main implements Initializable{
         BeanFoodInfo foodInfo = foodInfoTableView.getSelectionModel().getSelectedItem();
         if(foodInfo == null){
             showDialog("请选择要操作的食材信息");
+            return;
+        }
+        if(KitchenSystemUtil.buyFoodController.findBuyOrderByFoodId(foodInfo.getFoodId())!=null){
+            showDialog("该食材在相关采购单上存在，无法删除");
+            return;
+        }
+        if(KitchenSystemUtil.recipeController.findRecipeByFoodId(foodInfo.getFoodId())!=null){
+            showDialog("该食材在相关食谱上存在，无法删除");
+            return;
+        }
+        if(KitchenSystemUtil.foodOrderController.findOrderDetailByFoodId(foodInfo.getFoodId())!=null){
+            showDialog("该食材在相关订单上存在，无法删除");
             return;
         }
         JFXButton btnOK = new JFXButton("去意已决");
@@ -477,6 +502,11 @@ public class Main implements Initializable{
         BeanFoodType foodType = foodTypeTbl.getSelectionModel().getSelectedItem();
         if(foodType == null){
             showDialog("请选择要删除的分类");
+            return;
+        }
+
+        if(KitchenSystemUtil.foodInfoController.findFoodByFoodTypeName(foodType.getFoodTypeName())!=null){
+            showDialog("该食物分类下存在产品，无法删除");
             return;
         }
         JFXButton btnOK = new JFXButton("去意已决");
@@ -666,7 +696,12 @@ public class Main implements Initializable{
             if(!isCreated){
                 showDialog("该菜谱并非由当前登陆账户所建立,无法删除");
             }else {
-                KitchenSystemUtil.foodOrderController.delOrder(recipe.getRecipeName());
+                KitchenSystemUtil.recipeController.delBeanRecipe(recipe.getRecipeId());
+                KitchenSystemUtil.recipeController.delBeanRecipematerials(recipe.getRecipeId());
+                KitchenSystemUtil.recipeController.delBeanRecipeBrow(recipe.getRecipeId());
+                KitchenSystemUtil.recipeController.delBeanRecipeColl(recipe.getRecipeId());
+                KitchenSystemUtil.recipeController.delBeanRecipeComment(recipe.getRecipeId());
+                KitchenSystemUtil.recipeController.delBeanRecipeStep(recipe.getRecipeId());
                 showDialog("菜谱" + recipe.getRecipeName() + "已删除");
             }
         });
@@ -722,9 +757,9 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            List<BeanBuyFood> details  = KitchenSystemUtil.buyFoodController.loadDetailByOrderId(orderId);
-            int num = details.size();
-            Boolean isBenREN = CurrentAdmin != null || CurrentAdmin.getOpId() == order.get(0).getBuyOrderId();
+//            List<BeanBuyFood> details  = KitchenSystemUtil.buyFoodController.loadDetailByOrderId(orderId);
+//            int num = details.size();
+            Boolean isBenREN = CurrentAdmin != null && CurrentAdmin.getOpId().equals(order.get(0).getBuyOrderId());
             if(order.get(0).getStatus() == 2  || order.get(0).getStatus() == 1){
                 showDialog("采购订单"+order.get(0).getBuyOrderId() + "处于配送或入库状态，不可删除");
                 return;
@@ -754,6 +789,10 @@ public class Main implements Initializable{
             showDialog("请选择要操作的管理员");
             return;
         }
+        if(beanOperator.getOpId().equals(BeanOperator.currentOperator.getOpId())){
+            showDialog("当前在线管理员无法编辑");
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addOperator/addOperator.fxml"));
             Parent parent = loader.load();
@@ -771,16 +810,28 @@ public class Main implements Initializable{
 
     @FXML
     void editFoodInfo(ActionEvent event){
-        BeanFoodInfo beanFoodInfo = foodInfoTableView.getSelectionModel().getSelectedItem();
-        if(beanFoodInfo == null){
+        BeanFoodInfo foodInfo = foodInfoTableView.getSelectionModel().getSelectedItem();
+        if(foodInfo == null){
             showDialog("请选择要操作的食材");
+            return;
+        }
+        if(KitchenSystemUtil.buyFoodController.findBuyOrderByFoodId(foodInfo.getFoodId())!=null){
+            showDialog("该食材在相关采购单上存在，无法编辑");
+            return;
+        }
+        if(KitchenSystemUtil.recipeController.findRecipeByFoodId(foodInfo.getFoodId())!=null){
+            showDialog("该食材在相关食谱上存在，无法编辑");
+            return;
+        }
+        if(KitchenSystemUtil.foodOrderController.findOrderDetailByFoodId(foodInfo.getFoodId())!=null){
+            showDialog("该食材在相关订单上存在，无法编辑");
             return;
         }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addFoodInfo/addFoodInfo.fxml"));
             Parent parent = loader.load();
             AddFoodInfo addFoodInfo = (AddFoodInfo) loader.getController();
-            addFoodInfo.inflateUI(beanFoodInfo);
+            addFoodInfo.inflateUI(foodInfo);
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.getIcons().add(new Image("/ui/icons/icon.png"));
             stage.setTitle("编辑食材信息");
@@ -822,6 +873,10 @@ public class Main implements Initializable{
         BeanFoodType foodType = foodTypeTbl.getSelectionModel().getSelectedItem();
         if(foodType == null){
             showDialog("请选择要操作的分类");
+            return;
+        }
+        if(KitchenSystemUtil.foodInfoController.findFoodByFoodTypeName(foodType.getFoodTypeName())!=null){
+            showDialog("该食品分类下存在相关食品，暂时无法修改");
             return;
         }
         try {
@@ -911,9 +966,18 @@ public class Main implements Initializable{
     void createRecipeColl(ActionEvent event){
         String userId;
         BeanRecipe recipe = recipeBox2.getSelectionModel().getSelectedItem();
+        if(recipe == null){
+            showDialog("请选择要操作的菜谱");
+            return;
+        }
         String status = KitchenSystemUtil.recipeController.AddRecipeColl(recipe);
         if(BeanMyUser.currentUser == null) userId = BeanOperator.currentOperator.getOpId();
         else userId = BeanMyUser.currentUser.getUserId();
+        BeanRecipeComment recipeComment = KitchenSystemUtil.recipeCommentController.findRecipeCommentByRecipeIdandUsrId(recipe.getRecipeId(),userId);
+        if(recipeComment == null){
+            showDialog("请评论后再进行收藏");
+            return;
+        }
         if(status.equals("ok")) {
             KitchenSystemUtil.recipeCollAndBrowController.changeColSig(userId,recipe.getRecipeId());
             showDialog("收藏成功");
@@ -1048,6 +1112,12 @@ public class Main implements Initializable{
         String orderId =  buyOrderBox.getSelectionModel().getSelectedItem();
         if(orderId == null){
             showDialog("请选择要操作的采购单");
+            return;
+        }
+        List<BeanBuyFood> order = KitchenSystemUtil.buyFoodController.findOrderById(orderId);
+        Boolean isBenREN = CurrentAdmin != null || CurrentAdmin.getOpId().equals(order.get(0).getBuyOrderId());
+        if(order.get(0).getStatus() == 2  || order.get(0).getStatus() == 1){
+            showDialog("采购订单"+order.get(0).getBuyOrderId() + "处于配送或入库状态，不可修改");
             return;
         }
 

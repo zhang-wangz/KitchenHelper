@@ -68,6 +68,19 @@ public class FoodOrderController {
         return  order;
     }
 
+    public List<BeanOrderDetail> findOrderDetailByFoodId(String foodId){
+        List<BeanOrderDetail> order = null;
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("from BeanOrderDetail b where b.foodId = :id");
+        query.setParameter("id", foodId);
+        if(query.list().size()==0) return null;
+        order =  query.list();
+        tx.commit();
+        session.close();
+        return  order;
+    }
+
 
     public List<BeanOrderDetail> loadAllDetails() {
         Session session = getSession();
