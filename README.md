@@ -25,6 +25,8 @@ Environments:
 - 1.mysql:5.7及以上
 - 2.GUi javafx && hebernate
 
+
+Instructions:
 - if u want to try ,and your mysql is lower than this versioncan,u can use the following usr and pwd to login the  test database
 - url: 139.9.90.185/Kitchen
 - usr Kitchen
