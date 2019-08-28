@@ -6,14 +6,15 @@
 <?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="585.0" prefWidth="152.0" style="-fx-background-color: #1976D2;" stylesheets="@../../theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.main.toolbar.Toolbar">
+<VBox prefHeight="585.0" prefWidth="152.0" style="-fx-background-color: #1976D2;" stylesheets="@../../theme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.mainUser.toolbar.Toolbar">
    <children>
-      <JFXButton fx:id="addUser" mnemonicParsing="false" onAction="#addUserStarter" prefHeight="73.0" prefWidth="167.0" text="用户注册">
+
+      <JFXButton fx:id="btnAddFoodOrder" mnemonicParsing="false" onAction="#addFoodOrderStarter" prefHeight="73.0" prefWidth="167.0" text="添加订单">
          <graphic>
-            <FontAwesomeIcon glyphName="GROUP" size="40" text="" translateX="-10.0" />
+            <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnAddFoodOrder" mnemonicParsing="false" onAction="#addFoodOrderStarter" prefHeight="73.0" prefWidth="167.0" text="添加订单">
+      <JFXButton fx:id="btnAddRecipe" mnemonicParsing="false" onAction="#addRecipe" prefHeight="73.0" prefWidth="167.0" text="添加菜谱">
          <graphic>
             <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
          </graphic>

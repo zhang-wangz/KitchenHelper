@@ -167,7 +167,7 @@ public class AddFoodInfo implements Initializable{
     }
 
     public void inflateUI(BeanFoodInfo foodInfo){
-        foodDes.setText(foodInfo.getFoodId());
+        foodDes.setText(foodInfo.getFoodDes());
         foodName.setText(foodInfo.getFoodName());
         foodPrice.setText(foodInfo.getFoodPrice().toString());
         num.setText(foodInfo.getFoodNum().toString());

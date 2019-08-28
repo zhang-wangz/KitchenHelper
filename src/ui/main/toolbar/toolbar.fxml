@@ -28,20 +28,20 @@
             <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnAddFoodOrder" mnemonicParsing="false" onAction="#addFoodOrderStarter" prefHeight="73.0" prefWidth="167.0" text="添加订单">
-         <graphic>
-            <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
-         </graphic>
-      </JFXButton>
+<!--      <JFXButton fx:id="btnAddFoodOrder" mnemonicParsing="false" onAction="#addFoodOrderStarter" prefHeight="73.0" prefWidth="167.0" text="添加订单">-->
+<!--         <graphic>-->
+<!--            <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />-->
+<!--         </graphic>-->
+<!--      </JFXButton>-->
       <JFXButton fx:id="btnAddBuyFoodOrder" mnemonicParsing="false" onAction="#addBuyOrderStarter" prefHeight="73.0" prefWidth="167.0" text="添加采购">
          <graphic>
             <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnAddRecipe" mnemonicParsing="false" onAction="#addRecipe" prefHeight="73.0" prefWidth="167.0" text="添加菜谱">
-         <graphic>
-            <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />
-         </graphic>
-      </JFXButton>
+<!--      <JFXButton fx:id="btnAddRecipe" mnemonicParsing="false" onAction="#addRecipe" prefHeight="73.0" prefWidth="167.0" text="添加菜谱">-->
+<!--         <graphic>-->
+<!--            <FontAwesomeIcon glyphName="CUT" size="40" text="" translateX="-10.0" />-->
+<!--         </graphic>-->
+<!--      </JFXButton>-->
    </children>
 </VBox>

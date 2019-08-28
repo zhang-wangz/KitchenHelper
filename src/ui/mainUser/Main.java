@@ -309,6 +309,9 @@ public class Main implements Initializable{
     @FXML
     private TableColumn<BeanRecipeComment,Integer> RecipeCommentScore;
 
+    private BeanMyUser Currentuser = BeanMyUser.currentUser;
+    private BeanOperator CurrentAdmin = BeanOperator.currentOperator;
+
 
 
 
@@ -598,13 +601,14 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            Integer status = null;
-            try {
-                status = KitchenSystemUtil.foodOrderController.findOrderById(orderDetail.getOrderId()).getOrderStatus();
-                showDialog("订单状态异常，请稍后再试");
-            } catch (BaseException ex) {
-                ex.printStackTrace();
+            Integer status;
+            status = KitchenSystemUtil.foodOrderController.findOrderById(orderDetail.getOrderId()).getOrderStatus();
+            boolean isCreate = Currentuser.getUserId().equals(KitchenSystemUtil.foodOrderController.findOrderById(orderDetail.getOrderId()).getUserId());
+            if(!isCreate){
+                showDialog("该订单不是您所创建，无法删除");
+                return;
             }
+
             if(status != 0){
                 showDialog("订单货物" + orderDetail.getOrderId() + "未处于下单状态，无法删除");
             }else {
@@ -631,6 +635,10 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            if(!Currentuser.getUserName().equals(KitchenSystemUtil.recipeController.findRecipeByRecipeId(recipematerials.getRecipeId()).getContriUsr())){
+                showDialog("该菜谱不是由您所创建创建，无法删除");
+                return;
+            }
 
             KitchenSystemUtil.recipeController.delRecipeDetail(recipematerials);
             showDialog("菜谱内容" + recipematerials.getFoodId() + "已删除");
@@ -642,28 +650,7 @@ public class Main implements Initializable{
 
 
 
-    @FXML
-    void deleteBuyOrderDetail(ActionEvent event){
-        BeanBuyFood buyFood = buyOrderTbl.getSelectionModel().getSelectedItem();
 
-        if(buyFood == null){
-            showDialog("请选择要删除的采购单货物");
-            return;
-        }
-        JFXButton btnOK = new JFXButton("去意已决");
-        JFXButton btnCancel = new JFXButton("再想想");
-        btnCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            showCancelDialog("删除");
-        });
-        btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            Integer status = null;
-            KitchenSystemUtil.buyFoodController.delOrderDetail(buyFood);
-            showDialog("订单货物" + buyFood.getBuyOrderId() + "已删除");
-
-
-        });
-        showConfirmDialog("是否要删除订单货物"+buyFood.getFoodId()+" ?", Arrays.asList(btnCancel, btnOK));
-    }
 
 
 
@@ -680,11 +667,21 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            int num = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(order.getOrderId()).size();
-            if(num > 0){
-                showDialog("订单"+order.getOrderId()+"处于活跃状态，不可删除");
-            }else {
+            List<BeanOrderDetail> details  = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(order.getOrderId());
+            int num = details.size();
+            Boolean isBenREN = CurrentAdmin != null || Currentuser.getUserId().equals(order.getUserId());
+            if(order.getOrderStatus() == 2 ){
+                showDialog("订单"+order.getOrderId()+"处于配送状态，不可删除");
+                return;
+            }
+            else if(isBenREN){
+                showDialog("当前订单不是您创建的，无法删除");
+                return;
+            } else{
                 KitchenSystemUtil.foodOrderController.delOrder(order.getOrderId());
+                for(BeanOrderDetail detail: details){
+                    KitchenSystemUtil.delete(detail);
+                }
                 showDialog("订单" + order.getOrderId() + "已删除");
             }
         });
@@ -1033,6 +1030,12 @@ public class Main implements Initializable{
             showDialog("请选择要操作的菜谱步骤");
             return;
         }
+
+        boolean isCreate = Currentuser.getUserName().equals(KitchenSystemUtil.recipeController.findRecipeByRecipeId(recipeStep.getRecipeId()).getContriUsr());
+        if(!isCreate){
+            showDialog("该菜谱不是您所创建的，无法修改");
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeSteps/addRecipeSteps.fxml"));
             Parent parent = loader.load();
@@ -1194,6 +1197,11 @@ public class Main implements Initializable{
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeComment/addRecipeComment.fxml"));
+
+            boolean isCreate = Currentuser.getUserId().equals(recipeComment.getUserId());
+            if(isCreate) {
+                showDialog("该评论不是您所创建，无法修改");
+            }
             Parent parent = loader.load();
             AddRecipeComment addRecipeComment = (AddRecipeComment) loader.getController();
             addRecipeComment.inflateUI(recipeComment);
@@ -1548,6 +1556,10 @@ public class Main implements Initializable{
             showCancelDialog("确认退货");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            if(order.getOrderStatus() == 2){
+                showDialog("该订单处于送达状态，请联系商家进行退货处理，在管理界面无法退货");
+                return;
+            }
             order.setOrderStatus(3);
             KitchenSystemUtil.update(order);
             showDialog("订单"+order.getOrderId()+"已退货");
@@ -2137,7 +2149,7 @@ public class Main implements Initializable{
 
     private ObservableList<String> getChoice1(){
         ObservableList<String> choice = FXCollections.observableArrayList();
-        choice.addAll("订单","采购单");
+        choice.addAll("订单");
         return choice;
     }
 
@@ -2254,7 +2266,7 @@ public class Main implements Initializable{
 
     private void initDrawer() {
         try {
-            VBox toolbar = FXMLLoader.load(getClass().getResource("/ui/main/toolbar/toolbar.fxml"));
+            VBox toolbar = FXMLLoader.load(getClass().getResource("/ui/mainUser/toolbar/toolbar.fxml"));
             drawer.setSidePane(toolbar);
             drawer.setDefaultDrawerSize(150);
             HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(hamburger);

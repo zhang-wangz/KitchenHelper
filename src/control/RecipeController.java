@@ -50,6 +50,18 @@ public class RecipeController {
         session.close();
     }
 
+    public BeanRecipematerials findRecipeDetail (BeanRecipematerials detail){
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("from BeanRecipematerials b where b.foodId = :foodId and b.recipeId = :recipeId");
+        query.setParameter("foodId", detail.getFoodId());
+        query.setParameter("recipeId", detail.getRecipeId());
+        BeanRecipematerials recipematerials = null;
+        if(query.list().size()!=0)  recipematerials = (BeanRecipematerials) query.list().get(0);
+        return recipematerials;
+
+    }
+
 
     public List<BeanRecipe> loadAll(){
         List<BeanRecipe> lsit = null;

@@ -82,7 +82,7 @@
                                           <VBox alignment="CENTER" prefHeight="275.0" prefWidth="297.0">
                                              <children>
                                                 <JFXComboBox fx:id="choiceType1" focusColor="WHITE" labelFloat="true" onAction="#OrderOrAppointmentChoice" prefHeight="22.0" prefWidth="294.0" promptText="类型" unFocusColor="WHITE" />
-                                                <JFXTextField fx:id="orderId" labelFloat="true" onAction="#loadOrderOrAppointmentInfo" promptText="订单或采购单ID">
+                                                <JFXTextField fx:id="orderId" labelFloat="true" onAction="#loadOrderOrAppointmentInfo" promptText="订单">
                                                    <VBox.margin>
                                                       <Insets top="40.0" />
                                                    </VBox.margin></JFXTextField>
@@ -210,8 +210,8 @@
                                           <MenuItem mnemonicParsing="false" onAction="#deleteOperator" text="删除" />
                                           <MenuItem mnemonicParsing="false" onAction="#editOperator" text="编辑" />
                                           <MenuItem mnemonicParsing="false" onAction="#refreshOperator" text="刷新" />
-                                          <MenuItem mnemonicParsing="false" onAction="#levelUpOperator" text="升级" />
-                                          <MenuItem mnemonicParsing="false" onAction="#levelDownOperator" text="降级" />
+<!--                                          <MenuItem mnemonicParsing="false" onAction="#levelUpOperator" text="升级" />-->
+<!--                                          <MenuItem mnemonicParsing="false" onAction="#levelDownOperator" text="降级" />-->
                                        </items>
                                     </ContextMenu>
                                  </contextMenu>
@@ -238,8 +238,8 @@
                                  <contextMenu>
                                     <ContextMenu>
                                        <items>
-                                          <MenuItem mnemonicParsing="false" onAction="#deleteUser" text="删除" />
-                                          <MenuItem mnemonicParsing="false" onAction="#editUser" text="编辑" />
+<!--                                          <MenuItem mnemonicParsing="false" onAction="#deleteUser" text="删除" />-->
+<!--                                          <MenuItem mnemonicParsing="false" onAction="#editUser" text="编辑" />-->
                                           <MenuItem mnemonicParsing="false" onAction="#refreshUser" text="刷新" />
                                        </items>
                                     </ContextMenu>
@@ -327,11 +327,11 @@
                                                 <Insets left="10.0" top="10.0" />
                                              </HBox.margin>
                                           </Text>
-                                          <JFXButton buttonType="RAISED" onAction="#deleteOrder" text="删除订单">
-                                             <HBox.margin>
-                                                <Insets left="20.0" top="10.0" />
-                                             </HBox.margin>
-                                          </JFXButton>
+<!--                                          <JFXButton buttonType="RAISED" onAction="#deleteOrder" text="删除订单">-->
+<!--                                             <HBox.margin>-->
+<!--                                                <Insets left="20.0" top="10.0" />-->
+<!--                                             </HBox.margin>-->
+<!--                                          </JFXButton>-->
                                           <JFXButton buttonType="RAISED" onAction="#sendOrder" text="开始配送">
                                              <HBox.margin>
                                                 <Insets left="20.0" top="10.0" />
@@ -343,11 +343,11 @@
                                              </HBox.margin>
                                           </JFXButton>
 
-                                          <JFXButton buttonType="RAISED" onAction="#changeOrderToCancel" text="退回货物">
-                                             <HBox.margin>
-                                                <Insets left="20.0" top="10.0" />
-                                             </HBox.margin>
-                                          </JFXButton>
+<!--                                          <JFXButton buttonType="RAISED" onAction="#changeOrderToCancel" text="退回货物">-->
+<!--                                             <HBox.margin>-->
+<!--                                                <Insets left="20.0" top="10.0" />-->
+<!--                                             </HBox.margin>-->
+<!--                                          </JFXButton>-->
                                        </children>
                                        <VBox.margin>
                                           <Insets top="20.0" />
@@ -606,11 +606,11 @@
                                                 <Insets left="20.0" top="10.0" />
                                              </HBox.margin>
                                           </JFXButton>
-                                          <JFXButton buttonType="RAISED" onAction="#createRecipeComment" text="增加评论">
-                                             <HBox.margin>
-                                                <Insets left="20.0" top="10.0" />
-                                             </HBox.margin>
-                                          </JFXButton>
+<!--                                          <JFXButton buttonType="RAISED" onAction="#createRecipeComment" text="增加评论">-->
+<!--                                             <HBox.margin>-->
+<!--                                                <Insets left="20.0" top="10.0" />-->
+<!--                                             </HBox.margin>-->
+<!--                                          </JFXButton>-->
                                        </children>
                                        <VBox.margin>
                                           <Insets top="20.0" />
@@ -631,7 +631,7 @@
                                           <ContextMenu>
                                              <items>
                                                 <MenuItem mnemonicParsing="false" onAction="#deleteRecipeComment" text="删除" />
-                                                <MenuItem mnemonicParsing="false" onAction="#editRecipeComment" text="编辑" />
+<!--                                                <MenuItem mnemonicParsing="false" onAction="#editRecipeComment" text="编辑" />-->
                                                 <MenuItem mnemonicParsing="false" onAction="#refreshRecipeComment" text="刷新" />
                                              </items>
                                           </ContextMenu>

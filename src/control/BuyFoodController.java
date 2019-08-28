@@ -117,6 +117,7 @@ public class BuyFoodController {
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("delete from BeanBuyFood  b where b.BuyOrderId  = :orderid");
         query.setParameter("orderid",orderId);
+        query.executeUpdate();
         tx.commit();
     }
     public int getBuyOrderCount(Integer cate1){

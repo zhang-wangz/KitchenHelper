@@ -368,6 +368,9 @@ public class Main implements Initializable{
     private String choice1 = "";
     private String choice2 = "";
 
+    private BeanMyUser Currentuser = BeanMyUser.currentUser;
+    private BeanOperator CurrentAdmin = BeanOperator.currentOperator;
+
 //    @FXML
 //    void showProductBarcode(ActionEvent event) {
 //        BeanProduct product = productTbl.getSelectionModel().getSelectedItem();
@@ -536,15 +539,12 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            Integer status = null;
-            try {
+            Integer status ;
+
                 status = KitchenSystemUtil.foodOrderController.findOrderById(orderDetail.getOrderId()).getOrderStatus();
-                showDialog("订单状态异常，请稍后再试");
-            } catch (BaseException ex) {
-                ex.printStackTrace();
-            }
-            if(status != 0){
-                showDialog("订单货物" + orderDetail.getOrderId() + "未处于下单状态，无法删除");
+
+            if(status != 0 && status != 3){
+                showDialog("订单货物" + orderDetail.getOrderId() + "未处于下单或退货状态，无法删除");
             }else {
                 KitchenSystemUtil.foodOrderController.delOrderDetail(orderDetail);
                 showDialog("订单货物" + orderDetail.getFoodId() + "已删除");
@@ -594,11 +594,13 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-                Integer status = null;
+                Integer status = buyFood.getStatus();
+                if(status == 1 || status == 2){
+                    showDialog("该采购处于配送或入库状态，无法删除");
+                    return;
+                }
                 KitchenSystemUtil.buyFoodController.delOrderDetail(buyFood);
                 showDialog("订单货物" + buyFood.getBuyOrderId() + "已删除");
-
-
         });
         showConfirmDialog("是否要删除订单货物"+buyFood.getFoodId()+" ?", Arrays.asList(btnCancel, btnOK));
     }
@@ -618,11 +620,21 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            int num = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(order.getOrderId()).size();
-            if(num > 0){
-                showDialog("订单"+order.getOrderId()+"处于活跃状态，不可删除");
-            }else {
+            List<BeanOrderDetail> details  = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(order.getOrderId());
+            int num = details.size();
+            Boolean isBenREN = CurrentAdmin != null || Currentuser.getUserId().equals(order.getUserId());
+            if(order.getOrderStatus() == 2 ){
+                showDialog("订单"+order.getOrderId()+"处于配送状态，不可删除");
+                return;
+            }
+            else if(isBenREN){
+                showDialog("当前订单不是您创建的，无法删除");
+                return;
+            } else{
                 KitchenSystemUtil.foodOrderController.delOrder(order.getOrderId());
+                for(BeanOrderDetail detail: details){
+                    KitchenSystemUtil.delete(detail);
+                }
                 showDialog("订单" + order.getOrderId() + "已删除");
             }
         });
@@ -644,19 +656,15 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            int num = KitchenSystemUtil.recipeController.loadRecipeDetailByRecipeId(recipe.getRecipeId()).size();
+            List<BeanRecipematerials> details = KitchenSystemUtil.recipeController.loadRecipeDetailByRecipeId(recipe.getRecipeId());
             Boolean isCreated = null;
             if(BeanOperator.currentOperator == null)
-                isCreated = BeanMyUser.currentUser.getUserName() == recipe.getContriUsr();
+                isCreated = BeanMyUser.currentUser.getUserName().equals(recipe.getContriUsr());
             else
-                isCreated = BeanOperator.currentOperator.getOpName() == recipe.getContriUsr();
+                isCreated = true;
 
             if(!isCreated){
                 showDialog("该菜谱并非由当前登陆账户所建立,无法删除");
-            }
-
-            if(num > 0){
-                showDialog("菜谱"+recipe.getRecipeName()+"处于活跃状态，不可删除");
             }else {
                 KitchenSystemUtil.foodOrderController.delOrder(recipe.getRecipeName());
                 showDialog("菜谱" + recipe.getRecipeName() + "已删除");
@@ -714,15 +722,22 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            int num = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(orderId).size();
-            if(num > 0){
-                showDialog("订单"+order.get(0).getBuyOrderId()+"处于活跃状态，不可删除");
-            }else {
-                KitchenSystemUtil.buyFoodController.delOrder(orderId);
-                showDialog("订单" + order.get(0).getBuyOrderId() + "已删除");
+            List<BeanBuyFood> details  = KitchenSystemUtil.buyFoodController.loadDetailByOrderId(orderId);
+            int num = details.size();
+            Boolean isBenREN = CurrentAdmin != null || CurrentAdmin.getOpId() == order.get(0).getBuyOrderId();
+            if(order.get(0).getStatus() == 2  || order.get(0).getStatus() == 1){
+                showDialog("采购订单"+order.get(0).getBuyOrderId() + "处于配送或入库状态，不可删除");
+                return;
+            }
+            else if(isBenREN){
+                showDialog("尊敬的管理员，当前采购订单不是由您创建的，暂时无法删除");
+                return;
+            } else{
+                KitchenSystemUtil.buyFoodController.delOrder(order.get(0).getBuyOrderId());
+                showDialog("采购订单" + order.get(0).getBuyOrderId() + "已删除");
             }
         });
-        showConfirmDialog("是否要删除订单"+orderId+" ?", Arrays.asList(btnCancel, btnOK));
+        showConfirmDialog("是否要删除采购订单"+orderId+" ?", Arrays.asList(btnCancel, btnOK));
     }
 
 
@@ -962,7 +977,6 @@ public class Main implements Initializable{
             showDialog("请选择要操作的菜谱");
             return;
         }
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeInfo/addRecipeInfo.fxml"));
             Parent parent = loader.load();
@@ -1257,6 +1271,10 @@ public class Main implements Initializable{
             showCancelDialog("配送");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            if(order.getOrderStatus() != 0 ){
+                showDialog("该订单未处于下单状态状态，无法开始配送");
+                return;
+            }
             order.setOrderStatus(1);
             KitchenSystemUtil.update(order);
             showDialog("订单"+order.getOrderId()+"开始配送");
@@ -1301,6 +1319,11 @@ public class Main implements Initializable{
             showCancelDialog("确认送达");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            if(order.getOrderStatus() == 0 || order.getOrderStatus() == 3)
+            {
+                showDialog("该订单处于下单或退货状态状态，无法结束配送");
+                return;
+            }
             order.setOrderStatus(2);
             KitchenSystemUtil.update(order);
             showDialog("订单"+order.getOrderId()+"已送达");
@@ -1949,7 +1972,7 @@ public class Main implements Initializable{
 
     private ObservableList<String> getChoice1(){
         ObservableList<String> choice = FXCollections.observableArrayList();
-        choice.addAll("订单","采购单");
+        choice.addAll("订单");
         return choice;
     }
 

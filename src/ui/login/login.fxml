@@ -9,7 +9,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="center" hgap="10" prefHeight="246.0" prefWidth="364.0" stylesheets="@../theme.css" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.login.Login">
+<GridPane alignment="center" hgap="10" prefWidth="364.0" stylesheets="@../theme.css" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.login.Login">
     <columnConstraints>
         <ColumnConstraints />
     </columnConstraints>
@@ -20,21 +20,23 @@
       <RowConstraints maxHeight="216.0" minHeight="216.0" prefHeight="216.0" />
     </rowConstraints>
     <children>
-        <AnchorPane fx:id="rootPane" prefHeight="216.0" prefWidth="349.0" stylesheets="@../theme.css" GridPane.rowIndex="3" />
+        <AnchorPane fx:id="rootPane" prefWidth="349.0" stylesheets="@../theme.css" GridPane.rowIndex="3">
+         <children>
+             <FontAwesomeIcon glyphName="LOCK" layoutX="165.0" layoutY="32.0" size="60" />
+             <JFXButton fx:id="login" buttonType="RAISED" layoutX="51.0" layoutY="131.0" onAction="#userLogin" prefHeight="36.0" prefWidth="71.0" ripplerFill="WHITE" text="登录" textFill="WHITE" />
+             <JFXButton fx:id="login1" buttonType="RAISED" layoutX="149.0" layoutY="131.0" onAction="#addUserStarter" prefHeight="36.0" prefWidth="71.0" ripplerFill="WHITE" text="注册" textFill="WHITE" />
+             <JFXButton buttonType="RAISED" cancelButton="true" layoutX="244.0" layoutY="131.0" onAction="#quit" prefHeight="36.0" prefWidth="71.0" ripplerFill="WHITE" text="退出" textFill="WHITE" />
+         </children></AnchorPane>
       <VBox prefHeight="200.0" prefWidth="360.0" GridPane.rowIndex="2">
          <children>
                 <Pane prefHeight="200.0" prefWidth="360.0">
                     <children>
                         <JFXTextField fx:id="username" focusColor="#002697" labelFloat="true" layoutX="74.0" layoutY="25.0" prefHeight="27.0" prefWidth="223.0" promptText="用户名" />
                         <JFXPasswordField fx:id="password" labelFloat="true" layoutX="74.0" layoutY="74.0" onAction="#userLogin" prefHeight="27.0" prefWidth="223.0" promptText="密  码" />
-                        <JFXButton fx:id="login" buttonType="RAISED" layoutX="65.0" layoutY="141.0" onAction="#userLogin" prefHeight="36.0" prefWidth="71.0" ripplerFill="WHITE" text="登录" textFill="WHITE" />
-                        <JFXButton buttonType="RAISED" cancelButton="true" layoutX="227.0" layoutY="141.0" onAction="#quit" prefHeight="36.0" prefWidth="71.0" ripplerFill="WHITE" text="退出" textFill="WHITE" />
                   <FontAwesomeIcon glyphName="USER" layoutX="36.0" layoutY="46.0" size="22" wrappingWidth="16.0" />
                   <FontAwesomeIcon glyphName="KEY" layoutX="36.0" layoutY="95.0" size="22" text="" wrappingWidth="16.0" />
                   <JFXCheckBox fx:id="isAdmin" checkedColor="#002697" layoutX="148.0" layoutY="111.0" text="管理员" textFill="WHITE" unCheckedColor="WHITE" />
                   <FontAwesomeIcon layoutX="38.0" layoutY="125.0" text="" />
-      
-                        <FontAwesomeIcon glyphName="LOCK" layoutX="163.0" layoutY="36.0" size="60" />
                     </children>
                 </Pane>
          </children>

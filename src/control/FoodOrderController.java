@@ -40,14 +40,14 @@ public class FoodOrderController {
         session.close();
     }
 
-    public BeanFoodOrder findOrderById(String id) throws BaseException {
+    public BeanFoodOrder findOrderById(String id){
         BeanFoodOrder order = new BeanFoodOrder();
         Session session = getSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("from BeanFoodOrder b where b.orderId = :id");
         query.setParameter("id", id);
         if(query.list().size()==0){
-            throw new BaseException("¶©µ¥²»´æÔÚ");
+            return null;
         }
         order = (BeanFoodOrder) query.list().get(0);
         tx.commit();

@@ -38,6 +38,14 @@ public class KitchenSystemUtil {
         session.close();
     }
 
+    public static void delete(Object o) {
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        session.delete(o);
+        tx.commit();
+        session.close();
+    }
+
     public static int getCount(String cate){
         Session session = getSession();
         Transaction tx = session.beginTransaction();

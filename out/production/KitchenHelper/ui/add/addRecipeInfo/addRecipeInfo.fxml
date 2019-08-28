@@ -24,9 +24,9 @@
                </VBox.margin>
             </JFXTextField>
 
-<!--            <Label fx:id="recipeScore" text="菜谱评分" />-->
-<!--            <Label fx:id="recipeColl" text="收藏人数" />-->
-<!--            <Label fx:id="recipeBrow" text="浏览人数" />-->
+            <Label fx:id="recipeScore" text="菜谱评分" />
+            <Label fx:id="recipeColl" text="收藏人数" />
+            <Label fx:id="recipeBrow" text="浏览人数" />
 
 
             <HBox fx:id="hbox1" prefHeight="79.0" prefWidth="310.0">

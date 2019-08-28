@@ -42,7 +42,10 @@ public class Toolbar {
         showWindow("/ui/add/addBuyFood/addBuyFood.fxml","添加采购");
     }
 
-
+    @FXML
+    void addRecipe(ActionEvent event) {
+        showWindow("/ui/add/addRecipeInfo/addRecipeInfo.fxml","添加食谱");
+    }
 
     private void showWindow(String loc, String title){
         try {

@@ -32,10 +32,10 @@ public class Toolbar {
         showWindow("/ui/add/addUser/addUser.fxml","添加用户");
     }
 
-    @FXML
-    void addFoodOrderStarter(ActionEvent event) {
-        showWindow("/ui/add/addFoodOrder/addFoodOrder.fxml","添加订单");
-    }
+//    @FXML
+//    void addFoodOrderStarter(ActionEvent event) {
+//        showWindow("/ui/add/addFoodOrder/addFoodOrder.fxml","添加订单");
+//    }
 
     @FXML
     void addBuyOrderStarter(ActionEvent event) {
@@ -51,7 +51,7 @@ public class Toolbar {
 
     @FXML
     void addRecipeSteps(ActionEvent event){
-        showWindow("/ui/add/addRecipeSteps/addRecipeSteps.fxml","添加食谱步骤");
+        showWindow("/ui/add/addRecipeSteps/addRecipeSteps.fxml","添加菜谱步骤");
     }
 
 

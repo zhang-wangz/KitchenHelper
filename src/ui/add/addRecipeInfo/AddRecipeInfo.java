@@ -221,14 +221,16 @@ public class AddRecipeInfo implements Initializable{
             recipe.setRecipeId(KeyUtil.getUniqueKey());
         }else{
             recipe.setRecipeId(recipe.getRecipeId());
-            recipe.setContriUsr(recipe.getRecipeName());
+            recipe.setContriUsr(recipe.getContriUsr());
         }
         recipe.setRecipeName(recipeName.getText());
         recipe.setRecipeDes(recipeDes.getText());
-        //wait 三个收藏,浏览暂时指定为1
-        recipe.setRecipeBrow(0);
-        recipe.setRecipeColl(0);
-        recipe.setRecipeScore(0);
+
+        if(!isEditMode){
+            recipe.setRecipeBrow(0);
+            recipe.setRecipeColl(0);
+            recipe.setRecipeScore(0);
+        }
 
 //        discount = Double.parseDouble(foodDiscount.getText());
 
@@ -255,6 +257,7 @@ public class AddRecipeInfo implements Initializable{
 
 
             product1 = productBox1.getSelectionModel().getSelectedItem();
+
             BeanRecipematerials detail = new BeanRecipematerials();
             detail.setRecipeId(recipe.getRecipeId());
             detail.setFoodId(product1.getFoodId());
@@ -267,9 +270,11 @@ public class AddRecipeInfo implements Initializable{
 
 
             if(isEditMode){
-                detail.setRecipeId(recipeid1);
-                detail.setFoodId(foodid1);
-                KitchenSystemUtil.update(detail);
+                detail.setRecipeId(recipe.getRecipeId());
+                detail.setFoodId(product1.getFoodId());
+                if(KitchenSystemUtil.recipeController.findRecipeDetail(detail) == null ){
+                    KitchenSystemUtil.save(detail);
+                }else KitchenSystemUtil.update(detail);
             }else{
                 KitchenSystemUtil.save(detail);
             }
@@ -288,9 +293,11 @@ public class AddRecipeInfo implements Initializable{
 
 
             if(isEditMode){
-                detail.setRecipeId(recipeid2);
-                detail.setFoodId(foodid2);
-                KitchenSystemUtil.update(detail);
+                detail.setRecipeId(recipe.getRecipeId());
+                detail.setFoodId(product2.getFoodId());
+                if(KitchenSystemUtil.recipeController.findRecipeDetail(detail) == null ){
+                    KitchenSystemUtil.save(detail);
+                }else KitchenSystemUtil.update(detail);
             }else{
                 KitchenSystemUtil.save(detail);
             }
@@ -308,9 +315,11 @@ public class AddRecipeInfo implements Initializable{
 
 
             if(isEditMode){
-                detail.setRecipeId(recipeid3);
-                detail.setFoodId(foodid3);
-                KitchenSystemUtil.update(detail);
+                detail.setRecipeId(recipe.getRecipeId());
+                detail.setFoodId(product3.getFoodId());
+                if(KitchenSystemUtil.recipeController.findRecipeDetail(detail) == null ){
+                    KitchenSystemUtil.save(detail);
+                }else KitchenSystemUtil.update(detail);
             }else{
                 KitchenSystemUtil.save(detail);
             }
@@ -329,9 +338,11 @@ public class AddRecipeInfo implements Initializable{
 
 
             if(isEditMode){
-                detail.setRecipeId(recipeid4);
-                detail.setFoodId(foodid4);
-                KitchenSystemUtil.update(detail);
+                detail.setRecipeId(recipe.getRecipeId());
+                detail.setFoodId(product4.getFoodId());
+                if(KitchenSystemUtil.recipeController.findRecipeDetail(detail) == null ){
+                    KitchenSystemUtil.save(detail);
+                }else KitchenSystemUtil.update(detail);
             }else{
                 KitchenSystemUtil.save(detail);
             }
@@ -586,9 +597,11 @@ public class AddRecipeInfo implements Initializable{
         recipeName.setText(recipe.getRecipeName());
         recipeDes.setText(recipe.getRecipeDes());
 
-        recipeBrow.setText(recipe.getRecipeBrow().toString());
-        recipeColl.setText(recipe.getRecipeColl().toString());
-        recipeScore.setText(recipe.getRecipeScore().toString());
+//        System.out.println(recipe.getRecipeBrow().toString());
+        recipeBrow.setText("菜谱浏览人数:"+recipe.getRecipeBrow().toString());
+
+        recipeColl.setText("菜谱收藏人数:"+recipe.getRecipeColl().toString());
+        recipeScore.setText("菜谱评分:"+recipe.getRecipeScore().toString());
 
 
         int size = details.size();
