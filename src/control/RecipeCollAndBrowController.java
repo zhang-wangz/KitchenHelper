@@ -103,7 +103,7 @@ public class RecipeCollAndBrowController {
                 recipeComment.setBrowseSig(1);
                 KitchenSystemUtil.update(recipeComment);
             }else{
-                KitchenSystemUtil.save(recipeComment);
+                return;
             }
         }
     }

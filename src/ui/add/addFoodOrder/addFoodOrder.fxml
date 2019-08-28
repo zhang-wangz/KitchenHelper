@@ -12,11 +12,11 @@
          <children>
 
 
-            <JFXTextField fx:id="foodOrderUsrName" labelFloat="true" promptText="用户名">
+            <Label fx:id="foodOrderUsrName" text="用户名">
                <VBox.margin>
                   <Insets bottom="30.0" left="30.0" right="30.0" top="10.0" />
                </VBox.margin>
-            </JFXTextField>
+            </Label>
 
             <JFXTextField fx:id="foodOrderSendAddress" labelFloat="true" promptText="配送地址">
                <VBox.margin>
@@ -30,11 +30,11 @@
                </VBox.margin>
             </JFXTextField>
 
-            <JFXTextField fx:id="foodOrderOrderStatus" labelFloat="true" promptText="订单状态">
-               <VBox.margin>
-                  <Insets bottom="30.0" left="30.0" right="30.0" top="10.0" />
-               </VBox.margin>
-            </JFXTextField>
+<!--            <JFXTextField fx:id="foodOrderOrderStatus" labelFloat="true" promptText="订单状态">-->
+<!--               <VBox.margin>-->
+<!--                  <Insets bottom="30.0" left="30.0" right="30.0" top="10.0" />-->
+<!--               </VBox.margin>-->
+<!--            </JFXTextField>-->
 
 
             <HBox fx:id="hbox1" prefHeight="79.0" prefWidth="310.0">
@@ -137,11 +137,11 @@
 
             <HBox fx:id = "hbox5" prefHeight="79.0" prefWidth="310.0">
                <children>
-                  <JFXTextField fx:id="foodDiscount" focusColor="WHITE" labelFloat="true" prefHeight="27.0" prefWidth="151.0" promptText="折扣" unFocusColor="WHITE">
+                  <Label fx:id="foodDiscount"  prefHeight="27.0" prefWidth="151.0" text="折扣">
                      <padding>
                         <Insets top="3.0" />
                      </padding>
-                  </JFXTextField>
+                  </Label>
                   <JFXDatePicker fx:id="foodOrderSendTime" onAction="#foodOrderSendTimeSelected" prefHeight="27.0" prefWidth="99.0" promptText="时间"  >
                      <HBox.margin>
                         <Insets left="30.0" />

@@ -710,9 +710,9 @@ public class Main implements Initializable{
             int num = KitchenSystemUtil.recipeController.loadRecipeDetailByRecipeId(recipe.getRecipeId()).size();
             Boolean isCreated = null;
             if(BeanOperator.currentOperator == null)
-                isCreated = BeanMyUser.currentUser.getUserName() == recipe.getContriUsr();
+                isCreated = BeanMyUser.currentUser.getUserName().equals(recipe.getContriUsr());
             else
-                isCreated = BeanOperator.currentOperator.getOpName() == recipe.getContriUsr();
+                isCreated = true;
 
             if(!isCreated){
                 showDialog("该菜谱并非由当前登陆账户所建立,无法删除");
@@ -1063,6 +1063,11 @@ public class Main implements Initializable{
             showDialog("请选择你所要操作的菜谱");
             return;
         }
+        boolean isCreate = BeanMyUser.currentUser.getUserName().equals(KitchenSystemUtil.recipeController.findRecipeByRecipeId(recipe.getRecipeId()).getContriUsr());
+        if(!isCreate){
+            showDialog("该菜谱不是您所创建的，无法修改");
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeSteps/addRecipeSteps.fxml"));
             Parent parent = loader.load();
@@ -1112,6 +1117,11 @@ public class Main implements Initializable{
         String status = KitchenSystemUtil.recipeController.AddRecipeColl(recipe);
         if(BeanMyUser.currentUser == null) userId = BeanOperator.currentOperator.getOpId();
         else userId = BeanMyUser.currentUser.getUserId();
+        BeanRecipeComment recipeComment = KitchenSystemUtil.recipeCommentController.findRecipeCommentByRecipeIdandUsrId(recipe.getRecipeId(),userId);
+        if(recipeComment == null){
+            showDialog("请评论后再进行收藏");
+            return;
+        }
         if(status.equals("ok")) {
             KitchenSystemUtil.recipeCollAndBrowController.changeColSig(userId,recipe.getRecipeId());
             showDialog("收藏成功");
@@ -1151,6 +1161,11 @@ public class Main implements Initializable{
             showDialog("请选择要操作的订单");
             return;
         }
+        boolean isCreate = BeanMyUser.currentUser.getUserId().equals(KitchenSystemUtil.foodOrderController.findOrderById(order.getOrderId()).getUserId());
+        if(!isCreate){
+            showDialog("该订单不是您所创建的，无法修改");
+            return;
+        }
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addFoodOrder/addFoodOrder.fxml"));
@@ -1173,6 +1188,11 @@ public class Main implements Initializable{
         BeanRecipe recipe = recipeBox.getSelectionModel().getSelectedItem();
         if(recipe == null){
             showDialog("请选择要操作的菜谱");
+            return;
+        }
+        boolean isCreate = BeanMyUser.currentUser.getUserName().equals(KitchenSystemUtil.recipeController.findRecipeByRecipeId(recipe.getRecipeId()).getContriUsr());
+        if(!isCreate){
+            showDialog("该菜谱不是您所创建的，无法修改");
             return;
         }
 
@@ -1200,13 +1220,14 @@ public class Main implements Initializable{
             return;
         }
 
+        boolean isCreate = BeanMyUser.currentUser.getUserId().equals(recipeComment.getUserId());
+        if(isCreate) {
+            showDialog("该评论不是您所创建，无法修改");
+            return;
+        }
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeComment/addRecipeComment.fxml"));
-
-            boolean isCreate = BeanMyUser.currentUser.getUserId().equals(recipeComment.getUserId());
-            if(isCreate) {
-                showDialog("该评论不是您所创建，无法修改");
-            }
             Parent parent = loader.load();
             AddRecipeComment addRecipeComment = (AddRecipeComment) loader.getController();
             addRecipeComment.inflateUI(recipeComment);

@@ -29,6 +29,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,13 +42,8 @@ public class AddFoodOrder implements Initializable{
     @FXML
     private JFXDatePicker foodOrderSendTime;
 
-//wait
     @FXML
-    private JFXTextField foodDiscount;
-
-
-    @FXML
-    private JFXTextField foodOrderUsrName;
+    private Label foodOrderUsrName;
 
     @FXML
     private JFXTextField foodOrderSendAddress;
@@ -56,7 +52,7 @@ public class AddFoodOrder implements Initializable{
     private JFXTextField foodOrderUserTel;
 
     @FXML
-    private JFXTextField foodOrderOrderStatus;
+    private Label foodDiscount;
 
 
     @FXML
@@ -115,7 +111,7 @@ public class AddFoodOrder implements Initializable{
     @FXML
     private HBox hbox5;
 
-    private Double discount = 1.0;
+    private Double discount;
     private BeanFoodInfo product1 = null;
     private BeanFoodInfo product2 = null;
     private BeanFoodInfo product3 = null;
@@ -202,13 +198,15 @@ public class AddFoodOrder implements Initializable{
             order = new BeanFoodOrder();
             order.setOrderId(KeyUtil.getUniqueKey());
             order.setOrderStatus(0);
-        }else{
-            order.setOrderStatus(EnumUtils.getByMsg(foodOrderOrderStatus.getText(),FoodOrderStatusEnum.class).getCode());
-            order.setOrderId(order.getOrderId());
+            foodOrderUsrName.setText(BeanMyUser.currentUser.getUserName());
+            order.setUserId(BeanMyUser.currentUser.getUserId());
         }
 
         order.setSendAddress(foodOrderSendAddress.getText());
-        discount = Double.parseDouble(foodDiscount.getText());
+        order.setUserTel(foodOrderUserTel.getText());
+
+
+//        discount = Double.parseDouble(foodDiscount.getText());
 
         if(!isEditMode){
             if(foodsenddate.isBefore(LocalDate.now())){
@@ -219,15 +217,6 @@ public class AddFoodOrder implements Initializable{
         }else{
             order.setSendTime(Date.valueOf(foodsenddate));
         }
-
-        order.setUserTel(foodOrderUserTel.getText());
-
-        //会有找不到用户的错误产生可能
-        if(BeanOperator.currentOperator == null)
-            order.setUserId(KitchenSystemUtil.userController.findUserByName(foodOrderUsrName.getText()).getUserId());
-        else
-            order.setUserId(KitchenSystemUtil.operatorController.findOperatorByName(foodOrderUsrName.getText()).getOpId());
-
 
         if(isEditMode){
             KitchenSystemUtil.update(order);
@@ -241,7 +230,7 @@ public class AddFoodOrder implements Initializable{
             detail.setFoodId(product1.getFoodId());
             detail.setNum(num1);
             detail.setPrice(price1);
-            discount = Double.parseDouble(foodDiscount.getText());
+            discount = getDiscout(price1+price2+price3+price4);
             detail.setDiscount(discount);
 
 
@@ -260,7 +249,7 @@ public class AddFoodOrder implements Initializable{
             detail.setFoodId(product2.getFoodId());
             detail.setNum(num2);
             detail.setPrice(price2);
-            discount = Double.parseDouble(foodDiscount.getText());
+            discount = getDiscout(price1+price2+price3+price4);
             detail.setDiscount(discount);
 
             if(isEditMode){
@@ -278,7 +267,7 @@ public class AddFoodOrder implements Initializable{
             detail.setFoodId(product3.getFoodId());
             detail.setNum(num3);
             detail.setPrice(price3);
-            discount = Double.parseDouble(foodDiscount.getText());
+            discount = getDiscout(price1+price2+price3+price4);
             detail.setDiscount(discount);
 
             if(isEditMode){
@@ -297,7 +286,7 @@ public class AddFoodOrder implements Initializable{
             detail.setFoodId(product4.getFoodId());
             detail.setNum(num4);
             detail.setPrice(price4);
-            discount = Double.parseDouble(foodDiscount.getText());
+            discount = getDiscout(price1+price2+price3+price4);
             detail.setDiscount(discount);
             if(isEditMode){
                 detail.setOrderId(orderid4);
@@ -334,9 +323,11 @@ public class AddFoodOrder implements Initializable{
         if(num2 == 0 || product2 == null){
             productPrice2.setText("价格");
         }else {
-            price2 = (int)(product2.getFoodPrice()*num2 * discount);
+//            price2 = (int)(product2.getFoodPrice()*num2 * discount);
+
+            foodDiscount.setText("折扣:"+String.valueOf(getDiscout(price1+price2+price3+price4)));
+            price2 = (int)(product2.getFoodPrice() * num2* getDiscout(price1+price2+price3+price4));
             productPrice2.setText(String.valueOf(price2)+"元");
-//            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
     }
 
@@ -347,9 +338,11 @@ public class AddFoodOrder implements Initializable{
         if(num2 == 0 || product2 == null){
             productPrice2.setText("价格");
         }else {
-            price2 = (int)(product2.getFoodPrice() * num2* discount);
+//            price2 = (int)(product2.getFoodPrice() * num2* discount);
+
+            foodDiscount.setText("折扣:"+String.valueOf(getDiscout(price1+price2+price3+price4)));
+            price2 = (int)(product2.getFoodPrice() * num2* getDiscout(price1+price2+price3+price4));
             productPrice2.setText(String.valueOf(price2)+"元");
-//            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
 
     }
@@ -365,9 +358,11 @@ public class AddFoodOrder implements Initializable{
         if(num3 == 0 || product3 == null){
             productPrice3.setText("价格");
         }else {
-            price3 = (int)(product3.getFoodPrice()*num3* discount);
+
+
+            foodDiscount.setText("折扣:"+String.valueOf(getDiscout(price1+price2+price3+price4)));
+            price3 = (int)(product3.getFoodPrice()*num3* getDiscout(price1+price2+price3+price4));
             productPrice3.setText(String.valueOf(price3)+"元");
-//            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
     }
 
@@ -378,9 +373,11 @@ public class AddFoodOrder implements Initializable{
         if(num3 == 0 || product3 == null){
             productPrice3.setText("价格");
         }else {
-            price3 = (int)(product3.getFoodPrice()*num3* discount);
+
+
+            foodDiscount.setText("折扣:"+String.valueOf(getDiscout(price1+price2+price3+price4)));
+            price3 = (int)(product3.getFoodPrice()*num3* getDiscout(price1+price2+price3+price4));
             productPrice3.setText(String.valueOf(price3)+"元");
-//            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
     }
 
@@ -395,9 +392,11 @@ public class AddFoodOrder implements Initializable{
         if(num4 == 0 || product4 == null){
             productPrice4.setText("价格");
         }else {
-            price4 =(int) (product4.getFoodPrice()*num4* discount);
+
+
+            foodDiscount.setText("折扣:"+String.valueOf(getDiscout(price1+price2+price3+price4)));
+            price4 = (int)(product4.getFoodPrice()*num4* getDiscout(price1+price2+price3+price4));
             productPrice4.setText(String.valueOf(price4)+"元");
-//            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
 
         }
     }
@@ -409,9 +408,10 @@ public class AddFoodOrder implements Initializable{
         if(num4 == 0 || product4 == null){
             productPrice4.setText("");
         }else {
-            price4 = (int)(product4.getFoodPrice()*num4* discount);
+
+            foodDiscount.setText("折扣:"+String.valueOf(getDiscout(price1+price2+price3+price4)));
+            price4 = (int)(product4.getFoodPrice()*num4 * getDiscout(price1+price2+price3+price4));
             productPrice4.setText(String.valueOf(price4)+"元");
-//            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
     }
 
@@ -426,9 +426,9 @@ public class AddFoodOrder implements Initializable{
         if(num1 == 0 || product1 == null){
             productPrice1.setText("价格");
         }else {
-            price1 =(int)( product1.getFoodPrice()*num1* discount);
+            foodDiscount.setText("折扣:"+String.valueOf(getDiscout(price1+price2+price3+price4)));
+            price1 =(int)( product1.getFoodPrice()*num1* getDiscout(price1+price2+price3+price4));
             productPrice1.setText(String.valueOf(price1)+"元");
-//            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
     }
 
@@ -439,15 +439,29 @@ public class AddFoodOrder implements Initializable{
         if(num1 == 0 || product1 == null){
             productPrice1.setText("价格");
         }else {
-            price1 = (int)(product1.getFoodPrice()*num1* discount);
+
+            foodDiscount.setText("折扣:"+String.valueOf(getDiscout(price1+price2+price3+price4)));
+            price1 =(int)( product1.getFoodPrice()*num1* getDiscout(price1+price2+price3+price4));
             productPrice1.setText(String.valueOf(price1)+"元");
-//            orderTotalPrice.setText("总价:"+String.valueOf(price1+price2+price3+price4)+"元");
         }
 
     }
 
+    private  double getDiscout(Integer num){
+        double discount = 1;
+        if(num>100) {
+            discount = 0.9;
+        }
+        if(num<200 && num >100)  discount = 0.85;
+        if(num>200 && num <300)  discount = 0.8;
+        if(num > 500) discount = 0.77;
+        return  discount;
+    }
+
     private LocalDate Date2LocalDate(java.util.Date dateToConvert) {
-        return dateToConvert.toInstant()
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateToConvert);
+        return cal.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }
@@ -470,6 +484,13 @@ public class AddFoodOrder implements Initializable{
         productBox4.setItems(products);
 //        userBox.setItems(users);
 
+        if(!isEditMode) {
+            String usrName;
+            if (BeanMyUser.currentUser == null) usrName = BeanOperator.currentOperator.getOpName();
+            else usrName = BeanMyUser.currentUser.getUserName();
+            foodOrderUsrName.setText("用户:"+usrName);
+        }
+
         RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
         NumberValidator numberValidator = new NumberValidator();
         requiredFieldValidator.setMessage("此为必填项");
@@ -477,8 +498,8 @@ public class AddFoodOrder implements Initializable{
 
         productBox1.getValidators().add(requiredFieldValidator);
         productNum1.getValidators().add(requiredFieldValidator);
-        foodOrderUsrName.getValidators().add(requiredFieldValidator);
-        foodDiscount.getValidators().add(requiredFieldValidator);
+//        foodOrderUsrName.getValidators().add(requiredFieldValidator);
+//        foodDiscount.getValidators().add(requiredFieldValidator);
         productNum1.getValidators().add(numberValidator);
         productNum2.getValidators().add(numberValidator);
         productNum3.getValidators().add(numberValidator);
@@ -487,23 +508,23 @@ public class AddFoodOrder implements Initializable{
 //        userBox.getValidators().add(requiredFieldValidator);
 
 
-        foodOrderUsrName.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue){
-                    foodOrderUsrName.validate();
-                }
-            }
-        });
-
-        foodDiscount.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue){
-                    foodDiscount.validate();
-                }
-            }
-        });
+//        foodOrderUsrName.focusedProperty().addListener(new ChangeListener<Boolean>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//                if(!newValue){
+//                    foodOrderUsrName.validate();
+//                }
+//            }
+//        });
+//
+//        foodDiscount.focusedProperty().addListener(new ChangeListener<Boolean>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//                if(!newValue){
+//                    foodDiscount.validate();
+//                }
+//            }
+//        });
 
         productBox1.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -557,7 +578,7 @@ public class AddFoodOrder implements Initializable{
         foodOrderUsrName.setText(KitchenSystemUtil.userController.findUserById(order.getUserId()).getUserName());
         foodOrderSendAddress.setText(order.getSendAddress());
         foodOrderUserTel.setText(order.getUserTel());
-        foodOrderOrderStatus.setText(EnumUtils.getByCode(order.getOrderStatus(), FoodOrderStatusEnum.class).getMsg());
+//        foodOrderOrderStatus.setText(EnumUtils.getByCode(order.getOrderStatus(), FoodOrderStatusEnum.class).getMsg());
         foodDiscount.setText(details.get(0).getDiscount().toString());
         foodOrderSendTime.setValue(Date2LocalDate(order.getSendTime()));
 
@@ -571,8 +592,8 @@ public class AddFoodOrder implements Initializable{
             productNum1.setText(String.valueOf(num1));
             foodid1 = details.get(0).getFoodId();
             orderid1 = details.get(0).getOrderId();
-
             // orderTotalPrice.setText("总价:"+String.valueOf(order.getOrderPrice())+"元");
+
         }else if(size == 2) {
             product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
             productBox1.setValue(product1);
@@ -642,6 +663,7 @@ public class AddFoodOrder implements Initializable{
 
 
         }
+        foodDiscount.setText("折扣："+ details.get(0).getDiscount());
 
         this.order = order;
     }
@@ -649,10 +671,7 @@ public class AddFoodOrder implements Initializable{
 
     public void inflateUIAdd(BeanRecipe recipe) {
         List<BeanRecipematerials> details = KitchenSystemUtil.recipeController.loadRecipeDetailByRecipeId(recipe.getRecipeId());
-        String usrName;
-        if(BeanMyUser.currentUser == null) usrName = BeanOperator.currentOperator.getOpName();
-        else usrName = BeanMyUser.currentUser.getUserName();
-        foodOrderUsrName.setText(usrName);
+
         int size = details.size();
         this.isEditMode = false;
         if(size == 1){
@@ -733,8 +752,8 @@ public class AddFoodOrder implements Initializable{
 
         }
 
-    }
 
+    }
 
 
 }
