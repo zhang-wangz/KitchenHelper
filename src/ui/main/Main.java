@@ -1389,6 +1389,10 @@ public class Main implements Initializable{
             showCancelDialog("确认退货");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
+            if(buyFoodList.get(0).getStatus() != 0){
+                showDialog("该采购订单状态处于配送或入库状态，无法退货");
+                return;
+            }
             for(BeanBuyFood beanBuyFood :buyFoodList) {
                 beanBuyFood.setStatus(3);
                 KitchenSystemUtil.update(beanBuyFood);

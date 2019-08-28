@@ -10,6 +10,7 @@ import org.hibernate.query.Query;
 import util.BaseException;
 import util.KitchenSystemUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static util.HibernateUtil.getSession;
@@ -55,6 +56,19 @@ public class FoodOrderController {
         return  order;
     }
 
+    public List<BeanFoodOrder> findOrderByUserId(String userid){
+        List<BeanFoodOrder> order = null;
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("from BeanFoodOrder b where b.userId = :id");
+        query.setParameter("id", userid);
+        order =  query.list();
+        tx.commit();
+        session.close();
+        return  order;
+    }
+
+
     public List<BeanOrderDetail> loadAllDetails() {
         Session session = getSession();
         Transaction tx = session.beginTransaction();
@@ -65,16 +79,22 @@ public class FoodOrderController {
         return list;
     }
 
+
+
     public List<BeanOrderDetail> loadDetailByOrderId(String orderId) {
         Session session = getSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("from BeanOrderDetail b where b.orderId = :id");
         query.setParameter("id", orderId);
-        List<BeanOrderDetail> list = query.list();
+        List<BeanOrderDetail> list = null;
+        if(query.list().size() == 0) return null;
+        list = query.list();
         tx.commit();
         session.close();
         return list;
     }
+
+
 
 
     public void delOrderDetail(BeanOrderDetail detail) {

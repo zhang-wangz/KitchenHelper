@@ -599,7 +599,6 @@ public class AddRecipeInfo implements Initializable{
 
 //        System.out.println(recipe.getRecipeBrow().toString());
         recipeBrow.setText("菜谱浏览人数:"+recipe.getRecipeBrow().toString());
-
         recipeColl.setText("菜谱收藏人数:"+recipe.getRecipeColl().toString());
         recipeScore.setText("菜谱评分:"+recipe.getRecipeScore().toString());
 

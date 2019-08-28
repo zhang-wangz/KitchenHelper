@@ -49,6 +49,7 @@ import util.KitchenSystemUtil;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -309,8 +310,7 @@ public class Main implements Initializable{
     @FXML
     private TableColumn<BeanRecipeComment,Integer> RecipeCommentScore;
 
-    private BeanMyUser Currentuser = BeanMyUser.currentUser;
-    private BeanOperator CurrentAdmin = BeanOperator.currentOperator;
+
 
 
 
@@ -603,7 +603,7 @@ public class Main implements Initializable{
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
             Integer status;
             status = KitchenSystemUtil.foodOrderController.findOrderById(orderDetail.getOrderId()).getOrderStatus();
-            boolean isCreate = Currentuser.getUserId().equals(KitchenSystemUtil.foodOrderController.findOrderById(orderDetail.getOrderId()).getUserId());
+            boolean isCreate = BeanMyUser.currentUser.getUserId().equals(KitchenSystemUtil.foodOrderController.findOrderById(orderDetail.getOrderId()).getUserId());
             if(!isCreate){
                 showDialog("该订单不是您所创建，无法删除");
                 return;
@@ -635,7 +635,7 @@ public class Main implements Initializable{
             showCancelDialog("删除");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            if(!Currentuser.getUserName().equals(KitchenSystemUtil.recipeController.findRecipeByRecipeId(recipematerials.getRecipeId()).getContriUsr())){
+            if(!BeanMyUser.currentUser.getUserName().equals(KitchenSystemUtil.recipeController.findRecipeByRecipeId(recipematerials.getRecipeId()).getContriUsr())){
                 showDialog("该菜谱不是由您所创建创建，无法删除");
                 return;
             }
@@ -669,9 +669,13 @@ public class Main implements Initializable{
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
             List<BeanOrderDetail> details  = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(order.getOrderId());
             int num = details.size();
-            Boolean isBenREN = CurrentAdmin != null || Currentuser.getUserId().equals(order.getUserId());
-            if(order.getOrderStatus() == 2 ){
-                showDialog("订单"+order.getOrderId()+"处于配送状态，不可删除");
+
+
+//            System.out.println(BeanMyUser.currentUser.getUserId() );
+//            System.out.println(order.getUserId() );
+            Boolean isBenREN =  BeanMyUser.currentUser.getUserId().equals(order.getUserId());
+            if(order.getOrderStatus() == 1 || order.getOrderStatus() == 2){
+                showDialog("订单"+order.getOrderId()+"处于配送或入库状态，不可删除");
                 return;
             }
             else if(isBenREN){
@@ -712,6 +716,7 @@ public class Main implements Initializable{
 
             if(!isCreated){
                 showDialog("该菜谱并非由当前登陆账户所建立,无法删除");
+                return;
             }
 
             if(num > 0){
@@ -1031,7 +1036,7 @@ public class Main implements Initializable{
             return;
         }
 
-        boolean isCreate = Currentuser.getUserName().equals(KitchenSystemUtil.recipeController.findRecipeByRecipeId(recipeStep.getRecipeId()).getContriUsr());
+        boolean isCreate = BeanMyUser.currentUser.getUserName().equals(KitchenSystemUtil.recipeController.findRecipeByRecipeId(recipeStep.getRecipeId()).getContriUsr());
         if(!isCreate){
             showDialog("该菜谱不是您所创建的，无法修改");
             return;
@@ -1198,7 +1203,7 @@ public class Main implements Initializable{
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/add/addRecipeComment/addRecipeComment.fxml"));
 
-            boolean isCreate = Currentuser.getUserId().equals(recipeComment.getUserId());
+            boolean isCreate = BeanMyUser.currentUser.getUserId().equals(recipeComment.getUserId());
             if(isCreate) {
                 showDialog("该评论不是您所创建，无法修改");
             }
@@ -1378,8 +1383,9 @@ public class Main implements Initializable{
     void refreshOrder(ActionEvent event){
         orderBox.getItems().clear();
         orderBox.setItems(getOrder());
-        orderDetails.clear();
-        orderDetails = getOrderDetail();
+        if(orderDetails != null)
+            orderDetails.clear();
+        orderDetails = null;
         orderTbl.setItems(orderDetails);
     }
 
@@ -1761,7 +1767,8 @@ public class Main implements Initializable{
     @FXML
     void selectOrderId(ActionEvent event){
         BeanFoodOrder order = orderBox.getSelectionModel().getSelectedItem();
-        orderDetails.clear();
+        if(orderDetails != null)
+            orderDetails.clear();
         if(order == null){
             orderDetails.clear();
             orderTbl.setItems(orderDetails);
@@ -2003,6 +2010,17 @@ public class Main implements Initializable{
         return details;
     }
 
+    private ObservableList<BeanOrderDetail> getOrderDetailByuserId(String orderId){
+        ObservableList<BeanOrderDetail> details = FXCollections.observableArrayList();
+        List<BeanOrderDetail> list = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(orderId);
+        for (BeanOrderDetail e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
+
+
     private ObservableList<BeanRecipematerials> getRecipeDetail(){
         ObservableList<BeanRecipematerials> details = FXCollections.observableArrayList();
         List<BeanRecipematerials> list = KitchenSystemUtil.recipeController.loadAllDetails();
@@ -2040,6 +2058,15 @@ public class Main implements Initializable{
         return details;
     }
 
+    private ObservableList<BeanFoodOrder> getOrderByUserId(String userId){
+        ObservableList<BeanFoodOrder> details = FXCollections.observableArrayList();
+        List<BeanFoodOrder> list = KitchenSystemUtil.foodOrderController.findOrderByUserId(userId);
+        for (BeanFoodOrder e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
     private ObservableList<BeanRecipe> getRecipe(){
         ObservableList<BeanRecipe> details = FXCollections.observableArrayList();
         List<BeanRecipe> list = KitchenSystemUtil.recipeController.loadAll();
@@ -2057,6 +2084,17 @@ public class Main implements Initializable{
         }
         return details;
     }
+
+
+    private ObservableList<BeanOrderDetail> getOrderDetailByorderIdanduserId(String orderId){
+        ObservableList<BeanOrderDetail> details = FXCollections.observableArrayList();
+        List<BeanOrderDetail> list = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(orderId);
+        for (BeanOrderDetail e: list){
+            details.add(e);
+        }
+        return details;
+    }
+
 
     private ObservableList<BeanRecipematerials> getRecipeDetail(String recipeId){
         ObservableList<BeanRecipematerials> details = FXCollections.observableArrayList();
@@ -2164,18 +2202,26 @@ public class Main implements Initializable{
         this.users = getUser();
         this.foodInfos = getFoodInfo();
         this.foodTypes =  getFoodTypes();
-        this.orderDetails = getOrderDetail();
+        this.orderDetails = null;
         this.recipematerials = getRecipeDetail();
         this.recipeSteps = getRecipeSteps();
         this.recipeComments = getRecipeComment();
         this.buyFoods = getOrderBuyDetail();
 
-        orderBox.setItems(getOrder());
+        orderBox.setItems(getOrderByUserId(BeanMyUser.currentUser.getUserId()));
         recipeBox.setItems(getRecipe());
         recipeBox1.setItems(getRecipe());
         choiceType1.setItems(getChoice1());
         choiceType2.setItems(getChoice2());
     }
+
+//    ObservableList<BeanOrderDetail> getOrderDetailByorderId(List<BeanFoodOrder> list){
+//        ObservableList<BeanOrderDetail> list1 = FXCollections.observableArrayList();
+//        for(BeanFoodOrder e : list){
+//            List<>
+//        }
+//
+//    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

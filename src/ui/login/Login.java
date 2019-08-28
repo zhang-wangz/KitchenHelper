@@ -53,7 +53,6 @@ public class Login {
         try {
             if(isadmin) {
                 KitchenSystemUtil.operatorController.login(userName, passWord);
-                loadMain();
                 BeanOperator operator = KitchenSystemUtil.operatorController.findOperatorByName(userName);
                 BeanOperator.currentOperator = operator;
                 BeanMyUser.currentUser = null;
@@ -61,12 +60,12 @@ public class Login {
 
             }else{
                 KitchenSystemUtil.userController.login(userName, passWord);
-                loadMain();
                 BeanMyUser myUser = KitchenSystemUtil.userController.findUserByName(userName);
                 BeanMyUser.currentUser = myUser;
                 BeanOperator.currentOperator = null;
                 ((Stage) username.getScene().getWindow()).close();//获取当前的scene并且销毁
             }
+            loadMain();
 
         } catch (BaseException e) {
             username.getStyleClass().add("wrong-match");
