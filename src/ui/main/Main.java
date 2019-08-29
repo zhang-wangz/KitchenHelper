@@ -573,7 +573,7 @@ public class Main implements Initializable{
 
                 status = KitchenSystemUtil.foodOrderController.findOrderById(orderDetail.getOrderId()).getOrderStatus();
 
-            if(status != 0 && status != 3){
+            if(status != 2 && status != 3){
                 showDialog("订单货物" + orderDetail.getOrderId() + "未处于下单或退货状态，无法删除");
             }else {
                 KitchenSystemUtil.foodOrderController.delOrderDetail(orderDetail);
@@ -630,9 +630,11 @@ public class Main implements Initializable{
                     return;
                 }
                 KitchenSystemUtil.buyFoodController.delOrderDetail(buyFood);
-                showDialog("订单货物" + buyFood.getBuyOrderId() + "已删除");
+                BeanFoodInfo foodInfo = KitchenSystemUtil.foodInfoController.findFoodById(buyFood.getFoodId());
+                foodInfo.setFoodNum(foodInfo.getFoodNum()+buyFood.getNum());
+                showDialog("采购单货物" + buyFood.getBuyOrderId() + "已删除");
         });
-        showConfirmDialog("是否要删除订单货物"+buyFood.getFoodId()+" ?", Arrays.asList(btnCancel, btnOK));
+        showConfirmDialog("是否要删除采购单货物"+buyFood.getFoodId()+" ?", Arrays.asList(btnCancel, btnOK));
     }
 
 
@@ -760,8 +762,8 @@ public class Main implements Initializable{
 //            List<BeanBuyFood> details  = KitchenSystemUtil.buyFoodController.loadDetailByOrderId(orderId);
 //            int num = details.size();
             Boolean isBenREN = CurrentAdmin != null && CurrentAdmin.getOpId().equals(order.get(0).getBuyOrderId());
-            if(order.get(0).getStatus() == 2  || order.get(0).getStatus() == 1){
-                showDialog("采购订单"+order.get(0).getBuyOrderId() + "处于配送或入库状态，不可删除");
+            if(order.get(0).getStatus() == 1  || order.get(0).getStatus() == 0){
+                showDialog("采购订单"+order.get(0).getBuyOrderId() + "处于配送或下单状态，不可删除");
                 return;
             }
             else if(isBenREN){
@@ -769,6 +771,15 @@ public class Main implements Initializable{
                 return;
             } else{
                 KitchenSystemUtil.buyFoodController.delOrder(order.get(0).getBuyOrderId());
+                for(BeanBuyFood buyFood : order){
+                    BeanFoodInfo foodInfo = KitchenSystemUtil.foodInfoController.findFoodById(buyFood.getFoodId());
+                    if(foodInfo.getFoodNum() <buyFood.getNum()){
+                        showDialog("该采购单无法删除,删除后存在食材"+foodInfo.getFoodName()+"数目为负数");
+                        return;
+                    }
+                    foodInfo.setFoodNum(foodInfo.getFoodNum() - buyFood.getNum());
+                    KitchenSystemUtil.update(foodInfo);
+                }
                 showDialog("采购订单" + order.get(0).getBuyOrderId() + "已删除");
             }
         });
@@ -1416,6 +1427,9 @@ public class Main implements Initializable{
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
             for(BeanBuyFood beanBuyFood :buyFoodList) {
+                BeanFoodInfo foodInfo = KitchenSystemUtil.foodInfoController.findFoodById(beanBuyFood.getFoodId());
+                foodInfo.setFoodNum(foodInfo.getFoodNum()+beanBuyFood.getNum());
+                KitchenSystemUtil.update(foodInfo);
                 beanBuyFood.setStatus(2);
                 KitchenSystemUtil.update(beanBuyFood);
             }
@@ -1459,8 +1473,8 @@ public class Main implements Initializable{
             showCancelDialog("确认退货");
         });
         btnOK.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event e)->{
-            if(buyFoodList.get(0).getStatus() != 0){
-                showDialog("该采购订单状态处于配送或入库状态，无法退货");
+            if(buyFoodList.get(0).getStatus() != 3 ){
+                showDialog("该采购订单状态未处于退货状态，无法退货");
                 return;
             }
             for(BeanBuyFood beanBuyFood :buyFoodList) {
@@ -1549,8 +1563,12 @@ public class Main implements Initializable{
         try{
             String id = (orderId.getText());
             if(choice1.equals("订单")){
+                List<BeanFoodOrder> foodOrderList = KitchenSystemUtil.foodOrderController.search(id);
+                if(foodOrderList.size() == 0){
+                    showDialog("啥都没找到");
+                    return;
+                }
                 BeanFoodOrder foodOrder = null;
-                foodOrder = KitchenSystemUtil.foodOrderController.findOrderById(id);
                 orderUser.setText("用户名: "+ foodOrder.getUserName());
                 orderPrice.setText("状态:"+ EnumUtils.getByCode(foodOrder.getOrderStatus(),FoodOrderStatusEnum.class).getMsg());
                 orderTel.setText("联系电话: " + foodOrder.getUserTel());
@@ -1575,7 +1593,7 @@ public class Main implements Initializable{
                     showDialog("啥都没有找到!");
                     return;
                 }
-                if(list.size()>1){
+                if(list.size()>=1){
                     String ones = "";
                     for (BeanOperator b: list){
                         ones += (b.getOpName()+", ");
@@ -1587,13 +1605,13 @@ public class Main implements Initializable{
                 appDate.setText("");
                 appPet.setText("等级: "+b.getOpLevel().toString());
                 appStatus.setText("");
-            }else if(choice2 .equals("类别")){
+            }else if(choice2 .equals("食材类别")){
                 List<BeanFoodType> list = KitchenSystemUtil.foodTypeController.search(keyword.getText());
                 if(list.size()==0){
                     showDialog("啥都没有找到!");
                     return;
                 }
-                if(list.size()>1){
+                if(list.size() >= 1){
                     String ones = "";
                     for (BeanFoodType b: list){
                         ones += (b.getFoodTypeName()+", ");
@@ -1605,13 +1623,31 @@ public class Main implements Initializable{
                 appDate.setText("");
                 appPet.setText("详情: "+b.getFoodTypeDes());
                 appStatus.setText("");
+            }else if(choice2 .equals("食材")){
+                List<BeanFoodInfo> list = KitchenSystemUtil.foodInfoController.search(keyword.getText());
+                if(list.size()==0){
+                    showDialog("啥都没有找到!");
+                    return;
+                }
+                if(list.size() >= 1){
+                    String ones = "";
+                    for (BeanFoodInfo b: list){
+                        ones += (b.getFoodName()+", ");
+                    }
+                    showDialog("查找到多个结果"+ones+"但仅显示最匹配部分");
+                }
+                BeanFoodInfo b = list.get(0);
+                appUser.setText("名称: "+b.getFoodName());
+                appDate.setText("食材类别: "+b.getFoodTypeNameOfFoodInfo());
+                appPet.setText("库存: "+b.getFoodNum());
+                appStatus.setText("价格: "+b.getFoodPrice());
             }else if(choice2.equals("菜谱")){
                 List<BeanRecipe> list = KitchenSystemUtil.recipeController.search(keyword.getText());
                 if(list.size()==0){
                     showDialog("啥都没有找到!");
                     return;
                 }
-                if(list.size()>1){
+                if(list.size()>=1){
                     String ones = "";
                     for (BeanRecipe b: list){
                         ones += (b.getRecipeName()+", ");
@@ -1629,7 +1665,7 @@ public class Main implements Initializable{
                     showDialog("啥都么找到!");
                     return;
                 }
-                if(list.size()>1){
+                if(list.size()>=1){
                     String ones = "";
                     for (BeanMyUser b: list){
                         ones += (b.getUserName()+", ");

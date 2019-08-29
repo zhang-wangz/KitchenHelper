@@ -239,6 +239,18 @@ public class AddFoodOrder implements Initializable{
                 detail.setFoodId(foodid1);
                 KitchenSystemUtil.update(detail);
             }else{
+                BeanFoodInfo  beanFoodInfo = KitchenSystemUtil.foodInfoController.findFoodById(detail.getFoodId());
+                if(num1 > beanFoodInfo.getFoodNum()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(null);
+                    alert.setContentText("食材1库存不足，请等待补充后再次购买");
+                    alert.showAndWait();
+                    cancel(new ActionEvent());
+                    return;
+                }else{
+                    beanFoodInfo.setFoodNum(beanFoodInfo.getFoodNum() - num1);
+                    KitchenSystemUtil.update(beanFoodInfo);
+                }
                 KitchenSystemUtil.save(detail);
             }
         }
@@ -257,6 +269,18 @@ public class AddFoodOrder implements Initializable{
                 detail.setFoodId(foodid2);
                 KitchenSystemUtil.update(detail);
             }else{
+                BeanFoodInfo  beanFoodInfo = KitchenSystemUtil.foodInfoController.findFoodById(detail.getFoodId());
+                if(num2 > beanFoodInfo.getFoodNum()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(null);
+                    alert.setContentText("食材2库存不足，请等待补充后再次购买");
+                    alert.showAndWait();
+                    cancel(new ActionEvent());
+                    return;
+                }else{
+                    beanFoodInfo.setFoodNum(beanFoodInfo.getFoodNum() - num1);
+                    KitchenSystemUtil.update(beanFoodInfo);
+                }
                 KitchenSystemUtil.save(detail);
             }
         }
@@ -275,6 +299,18 @@ public class AddFoodOrder implements Initializable{
                 detail.setFoodId(foodid3);
                 KitchenSystemUtil.update(detail);
             }else{
+                BeanFoodInfo  beanFoodInfo = KitchenSystemUtil.foodInfoController.findFoodById(detail.getFoodId());
+                if(num3 > beanFoodInfo.getFoodNum()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(null);
+                    alert.setContentText("食材3库存不足，请等待补充后再次购买");
+                    alert.showAndWait();
+                    cancel(new ActionEvent());
+                    return;
+                }else{
+                    beanFoodInfo.setFoodNum(beanFoodInfo.getFoodNum() - num1);
+                    KitchenSystemUtil.update(beanFoodInfo);
+                }
                 KitchenSystemUtil.save(detail);
             }
         }
@@ -293,6 +329,19 @@ public class AddFoodOrder implements Initializable{
                 detail.setFoodId(foodid4);
                 KitchenSystemUtil.update(detail);
             }else{
+                BeanFoodInfo  beanFoodInfo = KitchenSystemUtil.foodInfoController.findFoodById(detail.getFoodId());
+                if(num4 > beanFoodInfo.getFoodNum()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(null);
+                    alert.setContentText("食材4库存不足，请等待补充后再次购买");
+                    alert.showAndWait();
+                    cancel(new ActionEvent());
+                    return;
+//                    throw new BaseException("食材4库存不足，请等待补充后再次购买");
+                }else{
+                    beanFoodInfo.setFoodNum(beanFoodInfo.getFoodNum() - num1);
+                    KitchenSystemUtil.update(beanFoodInfo);
+                }
                 KitchenSystemUtil.save(detail);
             }
         }
@@ -338,8 +387,6 @@ public class AddFoodOrder implements Initializable{
         if(num2 == 0 || product2 == null){
             productPrice2.setText("价格");
         }else {
-//            price2 = (int)(product2.getFoodPrice() * num2* discount);
-
             foodDiscount.setText("折扣:"+String.valueOf(getDiscout(price1+price2+price3+price4)));
             price2 = (int)(product2.getFoodPrice() * num2* getDiscout(price1+price2+price3+price4));
             productPrice2.setText(String.valueOf(price2)+"元");

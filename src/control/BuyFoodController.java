@@ -75,11 +75,11 @@ public class BuyFoodController {
         query.setParameter("orderId", detail.getBuyOrderId());
         query.executeUpdate();
 
-        query = session.createQuery("update BeanFoodInfo b set b.foodNum = b.foodNum -:num where foodId =:foodId");
-        query.setParameter("num",detail.getNum());
-        query.setParameter("foodId",detail.getFoodId());
-
-        query.executeUpdate();
+//        query = session.createQuery("update BeanFoodInfo b set b.foodNum = b.foodNum -:num where foodId =:foodId");
+//        query.setParameter("num",detail.getNum());
+//        query.setParameter("foodId",detail.getFoodId());
+//
+//        query.executeUpdate();
 
         tx.commit();
         session.close();

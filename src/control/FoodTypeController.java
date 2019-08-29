@@ -71,7 +71,7 @@ public class FoodTypeController {
     public List<BeanFoodType> search(String text) {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from BeanFoodType b where b.foodTypeName like :text");
+        Query query = session.createQuery("from BeanFoodType b where b.foodTypeName like  :text");
         query.setParameter("text","%"+text+"%");
         List<BeanFoodType> list = query.list();
         transaction.commit();
@@ -81,8 +81,8 @@ public class FoodTypeController {
 
 
     public static void main(String[] args) {
-        List<BeanFoodType> list = KitchenSystemUtil.foodTypeController.loadAll();
-        for (BeanFoodType e :list){
+        List<BeanFoodType> foodTypes  = KitchenSystemUtil.foodTypeController.search("Ив");
+        for(BeanFoodType e :foodTypes){
             System.out.println(e.getFoodTypeName());
         }
     }

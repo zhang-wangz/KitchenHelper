@@ -40,6 +40,18 @@ public class FoodInfoController {
         return foodInfo;
     }
 
+    public List<BeanFoodInfo> search(String text) {
+        Session session = getSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from BeanFoodInfo b where b.foodName like :text");
+        query.setParameter("text","%"+text+"%");
+        if(query.list().size()==0) return null;
+        List<BeanFoodInfo> list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
+
     public BeanFoodInfo findFoodById(String id) {
         BeanFoodInfo foodInfo = null;
         Session session = getSession();
@@ -80,16 +92,7 @@ public class FoodInfoController {
                 .uniqueResult();
     }
 
-    public List<BeanFoodInfo> search(String text) {
-        Session session = getSession();
-        Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from BeanFoodInfo b where b.foodName like :text");
-        query.setParameter("text","%"+text+"%");
-        List<BeanFoodInfo> list = query.list();
-        transaction.commit();
-        session.close();
-        return list;
-    }
+
 
 
     public static void main(String[] args) {

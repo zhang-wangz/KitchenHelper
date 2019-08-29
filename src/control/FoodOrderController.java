@@ -56,12 +56,25 @@ public class FoodOrderController {
         return  order;
     }
 
+    public List<BeanFoodOrder> search(String text) {
+        Session session = getSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from BeanFoodOrder b where b.orderId like :text");
+        query.setParameter("text","%"+text+"%");
+        if(query.list().size()==0)return null;
+        List<BeanFoodOrder> list = query.list();
+        transaction.commit();
+        session.close();
+        return list;
+    }
+
     public List<BeanFoodOrder> findOrderByUserId(String userid){
         List<BeanFoodOrder> order = null;
         Session session = getSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("from BeanFoodOrder b where b.userId = :id");
         query.setParameter("id", userid);
+        if(query.list().size()== 0) return null;
         order =  query.list();
         tx.commit();
         session.close();
@@ -119,12 +132,12 @@ public class FoodOrderController {
         query.setParameter("orderid", detail.getOrderId());
         query.executeUpdate();
 
-        query = session.createQuery("update BeanOrderDetail b set b.num = b.num -:num, b.price = b.price - :price where orderId =:orderid and foodId = :foodid");
-        query.setParameter("num",detail.getNum());
-        query.setParameter("orderid",detail.getOrderId());
-        query.setParameter("foodid",detail.getFoodId());
-        query.setParameter("price", detail.getNum() * detail.getPrice());
-        query.executeUpdate();
+//        query = session.createQuery("update BeanOrderDetail b set b.num = b.num -:num, b.price = b.price - :price where orderId =:orderid and foodId = :foodid");
+//        query.setParameter("num",detail.getNum());
+//        query.setParameter("orderid",detail.getOrderId());
+//        query.setParameter("foodid",detail.getFoodId());
+//        query.setParameter("price", detail.getNum() * detail.getPrice());
+//        query.executeUpdate();
 
         tx.commit();
         session.close();
@@ -162,6 +175,11 @@ public class FoodOrderController {
         rx.commit();
         session.close();
         return size;
+    }
+
+    public static void main(String[] args) {
+        BeanFoodOrder order = KitchenSystemUtil.foodOrderController.findOrderByUserId("wzw").get(0);
+        System.out.println(order.getOrderId());
     }
 
 
