@@ -1404,7 +1404,7 @@ public class Main implements Initializable{
     @FXML
     void refreshOrder(ActionEvent event){
         orderBox.getItems().clear();
-        orderBox.setItems(getOrder());
+        orderBox.setItems(getOrderByUserId(BeanMyUser.currentUser.getUserId()));
         if(orderDetails != null)
             orderDetails.clear();
         orderDetails = null;
@@ -2182,15 +2182,16 @@ public class Main implements Initializable{
 
     private ObservableList<PieChart.Data> getOrderPieData(){
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
-        int count1 = KitchenSystemUtil.foodOrderController.getOrderCount(2);
-        int count2 = KitchenSystemUtil.foodOrderController.getOrderCount(1);
-        int count3 = KitchenSystemUtil.foodOrderController.getOrderCount(0);
-        int count4 = KitchenSystemUtil.foodOrderController.getOrderCount(4);
+        String userId = BeanMyUser.currentUser.getUserId();
+        int count1 = KitchenSystemUtil.foodOrderController.getOrderCountByStatusandUserId(2,userId);
+        int count2 = KitchenSystemUtil.foodOrderController.getOrderCountByStatusandUserId(1,userId);
+        int count3 = KitchenSystemUtil.foodOrderController.getOrderCountByStatusandUserId(0,userId);
+        int count4 = KitchenSystemUtil.foodOrderController.getOrderCountByStatusandUserId(3,userId);
 
-        data.add(new PieChart.Data("已完成订单 ( " + String.valueOf(count1) +" )",count1));
-        data.add(new PieChart.Data("已配送订单 ( " + String.valueOf(count2) +" )",count2));
-        data.add(new PieChart.Data("未配送订单 ( " + String.valueOf(count3) +" )",count3));
-        data.add(new PieChart.Data("已退货订单 ( " + String.valueOf(count3) +" )",count4));
+        data.add(new PieChart.Data("送达订单 ( " + String.valueOf(count1) +" )",count1));
+        data.add(new PieChart.Data("配送订单 ( " + String.valueOf(count2) +" )",count2));
+        data.add(new PieChart.Data("下单订单 ( " + String.valueOf(count3) +" )",count3));
+        data.add(new PieChart.Data("退货订单 ( " + String.valueOf(count3) +" )",count4));
         return data;
     }
 

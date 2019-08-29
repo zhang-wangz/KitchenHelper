@@ -148,4 +148,21 @@ public class FoodOrderController {
         session.close();
         return size;
     }
+
+
+    public int getOrderCountByStatusandUserId(Integer cate1,String userId){
+        Session session = getSession();
+        Transaction rx = session.beginTransaction();
+
+//        Query query = session.createQuery("from BeanFoodOrder b where b.orderStatus = '"+ cate+"'");
+        Query query = session.createQuery("from BeanFoodOrder b where b.orderStatus = :cate and b.userId = :userId");
+        query.setParameter("cate",cate1);
+        query.setParameter("userId",userId);
+        int size = query.list().size();
+        rx.commit();
+        session.close();
+        return size;
+    }
+
+
 }

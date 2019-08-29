@@ -2022,12 +2022,12 @@ public class Main implements Initializable{
         int count1 = KitchenSystemUtil.foodOrderController.getOrderCount(2);
         int count2 = KitchenSystemUtil.foodOrderController.getOrderCount(1);
         int count3 = KitchenSystemUtil.foodOrderController.getOrderCount(0);
-        int count4 = KitchenSystemUtil.foodOrderController.getOrderCount(4);
+        int count4 = KitchenSystemUtil.foodOrderController.getOrderCount(3);
 
-        data.add(new PieChart.Data("已完成订单 ( " + String.valueOf(count1) +" )",count1));
-        data.add(new PieChart.Data("已配送订单 ( " + String.valueOf(count2) +" )",count2));
-        data.add(new PieChart.Data("未配送订单 ( " + String.valueOf(count3) +" )",count3));
-        data.add(new PieChart.Data("已退货订单 ( " + String.valueOf(count3) +" )",count4));
+        data.add(new PieChart.Data("送达订单 ( " + String.valueOf(count1) +" )",count1));
+        data.add(new PieChart.Data("配送订单 ( " + String.valueOf(count2) +" )",count2));
+        data.add(new PieChart.Data("下单订单 ( " + String.valueOf(count3) +" )",count3));
+        data.add(new PieChart.Data("退货订单 ( " + String.valueOf(count3) +" )",count4));
         return data;
     }
 
