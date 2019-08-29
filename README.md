@@ -6,7 +6,9 @@
 
 - when download the projects,please after rm the .DS_Store file , then run the projects.
 
-HEAD
+
+------------------
+Update:
 - 2019-8-28 update
 - 订单删除连带删除订单详情已处理
 - 采购单删除和订单具体货物修改已处理
@@ -20,8 +22,15 @@ HEAD
 - 修改搜索功能 等待修复
 - 主页订单数字用户显示 已处理
 
-
+--------------------
 Environments:
-    - 1.mysql:5.7及以上
-    - 2.GUi javafx && hebernate
+- 1.mysql:5.7及以上
+- 2.GUi javafx && hebernate
 
+------------------
+Instructions:
+- if u want to try ,and your mysql is lower than this versioncan,u can use the following usr and pwd to login the  test database
+- url: 139.9.90.185/Kitchen
+- usr Kitchen
+- pwd 123456
+- the user is be used in test only.
