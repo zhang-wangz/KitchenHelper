@@ -30,7 +30,7 @@ Update:
 --------------------
 Environments:
 - 1.mysql:5.7及以上
-- 2.GUi javafx && hebernate
+- 2.GUi javafx && hibernate
 
 ------------------
 Instructions:
