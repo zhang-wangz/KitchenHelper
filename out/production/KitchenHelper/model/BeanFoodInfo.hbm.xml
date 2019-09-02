@@ -22,6 +22,10 @@
             <column name="food_des" sql-type="varchar(1024)" length="1024" not-null="true"/>
         </property>
 
+        <property name="foodUnit">
+            <column name="food_unit" sql-type="varchar(1024)" length="1024" not-null="true"/>
+        </property>
+
         <property name="foodPrice">
             <column name="food_price" sql-type="int(11)"  not-null="true" default="0"/>
         </property>

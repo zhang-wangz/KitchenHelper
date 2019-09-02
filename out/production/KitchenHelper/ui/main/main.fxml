@@ -264,6 +264,7 @@
                                     <TableColumn fx:id="foodinfopriceCol" prefWidth="75.0" text="price" />
                                     <TableColumn fx:id="foodinfonumCol" prefWidth="75.0" text="num" />
                                     <TableColumn fx:id="foodinfodesCol" prefWidth="75.0" text="des" />
+                                    <TableColumn fx:id="foodinfounitCol" prefWidth="75.0" text="unit" />
                                  </columns>
                                  <contextMenu>
                                     <ContextMenu>

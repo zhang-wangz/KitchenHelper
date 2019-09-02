@@ -43,8 +43,15 @@ public class AddFoodInfo implements Initializable{
     @FXML
     private JFXComboBox<String> foodTypeNameJFXComboBox;
 
+
+    @FXML
+    private JFXComboBox<String> foodUnidtJFXComboBox;
+
+//    private ObservableList<String> foodUnit = FXCollections.observableArrayList();
+
     @FXML
     private JFXTextField foodDes;
+
 
 
     @FXML
@@ -52,6 +59,24 @@ public class AddFoodInfo implements Initializable{
 
     private boolean isEditMode = false;
     private String id = "0";
+    private String foodUnits = "";
+
+    private ObservableList<String> getfoodUnitList(){
+        ObservableList<String> list = FXCollections.observableArrayList();
+
+        list.add("斤");
+        list.add("克");
+        list.add("根");
+        list.add("只");
+        list.add("片");
+        list.add("毫升");
+        return list;
+    }
+
+    @FXML
+    void foodUnitSelected(ActionEvent event) {
+        this.foodUnits = foodUnidtJFXComboBox.getSelectionModel().getSelectedItem();
+    }
 
 
     private ObservableList<String> getFoodTypeName(){
@@ -89,6 +114,7 @@ public class AddFoodInfo implements Initializable{
         foodInfo.setFoodNum(number);
         foodInfo.setFoodDes(des);
         foodInfo.setFoodTypeNameOfFoodInfo(foodTypeNameJFXComboBox.getSelectionModel().getSelectedItem());
+        foodInfo.setFoodUnit(foodUnidtJFXComboBox.getSelectionModel().getSelectedItem());
         if (!isEditMode){
             foodInfo.setFoodId(KeyUtil.getUniqueKey());
         }
@@ -114,6 +140,11 @@ public class AddFoodInfo implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
+//        this.foodUnit = getfoodUnitList();
+//
+
         RequiredFieldValidator validator = new RequiredFieldValidator();
         NumberValidator numberValidator = new NumberValidator();
         validator.setMessage("此为必填项");
@@ -163,6 +194,7 @@ public class AddFoodInfo implements Initializable{
         });
 
         foodTypeNameJFXComboBox.setItems(getFoodTypeName());
+        foodUnidtJFXComboBox.setItems(getfoodUnitList());
 
     }
 
@@ -172,6 +204,7 @@ public class AddFoodInfo implements Initializable{
         foodPrice.setText(foodInfo.getFoodPrice().toString());
         num.setText(foodInfo.getFoodNum().toString());
         foodTypeNameJFXComboBox.setValue(foodInfo.getFoodTypeNameOfFoodInfo());
+        foodUnidtJFXComboBox.setValue(foodInfo.getFoodUnit());
         this.isEditMode = true;
         this.id = foodInfo.getFoodId();
     }

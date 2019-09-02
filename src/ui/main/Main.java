@@ -207,6 +207,9 @@ public class Main implements Initializable{
     @FXML
     private  TableColumn<BeanFoodInfo,String> foodinfodesCol;
 
+    @FXML
+    private  TableColumn<BeanFoodInfo,String> foodinfounitCol;
+
 
     @FXML
     private TableView<BeanFoodType> foodTypeTbl;
@@ -1805,6 +1808,7 @@ public class Main implements Initializable{
         foodinfonumCol.setCellValueFactory(new PropertyValueFactory<>("foodNum"));
         foodinfopriceCol.setCellValueFactory(new PropertyValueFactory<>("foodPrice"));
         foodinfodesCol.setCellValueFactory(new PropertyValueFactory<>("foodDes"));
+        foodinfounitCol.setCellValueFactory(new PropertyValueFactory<>("foodUnit"));
         foodInfoTableView.setItems(foodInfos);
 
 //

@@ -7,6 +7,17 @@ public class BeanFoodInfo {
     private String foodName;
     private Integer foodPrice;
     private Integer foodNum;
+    private String foodUnit;
+
+
+    public String getFoodUnit() {
+        return foodUnit;
+    }
+
+    public void setFoodUnit(String foodUnit) {
+        this.foodUnit = foodUnit;
+    }
+
     private String foodTypeNameOfFoodInfo;
 
 
