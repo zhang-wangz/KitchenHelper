@@ -1,4 +1,8 @@
 lib
 .idea
 src/.DS_Store
+<<<<<<< HEAD
 .DS_Store
+=======
+.DS_Store
+>>>>>>> 08ebb289568b0e31a4938dc5fb04171390379f94
