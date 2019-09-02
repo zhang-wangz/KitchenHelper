@@ -1747,7 +1747,7 @@ public class Main implements Initializable{
                 appStatus.setText("");
             }else if(choice2 .equals("食材")){
                 List<BeanFoodInfo> list = KitchenSystemUtil.foodInfoController.search(keyword.getText());
-                if(list.size()==0){
+                if(list == null ){
                     showDialog("啥都没有找到!");
                     return;
                 }
@@ -1798,7 +1798,7 @@ public class Main implements Initializable{
             String id = (orderId.getText());
             if(choice1.equals("订单")){
                 List<BeanFoodOrder> list = KitchenSystemUtil.foodOrderController.search(id);
-                if(list.size()==0){
+                if(list == null){
                     showDialog("啥都没有找到!");
                     return;
                 }
@@ -2145,6 +2145,7 @@ public class Main implements Initializable{
     private ObservableList<BeanOrderDetail> getOrderDetail(String orderId){
         ObservableList<BeanOrderDetail> details = FXCollections.observableArrayList();
         List<BeanOrderDetail> list = KitchenSystemUtil.foodOrderController.loadDetailByOrderId(orderId);
+        if(list == null) return null;
         for (BeanOrderDetail e: list){
             details.add(e);
         }

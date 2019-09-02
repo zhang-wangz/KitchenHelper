@@ -117,6 +117,7 @@ public class AddBuyFood implements Initializable{
     private Integer status4 = 0;
 
     private String buyorderId = "0";
+    private Integer size;
 
     private JFXDepthManager jfxDepthManager = null;
 
@@ -198,8 +199,12 @@ public class AddBuyFood implements Initializable{
 
             if(isEditMode){
                 buyFood.setBuyOrderId(buyorderId);
-                buyFood.setFoodId(foodid1);
-                KitchenSystemUtil.update(buyFood);
+                buyFood.setFoodId(product1.getFoodId());
+                if(size == 1)
+                    KitchenSystemUtil.update(buyFood);
+                else if(size == 0){
+                    KitchenSystemUtil.save(buyFood);
+                }
             }else{
                 KitchenSystemUtil.save(buyFood);
             }
@@ -217,8 +222,12 @@ public class AddBuyFood implements Initializable{
 
             if(isEditMode){
                 buyFood.setBuyOrderId(buyorderId);
-                buyFood.setFoodId(foodid2);
-                KitchenSystemUtil.update(buyFood);
+                buyFood.setFoodId(product2.getFoodId());
+                if(size == 2)
+                    KitchenSystemUtil.update(buyFood);
+                else if(size == 1){
+                    KitchenSystemUtil.save(buyFood);
+                }
             }else{
                 KitchenSystemUtil.save(buyFood);
             }
@@ -239,8 +248,12 @@ public class AddBuyFood implements Initializable{
 
             if(isEditMode){
                 buyFood.setBuyOrderId(buyorderId);
-                buyFood.setFoodId(foodid3);
-                KitchenSystemUtil.update(buyFood);
+                buyFood.setFoodId(product3.getFoodId());
+                if(size == 3)
+                    KitchenSystemUtil.update(buyFood);
+                else if(size == 2){
+                    KitchenSystemUtil.save(buyFood);
+                }
             }else{
                 KitchenSystemUtil.save(buyFood);
 
@@ -261,8 +274,12 @@ public class AddBuyFood implements Initializable{
 //            detail.setDiscount(discount);
             if(isEditMode){
                 buyFood.setBuyOrderId(buyorderId);
-                buyFood.setFoodId(foodid4);
-                KitchenSystemUtil.update(buyFood);
+                buyFood.setFoodId(product4.getFoodId());
+                if(size == 4)
+                    KitchenSystemUtil.update(buyFood);
+                else if(size == 3){
+                    KitchenSystemUtil.save(buyFood);
+                }
             }else{
                 KitchenSystemUtil.save(buyFood);
 
@@ -505,11 +522,12 @@ public class AddBuyFood implements Initializable{
 
     public void inflateUI(String orderId) {
         List<BeanBuyFood> details = KitchenSystemUtil.buyFoodController.loadBuyDetailByOrderId(orderId);
-        int size = details.size();
-        this.isEditMode = true;
 
+        int size = 0;
+        this.isEditMode = true;
+        size = details.size();
         if(size == 1){
-            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getBuyOrderId());
+            product1 = KitchenSystemUtil.foodInfoController.findFoodById(details.get(0).getFoodId());
             productBox1.setValue(product1);
             num1 = details.get(0).getNum();
             productNum1.setText(String.valueOf(num1));
@@ -599,6 +617,7 @@ public class AddBuyFood implements Initializable{
 //            foodOrderSendTime.setValue(foodsenddate);
 
         }
+        this.size = size;
 
 
 

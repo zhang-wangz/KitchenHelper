@@ -135,6 +135,7 @@ public class AddFoodOrder implements Initializable{
     private String orderid3 = "0";
     private String foodid4 = "0";
     private String orderid4 = "0";
+    private Integer size;
 
     private BeanFoodOrder order= null;
     private JFXDepthManager jfxDepthManager = null;
@@ -237,7 +238,11 @@ public class AddFoodOrder implements Initializable{
             if(isEditMode){
                 detail.setOrderId(orderid1);
                 detail.setFoodId(foodid1);
-                KitchenSystemUtil.update(detail);
+                if(size == 1)
+                    KitchenSystemUtil.update(detail);
+                else if(size == 0){
+                    KitchenSystemUtil.save(detail);
+                }
             }else{
                 BeanFoodInfo  beanFoodInfo = KitchenSystemUtil.foodInfoController.findFoodById(detail.getFoodId());
                 if(num1 > beanFoodInfo.getFoodNum()){
@@ -267,7 +272,11 @@ public class AddFoodOrder implements Initializable{
             if(isEditMode){
                 detail.setOrderId(orderid2);
                 detail.setFoodId(foodid2);
-                KitchenSystemUtil.update(detail);
+                if(size == 2)
+                    KitchenSystemUtil.update(detail);
+                else if(size == 1){
+                    KitchenSystemUtil.save(detail);
+                }
             }else{
                 BeanFoodInfo  beanFoodInfo = KitchenSystemUtil.foodInfoController.findFoodById(detail.getFoodId());
                 if(num2 > beanFoodInfo.getFoodNum()){
@@ -297,7 +306,11 @@ public class AddFoodOrder implements Initializable{
             if(isEditMode){
                 detail.setOrderId(orderid3);
                 detail.setFoodId(foodid3);
-                KitchenSystemUtil.update(detail);
+                if(size == 3)
+                    KitchenSystemUtil.update(detail);
+                else if(size == 2){
+                    KitchenSystemUtil.save(detail);
+                }
             }else{
                 BeanFoodInfo  beanFoodInfo = KitchenSystemUtil.foodInfoController.findFoodById(detail.getFoodId());
                 if(num3 > beanFoodInfo.getFoodNum()){
@@ -327,7 +340,11 @@ public class AddFoodOrder implements Initializable{
             if(isEditMode){
                 detail.setOrderId(orderid4);
                 detail.setFoodId(foodid4);
-                KitchenSystemUtil.update(detail);
+                if(size == 4)
+                    KitchenSystemUtil.update(detail);
+                else if(size == 3){
+                    KitchenSystemUtil.save(detail);
+                }
             }else{
                 BeanFoodInfo  beanFoodInfo = KitchenSystemUtil.foodInfoController.findFoodById(detail.getFoodId());
                 if(num4 > beanFoodInfo.getFoodNum()){
@@ -626,10 +643,14 @@ public class AddFoodOrder implements Initializable{
         foodOrderSendAddress.setText(order.getSendAddress());
         foodOrderUserTel.setText(order.getUserTel());
 //        foodOrderOrderStatus.setText(EnumUtils.getByCode(order.getOrderStatus(), FoodOrderStatusEnum.class).getMsg());
-        foodDiscount.setText(details.get(0).getDiscount().toString());
+        int size = 0;
+        if(details != null) {
+            foodDiscount.setText(details.get(0).getDiscount().toString());
+            size = details.size();
+        }
         foodOrderSendTime.setValue(Date2LocalDate(order.getSendTime()));
 
-        int size = details.size();
+
         this.isEditMode = true;
 
         if(size == 1){
@@ -710,9 +731,13 @@ public class AddFoodOrder implements Initializable{
 
 
         }
-        foodDiscount.setText("’€ø€£∫"+ details.get(0).getDiscount());
+        if(details != null)
+            foodDiscount.setText("’€ø€£∫"+ details.get(0).getDiscount());
+        else
+            foodDiscount.setText("’€ø€: ");
 
         this.order = order;
+        this.size = size;
     }
 
 

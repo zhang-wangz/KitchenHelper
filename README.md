@@ -5,7 +5,12 @@
 
 
 - when download the projects,please after rm the .DS_Store file , then run the projects.
-
+------------------
+update:
+- 2010-9-2 更新
+- 在万恶的资本主义下，又修改了新的bug
+- 订单可以为空，采购单可以为空，(特殊情况下造成的为空情况)
+- 等待增加正则匹配
 
 ------------------
 update:
